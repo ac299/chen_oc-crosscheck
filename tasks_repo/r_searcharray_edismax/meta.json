@@ -1,0 +1,53 @@
+{
+ "task_id": "r_searcharray_edismax",
+ "project": "searcharray",
+ "namespace": "searcharray.solr.edismax",
+ "completion_file": "searcharray/solr.py",
+ "tests": [
+  "test/test_solr.py::test_edismax",
+  "test/test_solr.py::test_edismax_custom_similarity"
+ ],
+ "test_files": [
+  "test/test_solr.py"
+ ],
+ "env_volume": "xc-env-searcharray",
+ "gold_body": "    def listify(x):\n        return x if isinstance(x, list) else [x]\n\n    query_fields = parse_field_boosts(listify(qf))\n    phrase_fields = parse_field_boosts(listify(pf)) if pf else {}\n    if mm is None:\n        mm = \"1\"\n    if q_op == \"AND\":\n        mm = \"100%\"\n\n    # bigram_fields = parse_field_boosts(pf2) if pf2 else {}\n    # trigram_fields = parse_field_boosts(pf3) if pf3 else {}\n\n    num_search_terms, search_terms, term_centric = parse_query_terms(frame, q, list(query_fields.keys()))\n    if term_centric:\n        qf_scores, explain = _edismax_term_centric(frame, query_fields,\n                                                   num_search_terms, search_terms, mm,\n                                                   similarity=similarity)\n    else:\n        qf_scores, explain = _edismax_field_centric(frame, query_fields,\n                                                    num_search_terms, search_terms, mm,\n                                                    similarity=similarity)\n\n    phrase_scores = []\n    for field, boost in phrase_fields.items():\n        arr = get_field(frame, field)\n        terms = search_terms[field]\n        field_phrase_score = arr.score(terms, similarity=similarity) * (1 if boost is None else boost)\n        boost_exp = f\"{boost}\" if boost is not None else \"1\"\n        explain += f\" ({field}:\\\"{' '.join(terms)}\\\")^{boost_exp}\"\n        phrase_scores.append(field_phrase_score)\n\n    if len(phrase_scores) > 0:\n        phrase_scores = np.sum(phrase_scores, axis=0)\n        # Add where term_scores > 0\n        term_match_idx = np.where(qf_scores)[0]\n\n        qf_scores[term_match_idx] += phrase_scores[term_match_idx]\n    return qf_scores, explain",
+ "sample": {
+  "namespace": "searcharray.solr.edismax",
+  "type": "function",
+  "completion_path": "searcharray/searcharray/solr.py",
+  "signature_position": [
+   169,
+   177
+  ],
+  "body_position": [
+   202,
+   240
+  ],
+  "dependency": {
+   "intra_class": [],
+   "intra_file": [
+    "searcharray.solr._edismax_field_centric",
+    "searcharray.solr._edismax_term_centric",
+    "searcharray.solr.get_field",
+    "searcharray.solr.parse_field_boosts",
+    "searcharray.solr.parse_query_terms"
+   ],
+   "cross_file": [
+    "searcharray.postings.SearchArray.score",
+    "searcharray.similarity.Similarity",
+    "searcharray.similarity.default_bm25"
+   ]
+  },
+  "tests": [
+   "test/test_solr.py::test_edismax",
+   "test/test_solr.py::test_edismax_custom_similarity"
+  ],
+  "requirement": {
+   "Functionality": "This function performs an Extended Disjunction Max Query (edismax) search over a given DataFrame, considering various search parameters such as query fields, minimum match specifications, and phrase, bigram, and trigram matches. It supports both term-centric and field-centric approaches to calculate the relevance scores of documents based on the input query and returns the scores along with an explanation of how they were computed.\n",
+   "Arguments": ":param frame: pd.DataFrame. The DataFrame over which the search is performed.\n:param q: str. The query string used for the search.\n:param qf: List[str]. The fields in the DataFrame to search against.\n:param mm: Optional[str]. The minimum should match specification, which dictates the minimum number of query terms that must match. Defaults to None.\n:param pf: Optional[List[str]]. The fields to search for phrase matches. Defaults to None.\n:param pf2: Optional[List[str]]. The fields to search for bigram matches. Defaults to None.\n:param pf3: Optional[List[str]]. The fields to search for trigram matches. Defaults to None.\n:param q_op: str. The default operator for the query, which can be \"OR\" or \"AND\". Defaults to \"OR\".\n:param similarity: Similarity. The similarity measure to use for scoring documents. Defaults to a BM25 similarity measure.\n:return: Tuple[np.ndarray, str]. A tuple containing an array of search results scores and a string explaining the scoring."
+  },
+  "indent": 4,
+  "domain": "Text Processing"
+ }
+}

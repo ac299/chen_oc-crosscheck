@@ -1,0 +1,18 @@
+{
+ "task_id": "c_30",
+ "source": "ClassEval_30",
+ "class_name": "DataStatistics2",
+ "modules": [
+  "numpy",
+  "unittest"
+ ],
+ "completion_file": "solution.py",
+ "tests": [
+  "tests/test_solution.py"
+ ],
+ "test_files": [
+  "tests/test_solution.py"
+ ],
+ "env_volume": "xc-env-bcb",
+ "gold_source": "import numpy as np\n\n\nclass DataStatistics2:\n    def __init__(self, data):\n        self.data = np.array(data)\n\n    def get_sum(self):\n        return np.sum(self.data)\n\n    def get_min(self):\n        return np.min(self.data)\n\n    def get_max(self):\n        return np.max(self.data)\n\n    def get_variance(self):\n        return round(np.var(self.data), 2)\n\n    def get_std_deviation(self):\n        return round(np.std(self.data), 2)\n\n    def get_correlation(self):\n        return np.corrcoef(self.data, rowvar=False)"
+}

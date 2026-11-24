@@ -1,0 +1,17 @@
+{
+ "skills": {
+  "infer-io-contract": {
+   "status": "trial",
+   "version": 1,
+   "evidence": [],
+   "history": [
+    {
+     "op": "add",
+     "reason": "",
+     "version": 1,
+     "time": 1795344581.596013
+    }
+   ]
+  }
+ }
+}

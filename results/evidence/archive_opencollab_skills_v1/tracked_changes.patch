@@ -1,0 +1,34 @@
+diff --git a/opencollab/bootstrap/container.py b/opencollab/bootstrap/container.py
+index 86f15ee8..96732f9e 100644
+--- a/opencollab/bootstrap/container.py
++++ b/opencollab/bootstrap/container.py
+@@ -411,7 +411,14 @@ def build_skill_store(workspace: str | None) -> SkillStorePort:
+     workspace, or no ``skills/`` dir) we return a ``NullSkillStore`` so behavior
+     is byte-identical to today — no catalog appears and no body resolves. This
+     is the only place that picks the concrete store type.
++
++    ``OPENCOLLAB_SKILLS_DIR`` overrides the workspace folder with a shared
++    library (``adapters.skills.evolving``).
+     """
++    from opencollab.adapters.skills.evolving import EvolvingSkillStore, skills_dir
++
++    if skills_dir() is not None:
++        return EvolvingSkillStore(skills_dir())
+     if workspace:
+         skills_root = Path(workspace) / "skills"
+         if skills_root.is_dir():
+diff --git a/opencollab/bootstrap/session_factory.py b/opencollab/bootstrap/session_factory.py
+index 7d24bf3b..1dcb97aa 100644
+--- a/opencollab/bootstrap/session_factory.py
++++ b/opencollab/bootstrap/session_factory.py
+@@ -222,6 +222,10 @@ def build_session(
+     ``SessionRuntime`` via ``build_session_runtime`` and pass it directly
+     to ``application.session.Session``.
+     """
++    # Inert unless OPENCOLLAB_SKILLS_DIR names a non-empty skill library.
++    from opencollab.adapters.skills.evolving import attach_skills
++
++    agent, seed_system_messages = attach_skills(agent, seed_system_messages)
+     session = Session.__new__(Session)
+     runtime = build_session_runtime(
+         agent=agent,

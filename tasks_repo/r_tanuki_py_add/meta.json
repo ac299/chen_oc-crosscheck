@@ -1,0 +1,46 @@
+{
+ "task_id": "r_tanuki_py_add",
+ "project": "tanuki_py",
+ "namespace": "tanuki.bloom_filter.BloomFilter.add",
+ "completion_file": "src/tanuki/bloom_filter.py",
+ "tests": [
+  "tests/test_bloom_filter.py::test_bloom_filter_persistence"
+ ],
+ "test_files": [
+  "tests/test_bloom_filter.py"
+ ],
+ "env_volume": "xc-env-tanuki-py",
+ "gold_body": "        hash1, hash2 = self.hash_functions(string)\n        for seed in range(self.hash_count):\n            index = (hash1 + seed * hash2) % self.size\n            self.bit_array[index] = 1",
+ "sample": {
+  "namespace": "tanuki.bloom_filter.BloomFilter.add",
+  "type": "method",
+  "completion_path": "tanuki_py/src/tanuki/bloom_filter.py",
+  "signature_position": [
+   60,
+   60
+  ],
+  "body_position": [
+   61,
+   64
+  ],
+  "dependency": {
+   "intra_class": [
+    "tanuki.bloom_filter.BloomFilter.bit_array",
+    "tanuki.bloom_filter.BloomFilter.hash_count",
+    "tanuki.bloom_filter.BloomFilter.hash_functions",
+    "tanuki.bloom_filter.BloomFilter.size"
+   ],
+   "intra_file": [],
+   "cross_file": []
+  },
+  "tests": [
+   "tests/test_bloom_filter.py::test_bloom_filter_persistence"
+  ],
+  "requirement": {
+   "Functionality": "Adds a string to the Bloom filter by calculating multiple hash values and setting the bits at the calculated indices in the bit array to 1. This is used to efficiently check whether an item might be in a set without storing the actual items.",
+   "Arguments": ":param self: BloomFilter. An instance of the BloomFilter class.\n:param string: str, The string to be added to the Bloom filter. It is used to calculate the hash values which determine the indices in the bit array that should be set to 1.\n:return: No return values."
+  },
+  "indent": 8,
+  "domain": "Database"
+ }
+}

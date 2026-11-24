@@ -1,0 +1,40 @@
+{
+ "skills": {
+  "self-verify-no-tests": {
+   "status": "trial",
+   "version": 1,
+   "evidence": [
+    "Example 2",
+    "Example 4",
+    "Example 7",
+    "Example 9"
+   ],
+   "history": [
+    {
+     "op": "add",
+     "reason": "Tasks state tests are not provided, so the agent must self-verify documented behavior and edge cases.",
+     "version": 1,
+     "time": 1795348975.1935196
+    }
+   ]
+  },
+  "spec-to-implementation": {
+   "status": "trial",
+   "version": 1,
+   "evidence": [
+    "Example 1",
+    "Example 6",
+    "Example 10",
+    "Example 11"
+   ],
+   "history": [
+    {
+     "op": "add",
+     "reason": "Nearly every example is a single-function spec-to-code task with fixed signature and documented edge cases/exceptions.",
+     "version": 1,
+     "time": 1795348973.2283974
+    }
+   ]
+  }
+ }
+}

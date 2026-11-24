@@ -1,0 +1,94 @@
+{
+ "method": "single",
+ "runs": [
+  "b_1040__single__r0__1795235779",
+  "b_1040__single__r1__1795237074",
+  "b_1040__single__r2__1795238561",
+  "b_1077__single__r0__1795235501",
+  "b_1077__single__r1__1795236718",
+  "b_1077__single__r2__1795238285",
+  "b_346__single__r0__1795233255",
+  "b_346__single__r1__1795233588",
+  "b_346__single__r2__1795233848",
+  "b_424__single__r0__1795236124",
+  "b_424__single__r1__1795237730",
+  "b_424__single__r2__1795239298",
+  "b_509__single__r0__1795233214",
+  "b_509__single__r1__1795233461",
+  "b_509__single__r2__1795233791",
+  "b_553__single__r0__1795235438",
+  "b_553__single__r1__1795236647",
+  "b_553__single__r2__1795238183",
+  "b_587__single__r0__1795236449",
+  "b_587__single__r1__1795238000",
+  "b_587__single__r2__1795239651",
+  "b_771__single__r0__1795235661",
+  "b_771__single__r1__1795236909",
+  "b_771__single__r2__1795238477",
+  "b_785__single__r0__1795235379",
+  "b_785__single__r1__1795236529",
+  "b_785__single__r2__1795238118",
+  "b_857__single__r0__1795236241",
+  "b_857__single__r1__1795237917",
+  "b_857__single__r2__1795239502",
+  "b_870__single__r0__1795236044",
+  "b_870__single__r1__1795237324",
+  "b_870__single__r2__1795238900",
+  "b_917__single__r0__1795233324",
+  "b_917__single__r1__1795233658",
+  "b_917__single__r2__1795233913",
+  "b_988__single__r0__1795235586",
+  "b_988__single__r1__1795236811",
+  "b_988__single__r2__1795238391"
+ ],
+ "reply": "{\"analysis\":\"Two recurring, fixable causes appear across different tasks. (1) Output-shape guessing: agents invent the structure of the returned value (dict of lists vs dict of dicts in b_988, joined CSV strings vs tuples in b_509, DataFrame column/index naming) and fail every test on shape rather than logic. (2) Unspecified input formats: agents assume a canonical format (ISO timestamps in b_1077, 'Close' column in b_917, CSV row reconstruction in b_509) when the task never states it, and fail all cases. Also recurring: agents skip edge/empty inputs (b_553 empty lists, b_785 no-match, b_771) and silently swallow errors where the spec demands raising (b_771, b_857). I'll add one skill covering output-contract/format inference and one covering edge-case and error-contract handling.\",\"edits\":[{\"op\":\"add\",\"skill\":\"infer-io-contract\",\"description\":\"Use when the task specifies a return type or input format only loosely (e.g. 'a dict', 'a DataFrame', 'a list of strings', timestamps, column names) and hidden tests will check exact structure.\",\"body\":\"## When to use\\nWhen the task description names a return type or input format but does not pin down the exact structure, field names, or string format (e.g. \\\"returns a dict\\\", \\\"a DataFrame\\\", \\\"a list of strings\\\", \\\"timestamps\\\", \\\"the closing price column\\\"). Hidden tests usually assert exact shape, so guessing wrong fails every test even when the logic is right.\\n\\n## Steps\\n1. Re-read the description and any docstring/example for the exact output contract: keys vs list positions, column names, index labels, element types, string formatting.\\n2. If the contract is ambiguous, prefer the most literal reading of the stated type and the example output. Do not invent extra nesting or reformat values (e.g. do not join parsed fields back into a string when the example shows tuples).\\n3. For inputs whose format is not stated, do not assume one canonical format. Accept the common variants: try several parse formats / fall back across plausible column names / handle both str and already-parsed objects. Wrap parsing so an unexpected format raises a clear error rather than crashing on the first item.\\n4. When a column or key is referenced by a name the task does not guarantee, locate it case-insensitively or by position/type instead of hard-coding one spelling.\\n5. Before finishing, trace one concrete example from the description through your code and compare the produced value's type and shape to the stated output.\\n\\n## Pitfalls\\n- Returning a dict of lists when the example implies a dict of dicts (or vice versa).\\n- Assuming ISO timestamps or a specific date format when the task never says so.\\n- Hard-coding a column name that the tests may spell differently.\\n- Reformatting parsed data (joining fields, changing separators) so it no longer matches the expected element type.\"},{\"op\":\"add\",\"skill\":\"edge-cases-and-errors\",\"description\":\"Use when a task defines error behavior (raise X) or takes collections/paths that may be empty, missing, or unmatched; hidden tests often target these cases.\",\"body\":\"## When to use\\nWhen the task lists exceptions to raise, or accepts lists, directories, glob patterns, or file paths that can be empty, missing, or have no matches. Hidden tests frequently include these boundary cases.\\n\\n## Steps\\n1. Enumerate the boundary inputs implied by the signature: empty list/collection, empty or missing directory, pattern matching nothing, single element, unequal-length inputs, missing file.\\n2. For each, decide the required behavior from the description: return an empty result, return a sentinel value/string, or raise a specific exception. Implement exactly that; do not silently return a default where the spec says to raise, and do not raise where the spec says to return an empty result.\\n3. Validate inputs in the order the spec implies (e.g. check path existence before other work) and raise the named exception type with a clear message.\\n4. For per-item operations, catch failures per item, emit the required warning/exception, and continue with the remaining items rather than aborting the whole call.\\n5. When building a result from possibly-empty data (e.g. plotting a DataFrame), guard the empty case so it returns a valid object instead of raising from the library.\\n6. Re-read the description's example outputs for empty/no-match cases and match them literally.\\n\\n## Pitfalls\\n- Letting a library raise (e.g. plotting an empty frame) instead of handling the empty case.\\n- Swallowing an error the spec says to raise, or raising where the spec says to return an empty result.\\n- Aborting the whole loop on the first per-item failure instead of warning and continuing.\\n- Forgetting that a glob/pattern may match nothing and that a directory may not exist.\"}]}",
+ "problems": [],
+ "proposals": [
+  {
+   "edit": {
+    "op": "add",
+    "skill": "infer-io-contract",
+    "description": "Use when the task specifies a return type or input format only loosely (e.g. 'a dict', 'a DataFrame', 'a list of strings', timestamps, column names) and hidden tests will check exact structure.",
+    "body": "## When to use\nWhen the task description names a return type or input format but does not pin down the exact structure, field names, or string format (e.g. \"returns a dict\", \"a DataFrame\", \"a list of strings\", \"timestamps\", \"the closing price column\"). Hidden tests usually assert exact shape, so guessing wrong fails every test even when the logic is right.\n\n## Steps\n1. Re-read the description and any docstring/example for the exact output contract: keys vs list positions, column names, index labels, element types, string formatting.\n2. If the contract is ambiguous, prefer the most literal reading of the stated type and the example output. Do not invent extra nesting or reformat values (e.g. do not join parsed fields back into a string when the example shows tuples).\n3. For inputs whose format is not stated, do not assume one canonical format. Accept the common variants: try several parse formats / fall back across plausible column names / handle both str and already-parsed objects. Wrap parsing so an unexpected format raises a clear error rather than crashing on the first item.\n4. When a column or key is referenced by a name the task does not guarantee, locate it case-insensitively or by position/type instead of hard-coding one spelling.\n5. Before finishing, trace one concrete example from the description through your code and compare the produced value's type and shape to the stated output.\n\n## Pitfalls\n- Returning a dict of lists when the example implies a dict of dicts (or vice versa).\n- Assuming ISO timestamps or a specific date format when the task never says so.\n- Hard-coding a column name that the tests may spell differently.\n- Reformatting parsed data (joining fields, changing separators) so it no longer matches the expected element type."
+   },
+   "screen": {
+    "passed": true,
+    "hits": [],
+    "verdict": "general",
+    "reason": "Describes a reusable procedure for inferring loosely specified I/O contracts (types, keys, column names, formats) without naming any specific task's functions, constants, or outputs; steps are actionable and pitfalls are generic."
+   }
+  },
+  {
+   "edit": {
+    "op": "add",
+    "skill": "edge-cases-and-errors",
+    "description": "Use when a task defines error behavior (raise X) or takes collections/paths that may be empty, missing, or unmatched; hidden tests often target these cases.",
+    "body": "## When to use\nWhen the task lists exceptions to raise, or accepts lists, directories, glob patterns, or file paths that can be empty, missing, or have no matches. Hidden tests frequently include these boundary cases.\n\n## Steps\n1. Enumerate the boundary inputs implied by the signature: empty list/collection, empty or missing directory, pattern matching nothing, single element, unequal-length inputs, missing file.\n2. For each, decide the required behavior from the description: return an empty result, return a sentinel value/string, or raise a specific exception. Implement exactly that; do not silently return a default where the spec says to raise, and do not raise where the spec says to return an empty result.\n3. Validate inputs in the order the spec implies (e.g. check path existence before other work) and raise the named exception type with a clear message.\n4. For per-item operations, catch failures per item, emit the required warning/exception, and continue with the remaining items rather than aborting the whole call.\n5. When building a result from possibly-empty data (e.g. plotting a DataFrame), guard the empty case so it returns a valid object instead of raising from the library.\n6. Re-read the description's example outputs for empty/no-match cases and match them literally.\n\n## Pitfalls\n- Letting a library raise (e.g. plotting an empty frame) instead of handling the empty case.\n- Swallowing an error the spec says to raise, or raising where the spec says to return an empty result.\n- Aborting the whole loop on the first per-item failure instead of warning and continuing.\n- Forgetting that a glob/pattern may match nothing and that a directory may not exist."
+   },
+   "screen": {
+    "passed": true,
+    "hits": [],
+    "verdict": "general",
+    "reason": "Describes a reusable class of boundary/error-handling situations (empty collections, missing paths, no-match patterns, per-item failures) without naming any specific task's functions, columns, files, or expected values, and gives actionable steps."
+   }
+  }
+ ],
+ "model_calls": [
+  {
+   "tokens": 32371,
+   "seconds": 12.0,
+   "status": "completed"
+  },
+  {
+   "tokens": 1532,
+   "seconds": 1.4,
+   "status": "completed"
+  },
+  {
+   "tokens": 1503,
+   "seconds": 1.5,
+   "status": "completed"
+  }
+ ],
+ "screen_version": 2
+}

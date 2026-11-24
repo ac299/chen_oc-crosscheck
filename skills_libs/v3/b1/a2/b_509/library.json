@@ -1,0 +1,30 @@
+{
+ "skills": {
+  "task-checklist": {
+   "status": "trial",
+   "version": 1,
+   "evidence": [],
+   "history": [
+    {
+     "op": "add",
+     "reason": "v3",
+     "version": 1,
+     "time": 1795361446.3580368
+    }
+   ]
+  },
+  "task-tip": {
+   "status": "trial",
+   "version": 1,
+   "evidence": [],
+   "history": [
+    {
+     "op": "add",
+     "reason": "v3",
+     "version": 1,
+     "time": 1795361446.3795836
+    }
+   ]
+  }
+ }
+}

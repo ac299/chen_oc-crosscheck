@@ -1,0 +1,10 @@
+== upstream 15:21:07
+78ca8e37 docs: match citation author order to the paper (arXiv v3)
+8912 passed, 69 skipped, 66 warnings in 1763.37s (0:29:23)
+== fixed 15:51:06
+78ca8e37 docs: match citation author order to the paper (arXiv v3)
+ opencollab/application/session_run.py |  4 ++++
+ tests/agents/test_session_run_loop.py | 31 +++++++++++++++++++++++++++++++
+ 2 files changed, 35 insertions(+)
+8914 passed, 69 skipped, 66 warnings in 1801.07s (0:30:01)
+SUITES DONE

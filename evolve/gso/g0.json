@@ -1,0 +1,24 @@
+{
+ "ok": true,
+ "screen": {
+  "passed": true,
+  "hits": [],
+  "verdict": "general",
+  "reason": "Describes a reusable checklist procedure (extract spec claims, verify by running code) without naming any task's functions, columns, files, or expected values; applies to a broad class of spec-implementation tasks."
+ },
+ "body": "## When to use\nAny task: implement one function from a prose spec, no tests given. Read the spec once, extract every concrete claim, then verify each claim by running code.\n\n## Build the checklist\nBefore coding, write a short numbered checklist in your reply (not in a file). Pull items only from what the spec states:\n- Signature/imports: keep them exactly; body only.\n- Return type/shape: scalar, tuple order, DataFrame columns/index names, list element type, Axes vs Figure.\n- Exceptions: only those named, raised exactly when the stated condition holds; check order if several could apply.\n- Edge cases explicitly mentioned (empty input, single element, missing file, defaults).\n- Formats shown in examples: exact strings, column labels, index labels, rounding, NaN vs 0.\n- Side effects: files created/deleted, warnings, plots, subprocess behavior.\n- Defaults: default args and module constants must be honored.\n\n## Check it\nWrite a throwaway script (outside the repo or delete after) that imports the function and asserts each checklist item: type checks, `list(df.columns)`, `df.index.tolist()`, tuple unpacking, `pytest.raises`-style try/except for each named exception, and the documented edge inputs. For plots assert `isinstance(result, Axes)`; for files assert existence then clean up. Run it, fix failures, rerun. Also run any provided tests.\n\n## Pitfalls\n- Don't invent exceptions or messages the spec didn't name; don't swallow named ones.\n- Match example output literally (labels, spacing, NaN).\n- Respect stated ordering of tuple returns and list contents.\n- Close files/plots; avoid leaving temp artifacts in the repo.\n- Don't change signature, imports, or constants; don't edit tests.",
+ "reason": "Generalizes the examples into a checklist-driven implement-and-verify procedure without naming task specifics.",
+ "reply": "{\"body\": \"## When to use\\nAny task: implement one function from a prose spec, no tests given. Read the spec once, extract every concrete claim, then verify each claim by running code.\\n\\n## Build the checklist\\nBefore coding, write a short numbered checklist in your reply (not in a file). Pull items only from what the spec states:\\n- Signature/imports: keep them exactly; body only.\\n- Return type/shape: scalar, tuple order, DataFrame columns/index names, list element type, Axes vs Figure.\\n- Exceptions: only those named, raised exactly when the stated condition holds; check order if several could apply.\\n- Edge cases explicitly mentioned (empty input, single element, missing file, defaults).\\n- Formats shown in examples: exact strings, column labels, index labels, rounding, NaN vs 0.\\n- Side effects: files created/deleted, warnings, plots, subprocess behavior.\\n- Defaults: default args and module constants must be honored.\\n\\n## Check it\\nWrite a throwaway script (outside the repo or delete after) that imports the function and asserts each checklist item: type checks, `list(df.columns)`, `df.index.tolist()`, tuple unpacking, `pytest.raises`-style try/except for each named exception, and the documented edge inputs. For plots assert `isinstance(result, Axes)`; for files assert existence then clean up. Run it, fix failures, rerun. Also run any provided tests.\\n\\n## Pitfalls\\n- Don't invent exceptions or messages the spec didn't name; don't swallow named ones.\\n- Match example output literally (labels, spacing, NaN).\\n- Respect stated ordering of tuple returns and list contents.\\n- Close files/plots; avoid leaving temp artifacts in the repo.\\n- Don't change signature, imports, or constants; don't edit tests.\", \"reason\": \"Generalizes the examples into a checklist-driven implement-and-verify procedure without naming task specifics.\"}",
+ "model_calls": [
+  {
+   "tokens": 4217,
+   "seconds": 4.4,
+   "status": "completed"
+  },
+  {
+   "tokens": 1524,
+   "seconds": 1.9,
+   "status": "completed"
+  }
+ ]
+}

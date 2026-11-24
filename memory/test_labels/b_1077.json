@@ -1,0 +1,226 @@
+[
+ {
+  "run": "b_1077__crosscheck-v7@s2__r1__1795236788",
+  "case": "xc_tests.test_xc_core::test_r1_returns_float_for_two_timestamps",
+  "held": false,
+  "message": "ValueError: time data '2023-01-01 10:00:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r1_returns_float_for_two_timestamps():\n    # 10:00:00 -> 10:00:10 is a single 10 second gap.\n    result = task_func([\"2023-01-01 10:00:00\", \"2023-01-01 10:00:10\"], \"UTC\")\n    assert isinstance(result, float)\n    assert result == pytest.approx(10.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r1__1795236788",
+  "case": "xc_tests.test_xc_core::test_r2_mean_of_multiple_gaps",
+  "held": false,
+  "message": "ValueError: time data '2023-01-01 10:00:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r2_mean_of_multiple_gaps():\n    # Gaps: 10s, 20s, 30s -> mean = 60 / 3 = 20.0\n    time_strings = [\n        \"2023-01-01 10:00:00\",\n        \"2023-01-01 10:00:10\",\n        \"2023-01-01 10:00:30\",\n        \"2023-01-01 10:01:00\",\n    ]\n    assert task_func(time_strings, \"UTC\") == pytest.approx(20.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r1__1795236788",
+  "case": "xc_tests.test_xc_core::test_r3_absolute_difference_for_descending_timestamps",
+  "held": false,
+  "message": "ValueError: time data '2023-01-01 10:00:30' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r3_absolute_difference_for_descending_timestamps():\n    # Gaps are -10s and -20s; absolute values 10s and 20s -> mean 15.0\n    time_strings = [\n        \"2023-01-01 10:00:30\",\n        \"2023-01-01 10:00:20\",\n        \"2023-01-01 10:00:00\",\n    ]\n    assert task_func(time_strings, \"UTC\") == pytest.approx(15.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r1__1795236788",
+  "case": "xc_tests.test_xc_core::test_r4_identical_timestamps_give_zero",
+  "held": false,
+  "message": "ValueError: time data '2023-01-01 10:00:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r4_identical_timestamps_give_zero():\n    # All gaps are 0 -> mean 0.0\n    time_strings = [\"2023-01-01 10:00:00\"] * 4\n    assert task_func(time_strings, \"UTC\") == pytest.approx(0.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r1__1795236788",
+  "case": "xc_tests.test_xc_core::test_r5_mixed_ordering_uses_absolute_gaps",
+  "held": false,
+  "message": "ValueError: time data '2023-01-01 10:00:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r5_mixed_ordering_uses_absolute_gaps():\n    # Gaps: +60s, -120s, +30s -> absolute 60, 120, 30 -> mean 70.0\n    time_strings = [\n        \"2023-01-01 10:00:00\",\n        \"2023-01-01 10:01:00\",\n        \"2023-01-01 09:59:00\",\n        \"2023-01-01 09:59:30\",\n    ]\n    assert task_func(time_strings, \"UTC\") == pytest.approx(70.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r1__1795236788",
+  "case": "xc_tests.test_xc_core::test_r6_fractional_seconds_are_averaged",
+  "held": false,
+  "message": "ValueError: time data '2023-01-01 10:00:00.000000' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r6_fractional_seconds_are_averaged():\n    # Gaps: 0.5s and 1.5s -> mean 1.0\n    time_strings = [\n        \"2023-01-01 10:00:00.000000\",\n        \"2023-01-01 10:00:00.500000\",\n        \"2023-01-01 10:00:02.000000\",\n    ]\n    assert task_func(time_strings, \"UTC\") == pytest.approx(1.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r1__1795236788",
+  "case": "xc_tests.test_xc_core::test_r7_large_gap_across_days",
+  "held": false,
+  "message": "ValueError: time data '2023-01-01 00:00:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r7_large_gap_across_days():\n    # 2023-01-01 00:00:00 -> 2023-01-02 00:00:00 is 86400 seconds.\n    time_strings = [\"2023-01-01 00:00:00\", \"2023-01-02 00:00:00\"]\n    assert task_func(time_strings, \"UTC\") == pytest.approx(86400.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r1__1795236788",
+  "case": "xc_tests.test_xc_core::test_r8_result_is_numpy_mean_value",
+  "held": false,
+  "message": "ValueError: time data '2023-01-01 10:00:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r8_result_is_numpy_mean_value():\n    # The task states numpy's mean is used; the returned value must be a\n    # plain float equal to the numpy mean of the absolute gaps.\n    time_strings = [\n        \"2023-01-01 10:00:00\",\n        \"2023-01-01 10:00:07\",\n        \"2023-01-01 10:00:11\",\n    ]\n    expected = float(np.mean([7.0, 4.0]))\n    result = task_func(time_strings, \"UTC\")\n    assert isinstance(result, float)\n    assert result == pytest.approx(expected)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r1__1795236788",
+  "case": "xc_tests.test_xc_edge::test_r14_empty_list_returns_zero",
+  "held": true,
+  "message": "",
+  "source": "def test_r14_empty_list_returns_zero():\n    result = task_func([], \"UTC\")\n    assert isinstance(result, float)\n    assert result == pytest.approx(0.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r1__1795236788",
+  "case": "xc_tests.test_xc_edge::test_r15_single_timestamp_returns_zero",
+  "held": true,
+  "message": "",
+  "source": "def test_r15_single_timestamp_returns_zero():\n    result = task_func([\"2023-01-01 10:00:00\"], \"UTC\")\n    assert isinstance(result, float)\n    assert result == pytest.approx(0.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r1__1795236788",
+  "case": "xc_tests.test_xc_edge::test_r16_single_timestamp_with_timezone_returns_zero",
+  "held": true,
+  "message": "",
+  "source": "def test_r16_single_timestamp_with_timezone_returns_zero():\n    # The \"single timestamp after timezone conversion\" case from the notes.\n    result = task_func([\"2023-03-12 01:30:00\"], \"America/New_York\")\n    assert isinstance(result, float)\n    assert result == pytest.approx(0.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r1__1795236788",
+  "case": "xc_tests.test_xc_edge::test_r17_two_identical_timestamps_return_zero",
+  "held": false,
+  "message": "ValueError: time data '2023-01-01 10:00:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r17_two_identical_timestamps_return_zero():\n    # Exactly one pair, with a zero difference -> 0.0\n    result = task_func(\n        [\"2023-01-01 10:00:00\", \"2023-01-01 10:00:00\"], \"Europe/Berlin\"\n    )\n    assert isinstance(result, float)\n    assert result == pytest.approx(0.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r1__1795236788",
+  "case": "xc_tests.test_xc_edge::test_r18_zero_result_is_float_not_int",
+  "held": true,
+  "message": "",
+  "source": "def test_r18_zero_result_is_float_not_int():\n    # The documented return type is float in every branch.\n    assert type(task_func([], \"UTC\")) is float\n    assert type(task_func([\"2023-01-01 10:00:00\"], \"UTC\")) is float"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r1__1795236788",
+  "case": "xc_tests.test_xc_timezone::test_r9_same_offset_timezone_keeps_gaps",
+  "held": false,
+  "message": "ValueError: time data '2023-06-01 10:00:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r9_same_offset_timezone_keeps_gaps():\n    # Converting all timestamps to Asia/Tokyo (UTC+9, no DST in 2023) shifts\n    # every timestamp by the same amount, so gaps stay 10s and 20s -> 15.0\n    time_strings = [\n        \"2023-06-01 10:00:00\",\n        \"2023-06-01 10:00:10\",\n        \"2023-06-01 10:00:30\",\n    ]\n    assert task_func(time_strings, \"Asia/Tokyo\") == pytest.approx(15.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r1__1795236788",
+  "case": "xc_tests.test_xc_timezone::test_r10_negative_offset_timezone_keeps_gaps",
+  "held": false,
+  "message": "ValueError: time data '2023-01-15 08:00:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r10_negative_offset_timezone_keeps_gaps():\n    # America/New_York in winter is UTC-5 with no transition in this window.\n    time_strings = [\n        \"2023-01-15 08:00:00\",\n        \"2023-01-15 08:00:45\",\n        \"2023-01-15 08:01:45\",\n    ]\n    assert task_func(time_strings, \"America/New_York\") == pytest.approx(30.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r1__1795236788",
+  "case": "xc_tests.test_xc_timezone::test_r11_dst_spring_forward_shifts_gap",
+  "held": false,
+  "message": "ValueError: time data '2023-03-12 01:30:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r11_dst_spring_forward_shifts_gap():\n    # 2023-03-12 in America/New_York: clocks jump from 02:00 EST to 03:00 EDT.\n    # 01:30:00 EST -> 03:30:00 EDT is only 1 hour of real time (3600 s),\n    # not the 2 hours the naive wall-clock strings suggest.\n    time_strings = [\"2023-03-12 01:30:00\", \"2023-03-12 03:30:00\"]\n    assert task_func(time_strings, \"America/New_York\") == pytest.approx(3600.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r1__1795236788",
+  "case": "xc_tests.test_xc_timezone::test_r12_dst_fall_back_shifts_gap",
+  "held": false,
+  "message": "ValueError: time data '2023-11-05 00:30:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r12_dst_fall_back_shifts_gap():\n    # 2023-11-05 in America/New_York: clocks fall back from 02:00 EDT to\n    # 01:00 EST.  00:30:00 EDT -> 02:30:00 EST is 3 hours of real time\n    # (10800 s), not the 2 hours the wall-clock strings suggest.\n    time_strings = [\"2023-11-05 00:30:00\", \"2023-11-05 02:30:00\"]\n    assert task_func(time_strings, \"America/New_York\") == pytest.approx(10800.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r1__1795236788",
+  "case": "xc_tests.test_xc_timezone::test_r13_timezone_argument_is_used",
+  "held": false,
+  "message": "ValueError: time data '2023-07-01 12:00:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r13_timezone_argument_is_used():\n    # Same wall-clock strings, two different timezones: the mean gap must be\n    # identical because both conversions shift all timestamps equally.\n    time_strings = [\n        \"2023-07-01 12:00:00\",\n        \"2023-07-01 12:00:05\",\n        \"2023-07-01 12:00:15\",\n    ]\n    utc_result = task_func(time_strings, \"UTC\")\n    kolkata_result = task_func(time_strings, \"Asia/Kolkata\")\n    assert utc_result == pytest.approx(5.0)\n    assert kolkata_result == pytest.approx(5.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r2__1795238334",
+  "case": "xc_tests.test_xc_basic::test_r1_single_pair_returns_difference",
+  "held": false,
+  "message": "ValueError: time data '2023-01-01 12:00:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r1_single_pair_returns_difference():\n    # Two timestamps 10 seconds apart -> only one pair -> mean is 10.0.\n    result = task_func([\"2023-01-01 12:00:00\", \"2023-01-01 12:00:10\"], \"UTC\")\n    assert isinstance(result, float)\n    assert result == pytest.approx(10.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r2__1795238334",
+  "case": "xc_tests.test_xc_basic::test_r1_three_timestamps_mean_of_pairs",
+  "held": false,
+  "message": "ValueError: time data '2023-01-01 12:00:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r1_three_timestamps_mean_of_pairs():\n    # Differences: 10s and 30s -> mean 20.0.\n    result = task_func(\n        [\"2023-01-01 12:00:00\", \"2023-01-01 12:00:10\", \"2023-01-01 12:00:40\"],\n        \"UTC\",\n    )\n    assert result == pytest.approx(20.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r2__1795238334",
+  "case": "xc_tests.test_xc_basic::test_r1_uneven_differences_mean",
+  "held": false,
+  "message": "ValueError: time data '2023-01-01 00:00:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r1_uneven_differences_mean():\n    # Differences: 5s, 15s, 40s -> mean 20.0.\n    result = task_func(\n        [\n            \"2023-01-01 00:00:00\",\n            \"2023-01-01 00:00:05\",\n            \"2023-01-01 00:00:20\",\n            \"2023-01-01 00:01:00\",\n        ],\n        \"UTC\",\n    )\n    assert result == pytest.approx(20.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r2__1795238334",
+  "case": "xc_tests.test_xc_basic::test_r1_identical_timestamps_zero",
+  "held": false,
+  "message": "ValueError: time data '2023-01-01 12:00:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r1_identical_timestamps_zero():\n    # All timestamps equal -> every difference is 0 -> mean 0.0.\n    result = task_func(\n        [\"2023-01-01 12:00:00\", \"2023-01-01 12:00:00\", \"2023-01-01 12:00:00\"],\n        \"UTC\",\n    )\n    assert result == pytest.approx(0.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r2__1795238334",
+  "case": "xc_tests.test_xc_basic::test_r1_large_gap_seconds",
+  "held": false,
+  "message": "ValueError: time data '2023-01-01 00:00:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r1_large_gap_seconds():\n    # One hour apart -> 3600 seconds.\n    result = task_func([\"2023-01-01 00:00:00\", \"2023-01-01 01:00:00\"], \"UTC\")\n    assert result == pytest.approx(3600.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r2__1795238334",
+  "case": "xc_tests.test_xc_edge::test_r3_empty_list_returns_zero",
+  "held": true,
+  "message": "",
+  "source": "def test_r3_empty_list_returns_zero():\n    result = task_func([], \"UTC\")\n    assert isinstance(result, float)\n    assert result == pytest.approx(0.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r2__1795238334",
+  "case": "xc_tests.test_xc_edge::test_r3_single_timestamp_returns_zero",
+  "held": true,
+  "message": "",
+  "source": "def test_r3_single_timestamp_returns_zero():\n    result = task_func([\"2023-01-01 12:00:00\"], \"UTC\")\n    assert isinstance(result, float)\n    assert result == pytest.approx(0.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r2__1795238334",
+  "case": "xc_tests.test_xc_edge::test_r3_single_timestamp_with_timezone_returns_zero",
+  "held": true,
+  "message": "",
+  "source": "def test_r3_single_timestamp_with_timezone_returns_zero():\n    result = task_func([\"2023-07-04 18:30:00\"], \"America/New_York\")\n    assert isinstance(result, float)\n    assert result == pytest.approx(0.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r2__1795238334",
+  "case": "xc_tests.test_xc_edge::test_r3_two_identical_timestamps_returns_zero",
+  "held": false,
+  "message": "ValueError: time data '2023-01-01 12:00:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r3_two_identical_timestamps_returns_zero():\n    result = task_func([\"2023-01-01 12:00:00\", \"2023-01-01 12:00:00\"], \"UTC\")\n    assert result == pytest.approx(0.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r2__1795238334",
+  "case": "xc_tests.test_xc_timezone::test_r2_timezone_conversion_preserves_utc_differences",
+  "held": false,
+  "message": "ValueError: time data '2023-01-01 12:00:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r2_timezone_conversion_preserves_utc_differences():\n    # Converting to another timezone must not change the elapsed seconds.\n    result = task_func(\n        [\"2023-01-01 12:00:00\", \"2023-01-01 12:00:10\", \"2023-01-01 12:00:40\"],\n        \"America/New_York\",\n    )\n    assert result == pytest.approx(20.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r2__1795238334",
+  "case": "xc_tests.test_xc_timezone::test_r2_timezone_conversion_asia_tokyo",
+  "held": false,
+  "message": "ValueError: time data '2023-06-15 08:00:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r2_timezone_conversion_asia_tokyo():\n    # Differences: 60s and 120s -> mean 90.0, regardless of target timezone.\n    result = task_func(\n        [\"2023-06-15 08:00:00\", \"2023-06-15 08:01:00\", \"2023-06-15 08:03:00\"],\n        \"Asia/Tokyo\",\n    )\n    assert result == pytest.approx(90.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r2__1795238334",
+  "case": "xc_tests.test_xc_timezone::test_r2_timezone_conversion_europe_london",
+  "held": false,
+  "message": "ValueError: time data '2023-03-10 23:59:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r2_timezone_conversion_europe_london():\n    result = task_func(\n        [\"2023-03-10 23:59:00\", \"2023-03-11 00:00:00\"],\n        \"Europe/London\",\n    )\n    assert result == pytest.approx(60.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r2__1795238334",
+  "case": "xc_tests.test_xc_timezone::test_r2_timezone_conversion_across_dst_change",
+  "held": false,
+  "message": "ValueError: time data '2023-03-12 01:30:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r2_timezone_conversion_across_dst_change():\n    # 2023-03-12 02:00 US/Eastern is the spring-forward transition; the\n    # wall-clock timestamps 01:30 and 03:30 are only 3600 real seconds apart.\n    result = task_func(\n        [\"2023-03-12 01:30:00\", \"2023-03-12 03:30:00\"],\n        \"America/New_York\",\n    )\n    assert result == pytest.approx(3600.0)"
+ },
+ {
+  "run": "b_1077__crosscheck-v7@s2__r2__1795238334",
+  "case": "xc_tests.test_xc_timezone::test_r2_timezone_conversion_utc_equivalent",
+  "held": false,
+  "message": "ValueError: time data '2023-01-01 00:00:00' does not match format '%d/%m/%y %H:%M:%S.%f'",
+  "source": "def test_r2_timezone_conversion_utc_equivalent():\n    # Same instants expressed in UTC and converted to a fixed-offset zone.\n    result = task_func(\n        [\"2023-01-01 00:00:00\", \"2023-01-01 00:00:30\"],\n        \"Asia/Kolkata\",\n    )\n    assert result == pytest.approx(30.0)"
+ }
+]

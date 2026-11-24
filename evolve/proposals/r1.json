@@ -1,0 +1,113 @@
+{
+ "method": "single",
+ "runs": [
+  "b_1040__single__r0__1795235779",
+  "b_1040__single__r1__1795237074",
+  "b_1040__single__r2__1795238561",
+  "b_1077__single__r0__1795235501",
+  "b_1077__single__r1__1795236718",
+  "b_1077__single__r2__1795238285",
+  "b_346__single__r0__1795233255",
+  "b_346__single__r1__1795233588",
+  "b_346__single__r2__1795233848",
+  "b_424__single__r0__1795236124",
+  "b_424__single__r1__1795237730",
+  "b_424__single__r2__1795239298",
+  "b_509__single__r0__1795233214",
+  "b_509__single__r1__1795233461",
+  "b_509__single__r2__1795233791",
+  "b_553__single__r0__1795235438",
+  "b_553__single__r1__1795236647",
+  "b_553__single__r2__1795238183",
+  "b_587__single__r0__1795236449",
+  "b_587__single__r1__1795238000",
+  "b_587__single__r2__1795239651",
+  "b_771__single__r0__1795235661",
+  "b_771__single__r1__1795236909",
+  "b_771__single__r2__1795238477",
+  "b_785__single__r0__1795235379",
+  "b_785__single__r1__1795236529",
+  "b_785__single__r2__1795238118",
+  "b_857__single__r0__1795236241",
+  "b_857__single__r1__1795237917",
+  "b_857__single__r2__1795239502",
+  "b_870__single__r0__1795236044",
+  "b_870__single__r1__1795237324",
+  "b_870__single__r2__1795238900",
+  "b_917__single__r0__1795233324",
+  "b_917__single__r1__1795233658",
+  "b_917__single__r2__1795233913",
+  "b_988__single__r0__1795235586",
+  "b_988__single__r1__1795236811",
+  "b_988__single__r2__1795238391"
+ ],
+ "reply": "{\"analysis\": \"Recurring causes across different tasks: (1) The agent guesses unspecified input formats/column names/return shapes instead of inferring them from the task's own example or docstring, causing failures in b_1077 (timestamp format), b_917 (column name), b_988 (return value shape), b_509 (content representation), b_424 (array equality). (2) The agent invents behavior for edge/empty inputs and error cases not specified by the task, causing failures in b_553 (empty lists), b_785 (no-match behavior), b_771 (exception handling), b_857 (exception handling), b_346 (raising on nonzero exit). Both classes recur across multiple distinct tasks and are fixable with procedural guidance.\", \"edits\": [{\"op\": \"add\", \"skill\": \"infer-unspecified-contracts\", \"description\": \"Use when the task leaves input formats, column names, or exact return shapes unspecified and hidden tests will check them\", \"body\": \"## When to use\\nWhen the task description does not fully pin down the data contract: input string formats, column names, the exact shape/type of the return value, or how content should be represented. Hidden tests will compare against a specific convention you must infer.\\n\\n## Steps\\n1. Re-read the task text, docstring, and any inline example (e.g. `>>> data = [...]`) for concrete values. The example is the strongest signal of the expected format.\\n2. For input parsing, support the format shown in the example. If the example uses a non-ISO date layout, parse with `datetime.strptime` using that layout (or try several common layouts) rather than assuming ISO.\\n3. For column/field selection, do not hardcode a guessed name. Inspect the actual object at runtime: pick the column case-insensitively, or fall back to the first/last numeric column, and handle a DatetimeIndex vs positional index explicitly.\\n4. For return values, match the stated type exactly: if the spec says a dict, return a dict keyed by item; if it says a list of tuples, return tuples, not joined strings. Mirror the example's representation.\\n5. When comparing arrays/DataFrames, reproduce the documented transformation exactly (e.g. same dtype, same rounding) instead of an approximation.\\n\\n## Pitfalls\\n- Assuming ISO format when the example shows another layout.\\n- Hardcoding a column name that the tests do not use.\\n- Returning a list where the spec says dict, or strings where it says tuples.\\n- Casting a datetime index to float or otherwise losing index type.\"}, {\"op\": \"add\", \"skill\": \"unspecified-edge-cases\", \"description\": \"Use when the task does not state behavior for empty inputs, missing files, or error conditions and hidden tests probe them\", \"body\": \"## When to use\\nWhen the task specifies a main behavior but is silent or ambiguous about empty inputs, missing files/directories, no matches, or when to raise vs. return. Hidden tests often probe these.\\n\\n## Steps\\n1. Enumerate the edge inputs the signature allows: empty list, empty string, missing path, no matching files, zero-length data.\\n2. Only add special handling the task actually implies. If the task says nothing about a case, prefer the simplest behavior that keeps the stated return type valid rather than inventing a new return value or exception.\\n3. Do not raise exceptions the task did not ask for. If the task lists specific exceptions, raise only those; otherwise return a sensible empty/default result.\\n4. Do not swallow errors the task says to raise. If the task says a condition should raise, let it propagate.\\n5. For subprocess/exit-code tasks, follow the stated contract literally: raise only when the task says to raise, otherwise return the code.\\n6. For plotting/aggregation on empty data, guard the empty case so the function still returns the documented object type instead of crashing.\\n\\n## Pitfalls\\n- Inventing a `FileNotFoundError` for a no-match case the task treats as normal.\\n- Returning an empty archive/path when the task expects a message or empty list.\\n- Raising `CalledProcessError` on a nonzero exit when the task only says to raise if the script itself raises.\\n- Letting pandas/matplotlib throw on empty frames instead of returning the documented type.\"}]}",
+ "problems": [],
+ "proposals": [
+  {
+   "edit": {
+    "op": "add",
+    "skill": "infer-unspecified-contracts",
+    "description": "Use when the task leaves input formats, column names, or exact return shapes unspecified and hidden tests will check them",
+    "body": "## When to use\nWhen the task description does not fully pin down the data contract: input string formats, column names, the exact shape/type of the return value, or how content should be represented. Hidden tests will compare against a specific convention you must infer.\n\n## Steps\n1. Re-read the task text, docstring, and any inline example (e.g. `>>> data = [...]`) for concrete values. The example is the strongest signal of the expected format.\n2. For input parsing, support the format shown in the example. If the example uses a non-ISO date layout, parse with `datetime.strptime` using that layout (or try several common layouts) rather than assuming ISO.\n3. For column/field selection, do not hardcode a guessed name. Inspect the actual object at runtime: pick the column case-insensitively, or fall back to the first/last numeric column, and handle a DatetimeIndex vs positional index explicitly.\n4. For return values, match the stated type exactly: if the spec says a dict, return a dict keyed by item; if it says a list of tuples, return tuples, not joined strings. Mirror the example's representation.\n5. When comparing arrays/DataFrames, reproduce the documented transformation exactly (e.g. same dtype, same rounding) instead of an approximation.\n\n## Pitfalls\n- Assuming ISO format when the example shows another layout.\n- Hardcoding a column name that the tests do not use.\n- Returning a list where the spec says dict, or strings where it says tuples.\n- Casting a datetime index to float or otherwise losing index type."
+   },
+   "screen": {
+    "passed": true,
+    "hits": [],
+    "verdict": "general",
+    "reason": "The skill describes a reusable class of situations (unspecified data contracts) with actionable, tool-performable steps and no task-specific names, constants, or outputs; its rules are generic conventions rather than one task's fix."
+   },
+   "screen_v1": {
+    "passed": false,
+    "hits": [
+     "content (b_509)",
+     "date (b_917)",
+     "name (b_509)"
+    ],
+    "verdict": "not_judged",
+    "reason": "names task-specific terms"
+   }
+  },
+  {
+   "edit": {
+    "op": "add",
+    "skill": "unspecified-edge-cases",
+    "description": "Use when the task does not state behavior for empty inputs, missing files, or error conditions and hidden tests probe them",
+    "body": "## When to use\nWhen the task specifies a main behavior but is silent or ambiguous about empty inputs, missing files/directories, no matches, or when to raise vs. return. Hidden tests often probe these.\n\n## Steps\n1. Enumerate the edge inputs the signature allows: empty list, empty string, missing path, no matching files, zero-length data.\n2. Only add special handling the task actually implies. If the task says nothing about a case, prefer the simplest behavior that keeps the stated return type valid rather than inventing a new return value or exception.\n3. Do not raise exceptions the task did not ask for. If the task lists specific exceptions, raise only those; otherwise return a sensible empty/default result.\n4. Do not swallow errors the task says to raise. If the task says a condition should raise, let it propagate.\n5. For subprocess/exit-code tasks, follow the stated contract literally: raise only when the task says to raise, otherwise return the code.\n6. For plotting/aggregation on empty data, guard the empty case so the function still returns the documented object type instead of crashing.\n\n## Pitfalls\n- Inventing a `FileNotFoundError` for a no-match case the task treats as normal.\n- Returning an empty archive/path when the task expects a message or empty list.\n- Raising `CalledProcessError` on a nonzero exit when the task only says to raise if the script itself raises.\n- Letting pandas/matplotlib throw on empty frames instead of returning the documented type."
+   },
+   "screen": {
+    "passed": false,
+    "hits": [],
+    "verdict": "task_specific",
+    "reason": "The body encodes details from specific tasks (FileNotFoundError, CalledProcessError, exit-code/subprocess contracts, pandas/matplotlib empty-frame behavior, archive/path return values) rather than a general procedure, and several rules (e.g. 'return the code', 'empty archive/path') are one-fix generalizations not supported by two distinct tasks."
+   },
+   "screen_v1": {
+    "passed": false,
+    "hits": [
+     "archive (b_785)",
+     "exception (b_346)"
+    ],
+    "verdict": "not_judged",
+    "reason": "names task-specific terms"
+   }
+  }
+ ],
+ "model_calls": [
+  {
+   "tokens": 32264,
+   "seconds": 11.9,
+   "status": "completed"
+  },
+  {
+   "tokens": 1473,
+   "seconds": 1.5,
+   "status": "completed"
+  },
+  {
+   "tokens": 1481,
+   "seconds": 1.8,
+   "status": "completed"
+  }
+ ],
+ "screen_version": 2
+}

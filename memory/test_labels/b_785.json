@@ -1,0 +1,177 @@
+[
+ {
+  "run": "b_785__crosscheck-v7@s2__r0__1795235396",
+  "case": "xc_tests.test_xc_archive::test_r1_returns_archive_file_path",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=b\"payload\"):\n    paths = []\n    for name in names:\n        path = os.path.join(str(directory), name)\n        with open(path, \"wb\") as fh:\n            fh.write(content)\n        paths.append(path)\n    return paths\n\ndef test_r1_returns_archive_file_path(tmp_path):\n    _make_files(tmp_path, [\"a.txt\", \"b.txt\"])\n    result = task_func(os.path.join(str(tmp_path), \"*.txt\"))\n    assert isinstance(result, str)\n    assert os.path.isfile(result)"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r0__1795235396",
+  "case": "xc_tests.test_xc_archive::test_r2_archive_created_in_archive_dir",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=b\"payload\"):\n    paths = []\n    for name in names:\n        path = os.path.join(str(directory), name)\n        with open(path, \"wb\") as fh:\n            fh.write(content)\n        paths.append(path)\n    return paths\n\ndef test_r2_archive_created_in_archive_dir(tmp_path):\n    _make_files(tmp_path, [\"a.txt\"])\n    result = task_func(os.path.join(str(tmp_path), \"*.txt\"))\n    assert os.path.dirname(os.path.abspath(result)) == os.path.abspath(ARCHIVE_DIR)"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r0__1795235396",
+  "case": "xc_tests.test_xc_archive::test_r3_matching_files_are_archived",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=b\"payload\"):\n    paths = []\n    for name in names:\n        path = os.path.join(str(directory), name)\n        with open(path, \"wb\") as fh:\n            fh.write(content)\n        paths.append(path)\n    return paths\n\ndef _archive_members(archive_path):\n    if zipfile.is_zipfile(archive_path):\n        with zipfile.ZipFile(archive_path) as zf:\n            return set(zf.namelist())\n    with tarfile.open(archive_path) as tf:\n        return set(tf.getnames())\n\ndef test_r3_matching_files_are_archived(tmp_path):\n    _make_files(tmp_path, [\"one.txt\", \"two.txt\", \"three.txt\"])\n    result = task_func(os.path.join(str(tmp_path), \"*.txt\"))\n    members = _archive_members(result)\n    basenames = {os.path.basename(m) for m in members}\n    assert {\"one.txt\", \"two.txt\", \"three.txt\"} <= basenames"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r0__1795235396",
+  "case": "xc_tests.test_xc_archive::test_r4_original_files_are_deleted",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=b\"payload\"):\n    paths = []\n    for name in names:\n        path = os.path.join(str(directory), name)\n        with open(path, \"wb\") as fh:\n            fh.write(content)\n        paths.append(path)\n    return paths\n\ndef test_r4_original_files_are_deleted(tmp_path):\n    paths = _make_files(tmp_path, [\"one.txt\", \"two.txt\"])\n    task_func(os.path.join(str(tmp_path), \"*.txt\"))\n    for path in paths:\n        assert not os.path.exists(path)"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r0__1795235396",
+  "case": "xc_tests.test_xc_archive::test_r5_non_matching_files_are_kept",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=b\"payload\"):\n    paths = []\n    for name in names:\n        path = os.path.join(str(directory), name)\n        with open(path, \"wb\") as fh:\n            fh.write(content)\n        paths.append(path)\n    return paths\n\ndef test_r5_non_matching_files_are_kept(tmp_path):\n    _make_files(tmp_path, [\"keep.log\", \"also_keep.log\"])\n    _make_files(tmp_path, [\"gone.txt\"])\n    task_func(os.path.join(str(tmp_path), \"*.txt\"))\n    assert os.path.isfile(os.path.join(str(tmp_path), \"keep.log\"))\n    assert os.path.isfile(os.path.join(str(tmp_path), \"also_keep.log\"))"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r0__1795235396",
+  "case": "xc_tests.test_xc_archive_extra::test_r6_archived_content_matches_original",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=b\"payload\"):\n    paths = []\n    for name in names:\n        path = os.path.join(str(directory), name)\n        with open(path, \"wb\") as fh:\n            fh.write(content)\n        paths.append(path)\n    return paths\n\ndef test_r6_archived_content_matches_original(tmp_path):\n    _make_files(tmp_path, [\"data.txt\"], content=b\"hello-archive-content\")\n    result = task_func(os.path.join(str(tmp_path), \"*.txt\"))\n    if zipfile.is_zipfile(result):\n        with zipfile.ZipFile(result) as zf:\n            names = [n for n in zf.namelist() if n.endswith(\"data.txt\")]\n            assert names\n            assert zf.read(names[0]) == b\"hello-archive-content\"\n    else:\n        with tarfile.open(result) as tf:\n            members = [m for m in tf.getmembers() if m.name.endswith(\"data.txt\")]\n            assert members\n            extracted = tf.extractfile(members[0]).read()\n            assert extracted == b\"hello-archive-content\""
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r0__1795235396",
+  "case": "xc_tests.test_xc_archive_extra::test_r7_multiple_patterns_are_supported",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=b\"payload\"):\n    paths = []\n    for name in names:\n        path = os.path.join(str(directory), name)\n        with open(path, \"wb\") as fh:\n            fh.write(content)\n        paths.append(path)\n    return paths\n\ndef _archive_members(archive_path):\n    if zipfile.is_zipfile(archive_path):\n        with zipfile.ZipFile(archive_path) as zf:\n            return set(zf.namelist())\n    with tarfile.open(archive_path) as tf:\n        return set(tf.getnames())\n\ndef test_r7_multiple_patterns_are_supported(tmp_path):\n    _make_files(tmp_path, [\"a.csv\", \"b.csv\"])\n    _make_files(tmp_path, [\"c.json\"])\n    result = task_func(os.path.join(str(tmp_path), \"*.csv\"))\n    basenames = {os.path.basename(m) for m in _archive_members(result)}\n    assert {\"a.csv\", \"b.csv\"} <= basenames\n    assert os.path.isfile(os.path.join(str(tmp_path), \"c.json\"))"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r0__1795235396",
+  "case": "xc_tests.test_xc_archive_extra::test_r9_archive_dir_is_created_if_missing",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=b\"payload\"):\n    paths = []\n    for name in names:\n        path = os.path.join(str(directory), name)\n        with open(path, \"wb\") as fh:\n            fh.write(content)\n        paths.append(path)\n    return paths\n\ndef test_r9_archive_dir_is_created_if_missing(tmp_path):\n    import shutil\n\n    from solution import ARCHIVE_DIR\n\n    if os.path.isdir(ARCHIVE_DIR):\n        shutil.rmtree(ARCHIVE_DIR)\n    _make_files(tmp_path, [\"only.txt\"])\n    result = task_func(os.path.join(str(tmp_path), \"*.txt\"))\n    assert os.path.isdir(ARCHIVE_DIR)\n    assert os.path.isfile(result)"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r1__1795236639",
+  "case": "xc_tests.test_xc_archive::test_r1_returns_archive_file_path",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=\"data\"):\n    os.makedirs(directory, exist_ok=True)\n    paths = []\n    for name in names:\n        path = os.path.join(directory, name)\n        with open(path, \"w\") as f:\n            f.write(content)\n        paths.append(path)\n    return paths\n\ndef test_r1_returns_archive_file_path(tmp_path):\n    _make_files(str(tmp_path), [\"a.txt\", \"b.txt\"])\n    result = task_func(os.path.join(str(tmp_path), \"*.txt\"))\n    assert isinstance(result, str)\n    assert os.path.isfile(result)"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r1__1795236639",
+  "case": "xc_tests.test_xc_archive::test_r2_archive_created_in_archive_dir",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=\"data\"):\n    os.makedirs(directory, exist_ok=True)\n    paths = []\n    for name in names:\n        path = os.path.join(directory, name)\n        with open(path, \"w\") as f:\n            f.write(content)\n        paths.append(path)\n    return paths\n\ndef test_r2_archive_created_in_archive_dir(tmp_path):\n    _make_files(str(tmp_path), [\"a.txt\"])\n    result = task_func(os.path.join(str(tmp_path), \"*.txt\"))\n    assert os.path.dirname(os.path.abspath(result)) == os.path.abspath(ARCHIVE_DIR)"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r1__1795236639",
+  "case": "xc_tests.test_xc_archive::test_r3_original_files_deleted",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=\"data\"):\n    os.makedirs(directory, exist_ok=True)\n    paths = []\n    for name in names:\n        path = os.path.join(directory, name)\n        with open(path, \"w\") as f:\n            f.write(content)\n        paths.append(path)\n    return paths\n\ndef test_r3_original_files_deleted(tmp_path):\n    paths = _make_files(str(tmp_path), [\"a.txt\", \"b.txt\", \"c.txt\"])\n    task_func(os.path.join(str(tmp_path), \"*.txt\"))\n    for path in paths:\n        assert not os.path.exists(path)"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r1__1795236639",
+  "case": "xc_tests.test_xc_archive::test_r4_archive_contains_matched_files",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=\"data\"):\n    os.makedirs(directory, exist_ok=True)\n    paths = []\n    for name in names:\n        path = os.path.join(directory, name)\n        with open(path, \"w\") as f:\n            f.write(content)\n        paths.append(path)\n    return paths\n\ndef _member_basenames(archive_path):\n    return {os.path.basename(name.rstrip(\"/\")) for name in _archive_members(archive_path)}\n\ndef test_r4_archive_contains_matched_files(tmp_path):\n    _make_files(str(tmp_path), [\"a.txt\", \"b.txt\"])\n    result = task_func(os.path.join(str(tmp_path), \"*.txt\"))\n    assert _member_basenames(result) == {\"a.txt\", \"b.txt\"}"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r1__1795236639",
+  "case": "xc_tests.test_xc_archive::test_r5_non_matching_files_untouched",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=\"data\"):\n    os.makedirs(directory, exist_ok=True)\n    paths = []\n    for name in names:\n        path = os.path.join(directory, name)\n        with open(path, \"w\") as f:\n            f.write(content)\n        paths.append(path)\n    return paths\n\ndef test_r5_non_matching_files_untouched(tmp_path):\n    _make_files(str(tmp_path), [\"a.txt\", \"b.txt\"])\n    keep = _make_files(str(tmp_path), [\"c.log\", \"d.csv\"])\n    task_func(os.path.join(str(tmp_path), \"*.txt\"))\n    for path in keep:\n        assert os.path.isfile(path)"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r1__1795236639",
+  "case": "xc_tests.test_xc_archive::test_r6_non_matching_files_not_in_archive",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=\"data\"):\n    os.makedirs(directory, exist_ok=True)\n    paths = []\n    for name in names:\n        path = os.path.join(directory, name)\n        with open(path, \"w\") as f:\n            f.write(content)\n        paths.append(path)\n    return paths\n\ndef _member_basenames(archive_path):\n    return {os.path.basename(name.rstrip(\"/\")) for name in _archive_members(archive_path)}\n\ndef test_r6_non_matching_files_not_in_archive(tmp_path):\n    _make_files(str(tmp_path), [\"a.txt\"])\n    _make_files(str(tmp_path), [\"c.log\"])\n    result = task_func(os.path.join(str(tmp_path), \"*.txt\"))\n    assert _member_basenames(result) == {\"a.txt\"}"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r1__1795236639",
+  "case": "xc_tests.test_xc_archive::test_r7_archive_content_preserved",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=\"data\"):\n    os.makedirs(directory, exist_ok=True)\n    paths = []\n    for name in names:\n        path = os.path.join(directory, name)\n        with open(path, \"w\") as f:\n            f.write(content)\n        paths.append(path)\n    return paths\n\ndef test_r7_archive_content_preserved(tmp_path):\n    _make_files(str(tmp_path), [\"a.txt\"], content=\"hello archive\")\n    result = task_func(os.path.join(str(tmp_path), \"*.txt\"))\n    if zipfile.is_zipfile(result):\n        with zipfile.ZipFile(result) as zf:\n            name = [n for n in zf.namelist() if os.path.basename(n) == \"a.txt\"][0]\n            data = zf.read(name).decode()\n    else:\n        with tarfile.open(result) as tf:\n            member = [m for m in tf.getmembers() if os.path.basename(m.name) == \"a.txt\"][0]\n            data = tf.extractfile(member).read().decode()\n    assert data == \"hello archive\""
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r1__1795236639",
+  "case": "xc_tests.test_xc_archive::test_r8_single_match",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=\"data\"):\n    os.makedirs(directory, exist_ok=True)\n    paths = []\n    for name in names:\n        path = os.path.join(directory, name)\n        with open(path, \"w\") as f:\n            f.write(content)\n        paths.append(path)\n    return paths\n\ndef _member_basenames(archive_path):\n    return {os.path.basename(name.rstrip(\"/\")) for name in _archive_members(archive_path)}\n\ndef test_r8_single_match(tmp_path):\n    _make_files(str(tmp_path), [\"only.dat\"])\n    result = task_func(os.path.join(str(tmp_path), \"*.dat\"))\n    assert _member_basenames(result) == {\"only.dat\"}\n    assert not os.path.exists(os.path.join(str(tmp_path), \"only.dat\"))"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r1__1795236639",
+  "case": "xc_tests.test_xc_archive::test_r9_multiple_patterns_are_independent",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=\"data\"):\n    os.makedirs(directory, exist_ok=True)\n    paths = []\n    for name in names:\n        path = os.path.join(directory, name)\n        with open(path, \"w\") as f:\n            f.write(content)\n        paths.append(path)\n    return paths\n\ndef _member_basenames(archive_path):\n    return {os.path.basename(name.rstrip(\"/\")) for name in _archive_members(archive_path)}\n\ndef test_r9_multiple_patterns_are_independent(tmp_path):\n    _make_files(str(tmp_path), [\"x.txt\", \"y.txt\"])\n    _make_files(str(tmp_path), [\"z.md\"])\n    result = task_func(os.path.join(str(tmp_path), \"*.md\"))\n    assert _member_basenames(result) == {\"z.md\"}\n    assert os.path.isfile(os.path.join(str(tmp_path), \"x.txt\"))\n    assert os.path.isfile(os.path.join(str(tmp_path), \"y.txt\"))"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r2__1795238172",
+  "case": "xc_tests.test_xc_archive::test_r1_returns_archive_file_path",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=\"data\"):\n    os.makedirs(directory, exist_ok=True)\n    paths = []\n    for name in names:\n        path = os.path.join(directory, name)\n        with open(path, \"w\") as fh:\n            fh.write(content)\n        paths.append(path)\n    return paths\n\ndef test_r1_returns_archive_file_path(tmp_path):\n    _make_files(str(tmp_path), [\"one.txt\", \"two.txt\"])\n    result = task_func(os.path.join(str(tmp_path), \"*.txt\"))\n    assert isinstance(result, str)\n    assert result != \"\"\n    assert os.path.isfile(result)"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r2__1795238172",
+  "case": "xc_tests.test_xc_archive::test_r2_archive_created_inside_archive_dir",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=\"data\"):\n    os.makedirs(directory, exist_ok=True)\n    paths = []\n    for name in names:\n        path = os.path.join(directory, name)\n        with open(path, \"w\") as fh:\n            fh.write(content)\n        paths.append(path)\n    return paths\n\ndef test_r2_archive_created_inside_archive_dir(tmp_path):\n    _make_files(str(tmp_path), [\"one.txt\"])\n    result = task_func(os.path.join(str(tmp_path), \"*.txt\"))\n    assert os.path.dirname(os.path.abspath(result)) == os.path.abspath(ARCHIVE_DIR)"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r2__1795238172",
+  "case": "xc_tests.test_xc_archive::test_r3_original_files_deleted",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=\"data\"):\n    os.makedirs(directory, exist_ok=True)\n    paths = []\n    for name in names:\n        path = os.path.join(directory, name)\n        with open(path, \"w\") as fh:\n            fh.write(content)\n        paths.append(path)\n    return paths\n\ndef test_r3_original_files_deleted(tmp_path):\n    paths = _make_files(str(tmp_path), [\"one.txt\", \"two.txt\", \"three.txt\"])\n    task_func(os.path.join(str(tmp_path), \"*.txt\"))\n    for path in paths:\n        assert not os.path.exists(path)"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r2__1795238172",
+  "case": "xc_tests.test_xc_archive::test_r4_archive_contains_matched_files",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=\"data\"):\n    os.makedirs(directory, exist_ok=True)\n    paths = []\n    for name in names:\n        path = os.path.join(directory, name)\n        with open(path, \"w\") as fh:\n            fh.write(content)\n        paths.append(path)\n    return paths\n\ndef _archive_members(archive_path):\n    \"\"\"List the member names stored inside a tar archive.\"\"\"\n    result = subprocess.run(\n        [\"tar\", \"-tf\", archive_path], capture_output=True, text=True\n    )\n    assert result.returncode == 0, result.stderr\n    return [line for line in result.stdout.splitlines() if line.strip()]\n\ndef test_r4_archive_contains_matched_files(tmp_path):\n    _make_files(str(tmp_path), [\"one.txt\", \"two.txt\"])\n    result = task_func(os.path.join(str(tmp_path), \"*.txt\"))\n    members = _archive_members(result)\n    basenames = sorted(os.path.basename(m) for m in members)\n    assert basenames == [\"one.txt\", \"two.txt\"]"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r2__1795238172",
+  "case": "xc_tests.test_xc_archive::test_r5_non_matching_files_untouched",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=\"data\"):\n    os.makedirs(directory, exist_ok=True)\n    paths = []\n    for name in names:\n        path = os.path.join(directory, name)\n        with open(path, \"w\") as fh:\n            fh.write(content)\n        paths.append(path)\n    return paths\n\ndef test_r5_non_matching_files_untouched(tmp_path):\n    _make_files(str(tmp_path), [\"keep.log\", \"other.csv\"])\n    _make_files(str(tmp_path), [\"gone.txt\"])\n    task_func(os.path.join(str(tmp_path), \"*.txt\"))\n    assert os.path.isfile(os.path.join(str(tmp_path), \"keep.log\"))\n    assert os.path.isfile(os.path.join(str(tmp_path), \"other.csv\"))"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r2__1795238172",
+  "case": "xc_tests.test_xc_archive::test_r6_only_matching_files_archived",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=\"data\"):\n    os.makedirs(directory, exist_ok=True)\n    paths = []\n    for name in names:\n        path = os.path.join(directory, name)\n        with open(path, \"w\") as fh:\n            fh.write(content)\n        paths.append(path)\n    return paths\n\ndef _archive_members(archive_path):\n    \"\"\"List the member names stored inside a tar archive.\"\"\"\n    result = subprocess.run(\n        [\"tar\", \"-tf\", archive_path], capture_output=True, text=True\n    )\n    assert result.returncode == 0, result.stderr\n    return [line for line in result.stdout.splitlines() if line.strip()]\n\ndef test_r6_only_matching_files_archived(tmp_path):\n    _make_files(str(tmp_path), [\"keep.log\"])\n    _make_files(str(tmp_path), [\"gone.txt\"])\n    result = task_func(os.path.join(str(tmp_path), \"*.txt\"))\n    members = _archive_members(result)\n    basenames = sorted(os.path.basename(m) for m in members)\n    assert basenames == [\"gone.txt\"]"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r2__1795238172",
+  "case": "xc_tests.test_xc_archive::test_r7_archive_dir_created_when_missing",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=\"data\"):\n    os.makedirs(directory, exist_ok=True)\n    paths = []\n    for name in names:\n        path = os.path.join(directory, name)\n        with open(path, \"w\") as fh:\n            fh.write(content)\n        paths.append(path)\n    return paths\n\ndef test_r7_archive_dir_created_when_missing(tmp_path):\n    assert not os.path.isdir(ARCHIVE_DIR)\n    _make_files(str(tmp_path), [\"one.txt\"])\n    result = task_func(os.path.join(str(tmp_path), \"*.txt\"))\n    assert os.path.isdir(ARCHIVE_DIR)\n    assert os.path.isfile(result)"
+ },
+ {
+  "run": "b_785__crosscheck-v7@s2__r2__1795238172",
+  "case": "xc_tests.test_xc_archive::test_r8_second_call_archives_its_own_files",
+  "held": true,
+  "message": "",
+  "source": "def _make_files(directory, names, content=\"data\"):\n    os.makedirs(directory, exist_ok=True)\n    paths = []\n    for name in names:\n        path = os.path.join(directory, name)\n        with open(path, \"w\") as fh:\n            fh.write(content)\n        paths.append(path)\n    return paths\n\ndef _archive_members(archive_path):\n    \"\"\"List the member names stored inside a tar archive.\"\"\"\n    result = subprocess.run(\n        [\"tar\", \"-tf\", archive_path], capture_output=True, text=True\n    )\n    assert result.returncode == 0, result.stderr\n    return [line for line in result.stdout.splitlines() if line.strip()]\n\ndef test_r8_second_call_archives_its_own_files(tmp_path):\n    first_dir = tmp_path / \"first\"\n    second_dir = tmp_path / \"second\"\n    _make_files(str(first_dir), [\"a.txt\"])\n    _make_files(str(second_dir), [\"b.txt\"])\n    first = task_func(os.path.join(str(first_dir), \"*.txt\"))\n    assert sorted(os.path.basename(m) for m in _archive_members(first)) == [\"a.txt\"]\n    second = task_func(os.path.join(str(second_dir), \"*.txt\"))\n    assert os.path.isfile(first)\n    assert os.path.isfile(second)\n    assert sorted(os.path.basename(m) for m in _archive_members(second)) == [\"b.txt\"]\n    assert not os.path.exists(os.path.join(str(first_dir), \"a.txt\"))\n    assert not os.path.exists(os.path.join(str(second_dir), \"b.txt\"))"
+ }
+]

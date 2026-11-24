@@ -1,0 +1,64 @@
+[
+ {
+  "text": "When the spec implies inputs may be empty or degenerate, handle those cases explicitly so the function returns a valid object of the required type (with correct columns/structure) instead of raising or returning None.",
+  "tasks": [
+   "b_1077",
+   "b_553",
+   "b_870"
+  ]
+ },
+ {
+  "text": "Return the exact type, container, and structure promised by the output contract on every code path, including fallback paths, so callers and tests always receive the documented type.",
+  "tasks": [
+   "b_553",
+   "b_618",
+   "b_800"
+  ]
+ },
+ {
+  "text": "Match the exact output format, column names, labels, and strings implied by the description rather than paraphrasing or choosing equivalent-looking alternatives, since tests often assert on exact strings.",
+  "tasks": [
+   "b_1040",
+   "b_367",
+   "b_618"
+  ]
+ },
+ {
+  "text": "Handle the specified error conditions explicitly and raise only the exact exception types the spec names for the specified causes, letting other conditions behave normally rather than catching broadly or raising on every failure.",
+  "tasks": [
+   "b_123",
+   "b_346",
+   "b_367",
+   "b_509"
+  ]
+ },
+ {
+  "text": "Keep the implementation minimal and faithful to the stated contract, avoiding extra assumptions, filtering, renumbering, or waiting logic that could alter observable behavior on hidden-test inputs.",
+  "tasks": [
+   "b_346",
+   "b_509",
+   "b_917"
+  ]
+ },
+ {
+  "text": "Resolve ambiguities in cardinality, bounds, and inclusivity by re-reading the explicit statements and examples, and keep generated counts and ranges consistent with them (e.g., inclusive numeric bounds, exact output length).",
+  "tasks": [
+   "b_120",
+   "b_618"
+  ]
+ },
+ {
+  "text": "Derive output shape and content from the actual data rather than assuming fixed widths or that specific columns/keys exist, falling back sensibly and skipping missing positions so partial data is handled.",
+  "tasks": [
+   "b_870",
+   "b_917"
+  ]
+ },
+ {
+  "text": "When the task provides a skeleton or says to update existing data, actually implement the body and preserve existing structure and rows rather than leaving placeholders or rewriting with a single summary.",
+  "tasks": [
+   "b_800",
+   "b_870"
+  ]
+ }
+]

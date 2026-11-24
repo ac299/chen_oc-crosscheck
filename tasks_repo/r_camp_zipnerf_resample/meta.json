@@ -1,0 +1,53 @@
+{
+ "task_id": "r_camp_zipnerf_resample",
+ "project": "camp_zipnerf",
+ "namespace": "stepfun.resample",
+ "completion_file": "internal/stepfun.py",
+ "tests": [
+  "tests/stepfun_test.py::StepFunTest::test_resample_self_noop",
+  "tests/stepfun_test.py::StepFunTest::test_resample_2x_downsample",
+  "tests/stepfun_test.py::StepFunTest::test_resample_entire_interval",
+  "tests/stepfun_test.py::StepFunTest::test_resample_entire_domain",
+  "tests/stepfun_test.py::StepFunTest::test_resample_single_span",
+  "tests/stepfun_test.py::StepFunTest::test_resample_vectorized"
+ ],
+ "test_files": [
+  "tests/stepfun_test.py"
+ ],
+ "env_volume": "xc-env-camp-zipnerf",
+ "gold_body": "  utils.assert_valid_stepfun(tp, vp)\n  if use_avg:\n    wp = jnp.diff(tp)\n    v_numer = resample(t, tp, vp * wp, use_avg=False)\n    v_denom = resample(t, tp, wp, use_avg=False)\n    v = math.safe_div(v_numer, v_denom)\n    return v\n\n  acc = jnp.cumsum(vp, axis=-1)\n  acc0 = jnp.concatenate([jnp.zeros(acc.shape[:-1] + (1,)), acc], axis=-1)\n  acc0_resampled = jnp.vectorize(jnp.interp, signature='(n),(m),(m)->(n)')(\n      t, tp, acc0\n  )\n  v = jnp.diff(acc0_resampled, axis=-1)\n  return v",
+ "sample": {
+  "namespace": "stepfun.resample",
+  "type": "function",
+  "completion_path": "camp_zipnerf/internal/stepfun.py",
+  "signature_position": [
+   212,
+   212
+  ],
+  "body_position": [
+   230,
+   244
+  ],
+  "dependency": {
+   "intra_class": [],
+   "intra_file": [
+    "stepfun.resample"
+   ],
+   "cross_file": []
+  },
+  "tests": [
+   "tests/stepfun_test.py::StepFunTest::test_resample_self_noop",
+   "tests/stepfun_test.py::StepFunTest::test_resample_2x_downsample",
+   "tests/stepfun_test.py::StepFunTest::test_resample_entire_interval",
+   "tests/stepfun_test.py::StepFunTest::test_resample_entire_domain",
+   "tests/stepfun_test.py::StepFunTest::test_resample_single_span",
+   "tests/stepfun_test.py::StepFunTest::test_resample_vectorized"
+  ],
+  "requirement": {
+   "Functionality": "Resamples a step function defined by pairs of time points (tp) and their corresponding values (vp) into new intervals specified by t. It supports both summation and averaging methods for resampling.\n",
+   "Arguments": ":param t: Tensor. The endpoints into which the step function is resampled. It is used as the new time points for resampling.\n:param tp: Tensor. The original time points of the step function being resampled. It defines the intervals of the original step function.\n:param vp: Tensor. The values of the step function at the original time points (tp). These values are resampled according to the new intervals defined by t.\n:param use_avg: Bool, optional. Determines the resampling method. If False, the function sums the values of the step function for each interval in `t`. If True, it returns the average value, weighted by the width of each interval in `t`.\n:return: Tensor. The values of the resampled step function at the new intervals defined by t."
+  },
+  "indent": 2,
+  "domain": "Scientific Engineering"
+ }
+}

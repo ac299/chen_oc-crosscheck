@@ -1,0 +1,9 @@
+{
+ "task": "Extra_Modulo",
+ "function": "process",
+ "input_type": "tuple/list with 2 numbers",
+ "kind": "pair",
+ "visible": 8,
+ "held_out": 15,
+ "seed": 20261122
+}

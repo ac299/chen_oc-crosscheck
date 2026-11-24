@@ -1,0 +1,41 @@
+{
+ "candidates": [
+  {
+   "tag": "g0",
+   "screen": {
+    "passed": true,
+    "hits": [],
+    "verdict": "general",
+    "reason": "Describes a reusable checklist procedure (extract spec claims, verify by running code) without naming any task's functions, columns, files, or expected values; applies to a broad class of spec-implementation tasks."
+   },
+   "why": null,
+   "gate": {
+    "accept": false,
+    "pairs": 60,
+    "mean_pass_rate_diff": -0.0028,
+    "pass_rate_up": 8,
+    "pass_rate_down": 5,
+    "wilcoxon_p": 0.9436,
+    "wins": 6,
+    "losses": 3,
+    "sign_p": 0.5078,
+    "base": {
+     "method": "single-sh",
+     "resolved": 32
+    },
+    "cand": {
+     "method": "single-sh+skills-gso-g0",
+     "resolved": 35
+    }
+   },
+   "result": "rejected"
+  },
+  {
+   "tag": "g1",
+   "screen": null,
+   "why": "no usable reply",
+   "result": "not produced: no usable reply"
+  }
+ ],
+ "best": "none"
+}

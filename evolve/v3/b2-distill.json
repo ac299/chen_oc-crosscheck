@@ -1,0 +1,63 @@
+{
+ "lessons": [],
+ "dropped_single_task": [
+  {
+   "text": "When the spec's literal value conflicts with the type the hidden tests likely check (e.g. a quoted string that is really a number), prefer the numeric type and coerce inputs with int() where sums are computed.",
+   "tasks": [
+    "b_123"
+   ]
+  },
+  {
+   "text": "When a function returns a Counter or summary of an operation, decide whether totals are cumulative over stored data or incremental over just the new inputs; re-read the wording and avoid double-counting pre-existing data.",
+   "tasks": [
+    "b_800"
+   ]
+  },
+  {
+   "text": "When a parameter is described as an upper bound for random generation, pass it directly to randint(0, bound) rather than bound-1, so zero and small values don't create empty ranges.",
+   "tasks": [
+    "b_618"
+   ]
+  },
+  {
+   "text": "When generating a number of items from a date range, check whether the count is inclusive or exclusive of the endpoints; the length is often (end-start).days while sampling can still include the end date.",
+   "tasks": [
+    "b_120"
+   ]
+  },
+  {
+   "text": "When plotting a DataFrame, guard empty or zero-column inputs explicitly by building fig, ax = plt.subplots() and returning ax instead of calling df.plot, which raises on empty data.",
+   "tasks": [
+    "b_553"
+   ]
+  },
+  {
+   "text": "When parsing timestamps, don't assume ISO format; detect day-first formats and use datetime.strptime with the matching pattern, treating naive datetimes as UTC before converting timezones.",
+   "tasks": [
+    "b_1077"
+   ]
+  },
+  {
+   "text": "When a DataFrame's schema isn't guaranteed, discover columns and index types at runtime (e.g. last numeric column, DatetimeIndex vs date column) instead of hardcoding names.",
+   "tasks": [
+    "b_917"
+   ]
+  },
+  {
+   "text": "When comparing structured records, preserve the parsed structure (e.g. csv.reader tuples) rather than rejoining to strings, and number output lines sequentially across the merged diff.",
+   "tasks": [
+    "b_509"
+   ]
+  }
+ ],
+ "body": "## Lessons\n",
+ "model_calls": [
+  {
+   "tokens": 3426,
+   "seconds": 7.2,
+   "status": "completed"
+  }
+ ],
+ "ok": false,
+ "why": "no lesson supported by >= 2 tasks"
+}

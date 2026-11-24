@@ -1,0 +1,289 @@
+[
+ {
+  "run": "b_870__crosscheck-v7@s2__r0__1795236109",
+  "case": "xc_tests.test_xc_task_func::test_r1_default_call_returns_dataframe",
+  "held": true,
+  "message": "",
+  "source": "def test_r1_default_call_returns_dataframe():\n    df = task_func()\n    assert isinstance(df, pd.DataFrame)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r0__1795236109",
+  "case": "xc_tests.test_xc_task_func::test_r2_column_name",
+  "held": true,
+  "message": "",
+  "source": "def test_r2_column_name():\n    df = task_func()\n    assert list(df.columns) == ['Mean Value']"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r0__1795236109",
+  "case": "xc_tests.test_xc_task_func::test_r3_index_scheme",
+  "held": true,
+  "message": "",
+  "source": "def test_r3_index_scheme():\n    df = task_func()\n    assert list(df.index) == ['Position 0', 'Position 1', 'Position 2']"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r0__1795236109",
+  "case": "xc_tests.test_xc_task_func::test_r4_default_means",
+  "held": false,
+  "message": "assert np.float64(nan) == 3.0 ± 3.0e-06\n  \n  comparison failed\n  Obtained: nan\n  Expected: 3.0 ± 3.0e-06",
+  "source": "def test_r4_default_means():\n    df = task_func()\n    assert df.loc['Position 0', 'Mean Value'] == pytest.approx(3.0)\n    assert df.loc['Position 1', 'Mean Value'] == pytest.approx(3.0)\n    assert df.loc['Position 2', 'Mean Value'] == pytest.approx(4.3)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r0__1795236109",
+  "case": "xc_tests.test_xc_task_func::test_r5_docstring_example",
+  "held": false,
+  "message": "AssertionError: assert np.False_\n +  where np.False_ = <ufunc 'isnan'>(np.float64(12.0))\n +    where <ufunc 'isnan'> = np.isnan",
+  "source": "def test_r5_docstring_example():\n    data = [('a', '1', 2.1), ('b', 21, 'c'), (12, 3, 4.3), (['d'], 4, 5.4), ('e', 5, 6.5)]\n    df = task_func(data)\n    assert list(df.columns) == ['Mean Value']\n    assert list(df.index) == ['Position 0', 'Position 1', 'Position 2']\n    assert np.isnan(df.loc['Position 0', 'Mean Value'])\n    assert df.loc['Position 1', 'Mean Value'] == pytest.approx(3.0)\n    assert df.loc['Position 2', 'Mean Value'] == pytest.approx(4.3)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r0__1795236109",
+  "case": "xc_tests.test_xc_task_func::test_r6_non_numeric_ignored",
+  "held": true,
+  "message": "",
+  "source": "def test_r6_non_numeric_ignored():\n    data = [('x', 'y', 'z'), (1, 2, 3), ('a', 'b', 'c'), (3, 4, 5)]\n    df = task_func(data)\n    assert df.loc['Position 0', 'Mean Value'] == pytest.approx(2.0)\n    assert df.loc['Position 1', 'Mean Value'] == pytest.approx(3.0)\n    assert df.loc['Position 2', 'Mean Value'] == pytest.approx(4.0)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r0__1795236109",
+  "case": "xc_tests.test_xc_task_func::test_r7_missing_data_ignored_per_position",
+  "held": true,
+  "message": "",
+  "source": "def test_r7_missing_data_ignored_per_position():\n    data = [(1, 'a'), ('b', 2), (3, 4)]\n    df = task_func(data)\n    assert df.loc['Position 0', 'Mean Value'] == pytest.approx(2.0)\n    assert df.loc['Position 1', 'Mean Value'] == pytest.approx(3.0)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r0__1795236109",
+  "case": "xc_tests.test_xc_task_func::test_r8_all_non_numeric_position_is_nan",
+  "held": true,
+  "message": "",
+  "source": "def test_r8_all_non_numeric_position_is_nan():\n    data = [('a', 1), ('b', 2), ('c', 3)]\n    df = task_func(data)\n    assert np.isnan(df.loc['Position 0', 'Mean Value'])\n    assert df.loc['Position 1', 'Mean Value'] == pytest.approx(2.0)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r0__1795236109",
+  "case": "xc_tests.test_xc_task_func::test_r9_empty_list_returns_empty_dataframe",
+  "held": true,
+  "message": "",
+  "source": "def test_r9_empty_list_returns_empty_dataframe():\n    df = task_func([])\n    assert isinstance(df, pd.DataFrame)\n    assert df.empty\n    assert len(df) == 0"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r0__1795236109",
+  "case": "xc_tests.test_xc_task_func::test_r10_floats_and_ints_mixed",
+  "held": true,
+  "message": "",
+  "source": "def test_r10_floats_and_ints_mixed():\n    data = [(1, 2.5), (2.0, 3), (3, 4.5)]\n    df = task_func(data)\n    assert df.loc['Position 0', 'Mean Value'] == pytest.approx(2.0)\n    assert df.loc['Position 1', 'Mean Value'] == pytest.approx(10.0 / 3.0)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r0__1795236109",
+  "case": "xc_tests.test_xc_task_func::test_r11_single_tuple",
+  "held": true,
+  "message": "",
+  "source": "def test_r11_single_tuple():\n    df = task_func([(7, 'x', 2.5)])\n    assert list(df.index) == ['Position 0', 'Position 1', 'Position 2']\n    assert df.loc['Position 0', 'Mean Value'] == pytest.approx(7.0)\n    assert np.isnan(df.loc['Position 1', 'Mean Value'])\n    assert df.loc['Position 2', 'Mean Value'] == pytest.approx(2.5)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r0__1795236109",
+  "case": "xc_tests.test_xc_task_func::test_r12_negative_values",
+  "held": true,
+  "message": "",
+  "source": "def test_r12_negative_values():\n    data = [(-1, 2), (-3, 4), (5, -6)]\n    df = task_func(data)\n    assert df.loc['Position 0', 'Mean Value'] == pytest.approx(1.0 / 3.0)\n    assert df.loc['Position 1', 'Mean Value'] == pytest.approx(0.0)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r1__1795237724",
+  "case": "xc_tests.test_xc_basic::test_r1_default_call_shape",
+  "held": true,
+  "message": "",
+  "source": "def test_r1_default_call_shape():\n    \"\"\"Default call returns a DataFrame with a single column named 'Mean Value'.\"\"\"\n    df = task_func()\n    assert isinstance(df, pd.DataFrame)\n    assert list(df.columns) == [\"Mean Value\"]"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r1__1795237724",
+  "case": "xc_tests.test_xc_basic::test_r2_default_call_values",
+  "held": true,
+  "message": "",
+  "source": "def test_r2_default_call_values():\n    \"\"\"Default data: numeric columns 1 and 2 are averaged, column 0 is all strings.\"\"\"\n    df = task_func()\n    expected = pd.Series(\n        [np.nan, 3.0, 4.3],\n        index=[\"Position 0\", \"Position 1\", \"Position 2\"],\n        name=\"Mean Value\",\n    )\n    pd.testing.assert_series_equal(df[\"Mean Value\"], expected)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r1__1795237724",
+  "case": "xc_tests.test_xc_basic::test_r3_default_call_index",
+  "held": true,
+  "message": "",
+  "source": "def test_r3_default_call_index():\n    \"\"\"Index labels follow the 'Position i' scheme.\"\"\"\n    df = task_func()\n    assert list(df.index) == [\"Position 0\", \"Position 1\", \"Position 2\"]"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r1__1795237724",
+  "case": "xc_tests.test_xc_basic::test_r4_docstring_example",
+  "held": false,
+  "message": "assert 8.25 == 3.0 ± 3.0e-06\n  \n  comparison failed\n  Obtained: 8.25\n  Expected: 3.0 ± 3.0e-06",
+  "source": "def test_r4_docstring_example():\n    \"\"\"The example from the task text.\n\n    Position 0 is ambiguous in the task text (the printed output shows NaN while\n    the data contains the number 12 at that position), so only the unambiguous\n    positions are checked strictly.\n    \"\"\"\n    data = [\n        (\"a\", \"1\", 2.1),\n        (\"b\", 21, \"c\"),\n        (12, 3, 4.3),\n        ([\"d\"], 4, 5.4),\n        (\"e\", 5, 6.5),\n    ]\n    df = task_func(data)\n    assert list(df.columns) == [\"Mean Value\"]\n    assert list(df.index) == [\"Position 0\", \"Position 1\", \"Position 2\"]\n    values = df[\"Mean Value\"].tolist()\n    assert values[1] == pytest.approx(3.0)\n    assert values[2] == pytest.approx(4.3)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r1__1795237724",
+  "case": "xc_tests.test_xc_missing::test_r5_empty_list_returns_empty_dataframe",
+  "held": true,
+  "message": "",
+  "source": "def test_r5_empty_list_returns_empty_dataframe():\n    \"\"\"An empty list yields an empty DataFrame (no rows).\"\"\"\n    df = task_func([])\n    assert isinstance(df, pd.DataFrame)\n    assert len(df) == 0\n    assert df.empty"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r1__1795237724",
+  "case": "xc_tests.test_xc_missing::test_r6_empty_list_has_mean_value_column",
+  "held": true,
+  "message": "",
+  "source": "def test_r6_empty_list_has_mean_value_column():\n    \"\"\"The empty result still exposes the 'Mean Value' column.\"\"\"\n    df = task_func([])\n    assert list(df.columns) == [\"Mean Value\"]"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r1__1795237724",
+  "case": "xc_tests.test_xc_missing::test_r7_missing_data_ignored",
+  "held": true,
+  "message": "",
+  "source": "def test_r7_missing_data_ignored():\n    \"\"\"Non-numeric entries are skipped; means use only available numbers.\"\"\"\n    data = [(1, \"x\"), (\"y\", 2), (3, 4)]\n    df = task_func(data)\n    assert list(df.index) == [\"Position 0\", \"Position 1\"]\n    values = df[\"Mean Value\"].tolist()\n    assert values[0] == pytest.approx(2.0)  # (1 + 3) / 2\n    assert values[1] == pytest.approx(3.0)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r1__1795237724",
+  "case": "xc_tests.test_xc_missing::test_r8_all_non_numeric_position_is_nan",
+  "held": true,
+  "message": "",
+  "source": "def test_r8_all_non_numeric_position_is_nan():\n    \"\"\"A position with no numeric values at all is NaN.\"\"\"\n    data = [(\"a\", 1), (\"b\", 2), (\"c\", 3)]\n    df = task_func(data)\n    assert list(df.index) == [\"Position 0\", \"Position 1\"]\n    assert np.isnan(df[\"Mean Value\"].iloc[0])\n    assert df[\"Mean Value\"].iloc[1] == pytest.approx(2.0)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r1__1795237724",
+  "case": "xc_tests.test_xc_missing::test_r9_numeric_strings_are_not_numbers",
+  "held": true,
+  "message": "",
+  "source": "def test_r9_numeric_strings_are_not_numbers():\n    \"\"\"Strings that look numeric (e.g. '1') are non-numeric and ignored.\"\"\"\n    data = [(\"1\", 10), (\"2\", 20)]\n    df = task_func(data)\n    assert np.isnan(df[\"Mean Value\"].iloc[0])\n    assert df[\"Mean Value\"].iloc[1] == pytest.approx(15.0)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r1__1795237724",
+  "case": "xc_tests.test_xc_missing::test_r10_booleans_and_lists_ignored",
+  "held": false,
+  "message": "AssertionError: assert np.False_\n +  where np.False_ = <ufunc 'isnan'>(np.float64(0.5))\n +    where <ufunc 'isnan'> = np.isnan",
+  "source": "def test_r10_booleans_and_lists_ignored():\n    \"\"\"Booleans and list values are not treated as numeric data.\"\"\"\n    data = [(True, [1, 2], 5), (False, [\"a\"], 7)]\n    df = task_func(data)\n    assert np.isnan(df[\"Mean Value\"].iloc[0])\n    assert np.isnan(df[\"Mean Value\"].iloc[1])\n    assert df[\"Mean Value\"].iloc[2] == pytest.approx(6.0)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r1__1795237724",
+  "case": "xc_tests.test_xc_values::test_r11_float_means",
+  "held": true,
+  "message": "",
+  "source": "def test_r11_float_means():\n    \"\"\"Means are computed as floats over the numeric values.\"\"\"\n    data = [(1.5, 2), (2.5, 4), (3.0, 6)]\n    df = task_func(data)\n    assert df[\"Mean Value\"].iloc[0] == pytest.approx(7.0 / 3.0)\n    assert df[\"Mean Value\"].iloc[1] == pytest.approx(4.0)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r1__1795237724",
+  "case": "xc_tests.test_xc_values::test_r12_negative_and_zero_values",
+  "held": true,
+  "message": "",
+  "source": "def test_r12_negative_and_zero_values():\n    \"\"\"Negative numbers and zeros participate in the mean.\"\"\"\n    data = [(-4, 0), (2, 0), (0, 0)]\n    df = task_func(data)\n    assert df[\"Mean Value\"].iloc[0] == pytest.approx(-2.0 / 3.0)\n    assert df[\"Mean Value\"].iloc[1] == pytest.approx(0.0)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r1__1795237724",
+  "case": "xc_tests.test_xc_values::test_r13_single_tuple",
+  "held": true,
+  "message": "",
+  "source": "def test_r13_single_tuple():\n    \"\"\"A single tuple produces one mean per position.\"\"\"\n    df = task_func([(1, \"a\", 3.5)])\n    assert list(df.index) == [\"Position 0\", \"Position 1\", \"Position 2\"]\n    values = df[\"Mean Value\"].tolist()\n    assert values[0] == pytest.approx(1.0)\n    assert np.isnan(values[1])\n    assert values[2] == pytest.approx(3.5)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r1__1795237724",
+  "case": "xc_tests.test_xc_values::test_r14_ragged_tuples",
+  "held": true,
+  "message": "",
+  "source": "def test_r14_ragged_tuples():\n    \"\"\"Tuples of differing lengths: positions exist up to the longest tuple.\"\"\"\n    data = [(1, 2, 3), (4,), (5, 6)]\n    df = task_func(data)\n    assert list(df.index) == [\"Position 0\", \"Position 1\", \"Position 2\"]\n    values = df[\"Mean Value\"].tolist()\n    assert values[0] == pytest.approx(10.0 / 3.0)\n    assert values[1] == pytest.approx(4.0)\n    assert values[2] == pytest.approx(3.0)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r1__1795237724",
+  "case": "xc_tests.test_xc_values::test_r15_numpy_numeric_types",
+  "held": false,
+  "message": "assert np.float64(nan) == 3.0 ± 3.0e-06\n  \n  comparison failed\n  Obtained: nan\n  Expected: 3.0 ± 3.0e-06",
+  "source": "def test_r15_numpy_numeric_types():\n    \"\"\"NumPy numeric scalars count as numeric values.\"\"\"\n    data = [(np.int64(2), np.float64(1.0)), (np.int64(4), np.float64(3.0))]\n    df = task_func(data)\n    assert df[\"Mean Value\"].iloc[0] == pytest.approx(3.0)\n    assert df[\"Mean Value\"].iloc[1] == pytest.approx(2.0)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r1__1795237724",
+  "case": "xc_tests.test_xc_values::test_r16_nan_values_ignored",
+  "held": true,
+  "message": "",
+  "source": "def test_r16_nan_values_ignored():\n    \"\"\"NaN entries are not numeric data and are skipped.\"\"\"\n    data = [(np.nan, 2), (4, np.nan)]\n    df = task_func(data)\n    assert df[\"Mean Value\"].iloc[0] == pytest.approx(4.0)\n    assert df[\"Mean Value\"].iloc[1] == pytest.approx(2.0)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r1__1795237724",
+  "case": "xc_tests.test_xc_values::test_r17_result_index_length_matches_positions",
+  "held": true,
+  "message": "",
+  "source": "def test_r17_result_index_length_matches_positions():\n    \"\"\"Number of rows equals the number of tuple positions.\"\"\"\n    data = [(1, 2), (3, 4), (5, 6), (7, 8)]\n    df = task_func(data)\n    assert len(df) == 2\n    assert list(df.index) == [\"Position 0\", \"Position 1\"]\n    assert df[\"Mean Value\"].tolist() == pytest.approx([4.0, 5.0])"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r2__1795239285",
+  "case": "xc_tests.test_xc_core::test_r1_default_call_returns_dataframe",
+  "held": true,
+  "message": "",
+  "source": "def test_r1_default_call_returns_dataframe():\n    df = task_func()\n    assert isinstance(df, pd.DataFrame)\n    assert list(df.columns) == [\"Mean Value\"]"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r2__1795239285",
+  "case": "xc_tests.test_xc_core::test_r2_default_call_values",
+  "held": true,
+  "message": "",
+  "source": "def _mean_col(df):\n    assert isinstance(df, pd.DataFrame)\n    assert list(df.columns) == [\"Mean Value\"]\n    return df[\"Mean Value\"]\n\ndef test_r2_default_call_values():\n    # default data: positions 1..5 numeric in every tuple -> means 1,2,3,4,5\n    # position 0 is all strings -> no numeric data -> NaN\n    df = task_func()\n    col = _mean_col(df)\n    assert len(col) == 3\n    assert np.isnan(col.iloc[0])\n    assert col.iloc[1] == pytest.approx(3.0)\n    assert col.iloc[2] == pytest.approx(4.3)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r2__1795239285",
+  "case": "xc_tests.test_xc_core::test_r3_example_from_task",
+  "held": false,
+  "message": "assert np.float64(4.575) == 4.3 ± 4.3e-06\n  \n  comparison failed\n  Obtained: 4.575\n  Expected: 4.3 ± 4.3e-06",
+  "source": "def _mean_col(df):\n    assert isinstance(df, pd.DataFrame)\n    assert list(df.columns) == [\"Mean Value\"]\n    return df[\"Mean Value\"]\n\ndef test_r3_example_from_task():\n    data = [('a', '1', 2.1), ('b', 21, 'c'), (12, 3, 4.3), (['d'], 4, 5.4), ('e', 5, 6.5)]\n    df = task_func(data)\n    col = _mean_col(df)\n    assert len(col) == 3\n    # position 0: only 12 is numeric -> 12.0\n    assert col.iloc[0] == pytest.approx(12.0)\n    # position 1: 21, 3, 4, 5 are numeric ('1' and 'c' ignored) -> 8.25\n    assert col.iloc[1] == pytest.approx(8.25)\n    assert col.iloc[2] == pytest.approx(4.3)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r2__1795239285",
+  "case": "xc_tests.test_xc_core::test_r4_index_scheme",
+  "held": true,
+  "message": "",
+  "source": "def test_r4_index_scheme():\n    data = [('a', '1', 2.1), ('b', 21, 'c'), (12, 3, 4.3), (['d'], 4, 5.4), ('e', 5, 6.5)]\n    df = task_func(data)\n    assert list(df.index) == [\"Position 0\", \"Position 1\", \"Position 2\"]"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r2__1795239285",
+  "case": "xc_tests.test_xc_core::test_r5_empty_list_returns_empty_dataframe",
+  "held": true,
+  "message": "",
+  "source": "def test_r5_empty_list_returns_empty_dataframe():\n    df = task_func([])\n    assert isinstance(df, pd.DataFrame)\n    assert df.empty\n    assert len(df) == 0\n    assert list(df.columns) == [\"Mean Value\"]"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r2__1795239285",
+  "case": "xc_tests.test_xc_core::test_r6_non_numeric_ignored_and_missing_ignored",
+  "held": true,
+  "message": "",
+  "source": "def _mean_col(df):\n    assert isinstance(df, pd.DataFrame)\n    assert list(df.columns) == [\"Mean Value\"]\n    return df[\"Mean Value\"]\n\ndef test_r6_non_numeric_ignored_and_missing_ignored():\n    # position 0: only 10 and 20 numeric -> 15 ; position 1: only 4 numeric -> 4\n    data = [('x', 4), (10, 'y'), (20, None)]\n    df = task_func(data)\n    col = _mean_col(df)\n    assert len(col) == 2\n    assert col.iloc[0] == pytest.approx(15.0)\n    assert col.iloc[1] == pytest.approx(4.0)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r2__1795239285",
+  "case": "xc_tests.test_xc_core::test_r7_all_non_numeric_position_is_nan",
+  "held": true,
+  "message": "",
+  "source": "def _mean_col(df):\n    assert isinstance(df, pd.DataFrame)\n    assert list(df.columns) == [\"Mean Value\"]\n    return df[\"Mean Value\"]\n\ndef test_r7_all_non_numeric_position_is_nan():\n    data = [('a', 1.0), ('b', 3.0), ('c', 5.0)]\n    df = task_func(data)\n    col = _mean_col(df)\n    assert np.isnan(col.iloc[0])\n    assert col.iloc[1] == pytest.approx(3.0)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r2__1795239285",
+  "case": "xc_tests.test_xc_core::test_r8_numeric_strings_are_not_numbers",
+  "held": true,
+  "message": "",
+  "source": "def _mean_col(df):\n    assert isinstance(df, pd.DataFrame)\n    assert list(df.columns) == [\"Mean Value\"]\n    return df[\"Mean Value\"]\n\ndef test_r8_numeric_strings_are_not_numbers():\n    # '1' and '2' are strings -> ignored; only 6 numeric at position 0\n    data = [('1', 2), ('2', 4), (6, 6)]\n    df = task_func(data)\n    col = _mean_col(df)\n    assert col.iloc[0] == pytest.approx(6.0)\n    assert col.iloc[1] == pytest.approx(4.0)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r2__1795239285",
+  "case": "xc_tests.test_xc_core::test_r9_booleans_and_lists_ignored",
+  "held": false,
+  "message": "assert np.float64(2.0) == 3.0 ± 3.0e-06\n  \n  comparison failed\n  Obtained: 2.0\n  Expected: 3.0 ± 3.0e-06",
+  "source": "def _mean_col(df):\n    assert isinstance(df, pd.DataFrame)\n    assert list(df.columns) == [\"Mean Value\"]\n    return df[\"Mean Value\"]\n\ndef test_r9_booleans_and_lists_ignored():\n    data = [([1, 2], 2.0), (True, 4.0), (3, 6.0)]\n    df = task_func(data)\n    col = _mean_col(df)\n    # only 3 is a plain number at position 0 (list and bool are not counted)\n    assert col.iloc[0] == pytest.approx(3.0)\n    assert col.iloc[1] == pytest.approx(4.0)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r2__1795239285",
+  "case": "xc_tests.test_xc_core::test_r10_single_tuple",
+  "held": true,
+  "message": "",
+  "source": "def _mean_col(df):\n    assert isinstance(df, pd.DataFrame)\n    assert list(df.columns) == [\"Mean Value\"]\n    return df[\"Mean Value\"]\n\ndef test_r10_single_tuple():\n    df = task_func([(7, 'a', 2.5)])\n    col = _mean_col(df)\n    assert len(col) == 3\n    assert col.iloc[0] == pytest.approx(7.0)\n    assert np.isnan(col.iloc[1])\n    assert col.iloc[2] == pytest.approx(2.5)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r2__1795239285",
+  "case": "xc_tests.test_xc_core::test_r11_float_mean_of_mixed_numbers",
+  "held": true,
+  "message": "",
+  "source": "def _mean_col(df):\n    assert isinstance(df, pd.DataFrame)\n    assert list(df.columns) == [\"Mean Value\"]\n    return df[\"Mean Value\"]\n\ndef test_r11_float_mean_of_mixed_numbers():\n    data = [(1, 2), (2, 4), (4, 6)]\n    df = task_func(data)\n    col = _mean_col(df)\n    assert col.iloc[0] == pytest.approx(7.0 / 3.0)\n    assert col.iloc[1] == pytest.approx(4.0)"
+ },
+ {
+  "run": "b_870__crosscheck-v7@s2__r2__1795239285",
+  "case": "xc_tests.test_xc_core::test_r12_input_not_mutated",
+  "held": true,
+  "message": "",
+  "source": "def test_r12_input_not_mutated():\n    data = [('a', 1, 2.1), ('b', 2, 3.2)]\n    snapshot = [tuple(t) for t in data]\n    task_func(data)\n    assert [tuple(t) for t in data] == snapshot"
+ }
+]

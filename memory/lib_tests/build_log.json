@@ -1,0 +1,196 @@
+{
+ "train_tasks": [
+  "b_509",
+  "b_346",
+  "b_917",
+  "b_785",
+  "b_553",
+  "b_1077",
+  "b_988",
+  "b_771",
+  "b_1040",
+  "b_870",
+  "b_424",
+  "b_857",
+  "b_587"
+ ],
+ "examples": [
+  "b_509",
+  "b_346",
+  "b_917",
+  "b_785",
+  "b_553",
+  "b_1077",
+  "b_988",
+  "b_771",
+  "b_1040",
+  "b_870",
+  "b_424",
+  "b_857",
+  "b_587"
+ ],
+ "lesson_tasks": [
+  "b_509",
+  "b_346",
+  "b_917",
+  "b_553",
+  "b_1077",
+  "b_988",
+  "b_1040",
+  "b_870",
+  "b_424",
+  "b_857",
+  "b_587"
+ ],
+ "per_task_lessons": [
+  {
+   "task": "b_509",
+   "text": "When the spec says the report includes 'no change' rows (a status for unchanged lines), do not assume identical files yield an empty result; assert on the status/content of rows rather than length being zero."
+  },
+  {
+   "task": "b_509",
+   "text": "Do not assume the 'Content' column stores raw source text; the reference may store parsed/tuple representations. Assert on behavior the spec guarantees (e.g., statuses, line numbers) rather than exact string formatting of content."
+  },
+  {
+   "task": "b_509",
+   "text": "For error-handling tests, only assert the exception types the spec explicitly names; a directory path may raise a generic Exception, so use broad pytest.raises(Exception) rather than assuming a specific subclass."
+  },
+  {
+   "task": "b_346",
+   "text": "When a spec says an error is raised for a failing subprocess, verify what the reference actually does before asserting an exception; a nonzero exit code may be returned rather than raised, so test the documented contract only if the reference confirms it."
+  },
+  {
+   "task": "b_346",
+   "text": "Do not assume that a child script raising an exception propagates as a Python exception in the caller; subprocess failures typically surface as exit codes or CalledProcessError only if check=True is used, so assert the observable return value unless the spec explicitly guarantees raising."
+  },
+  {
+   "task": "b_346",
+   "text": "For functions with optional flags and variadic arguments, test the documented default behavior and explicit flag values separately, and avoid assuming extra positional arguments change error semantics unless the description states so."
+  },
+  {
+   "task": "b_917",
+   "text": "When constructing input data for a function, derive the required schema (column names, types, index) from the task description and reference behavior rather than inventing plausible names; a KeyError on setup means the test's fixture is wrong, not the implementation."
+  },
+  {
+   "task": "b_917",
+   "text": "Do not assume the function adds plot decorations (title, axis labels) unless the description explicitly requires them; assert only properties the specification guarantees, such as the return type being an Axes object."
+  },
+  {
+   "task": "b_917",
+   "text": "Do not assume the exact numeric type of returned values (e.g., Python float vs numpy floating) unless specified; assert on the documented contract (length, finiteness, ordering) rather than strict isinstance checks."
+  },
+  {
+   "task": "b_553",
+   "text": "Do not assume the range or distribution of randomly generated values unless the task explicitly specifies it; only assert properties the description guarantees (e.g., shape, type, count), not sign or bounds."
+  },
+  {
+   "task": "b_553",
+   "text": "When a function returns a plot object, assert only the documented return type and structural properties (e.g., it is an Axes, has patches), not specific numeric values of the plotted data."
+  },
+  {
+   "task": "b_553",
+   "text": "Do not assume repeated calls produce different random outputs; randomness may be seeded or deterministic, so avoid asserting inequality between successive results unless the task states values are freshly random each call."
+  },
+  {
+   "task": "b_1077",
+   "text": "When the task description does not specify the exact input string format, do not invent a format and assume it will parse; use inputs in a format the reference is likely to accept, or derive the format from the description/examples rather than guessing."
+  },
+  {
+   "task": "b_1077",
+   "text": "Tests that exercise the core computation (e.g., nonzero differences) should use valid, parseable inputs; if unsure of the accepted format, prefer testing only behaviors explicitly guaranteed by the description (like empty/short-list handling) rather than fabricating data."
+  },
+  {
+   "task": "b_1077",
+   "text": "Do not assume a particular date/time string layout (separator, ordering, fractional seconds) unless the task states it; asserting on values computed from guessed-format inputs can fail for reasons unrelated to the logic being tested."
+  },
+  {
+   "task": "b_988",
+   "text": "When a task says predicates are deduplicated or that invalid predicates are filtered out, do not assume a plain lambda is accepted as a valid predicate; verify what counts as valid before using it in tests, and prefer predicates the spec clearly treats as valid."
+  },
+  {
+   "task": "b_988",
+   "text": "Do not assume the order of validation checks; if multiple error conditions are possible (e.g., missing directory and no valid predicates), construct tests that isolate exactly one error condition so the expected exception is unambiguous."
+  },
+  {
+   "task": "b_988",
+   "text": "When testing error paths, ensure the inputs satisfy all other preconditions (e.g., provide a valid predicate when testing a missing directory) rather than relying on one error taking precedence over another."
+  },
+  {
+   "task": "b_1040",
+   "text": "Do not rely on pytest fixtures that the task never promised to provide; define any helper (like a free-port picker) inside the test file yourself so the test is self-contained."
+  },
+  {
+   "task": "b_1040",
+   "text": "When asserting on a returned status string, only check properties the description explicitly guarantees (type, non-empty, mentions the run duration); avoid assuming specific wording such as the word 'server' or particular synonyms for time/duration."
+  },
+  {
+   "task": "b_1040",
+   "text": "For network/server functions, run the call in a background thread with a join timeout and capture exceptions in a result box, rather than calling it directly, so a blocking or long-running implementation fails cleanly instead of hanging the suite."
+  },
+  {
+   "task": "b_870",
+   "text": "When a spec says non-numeric values are ignored and means are computed only from available data, do not assume a position with no numeric values yields a numeric mean; it may yield NaN. Assert NaN (e.g., via isnan) for all-non-numeric positions rather than a numeric value."
+  },
+  {
+   "task": "b_870",
+   "text": "Do not assume which types count as 'numeric'. Booleans and numpy scalar types may be treated differently than expected; avoid writing tests that assert a specific inclusion/exclusion of edge-case types unless the description explicitly states it."
+  },
+  {
+   "task": "b_870",
+   "text": "Derive expected values from the described semantics and the provided example, not from intuition about the default arguments. If the example output shows NaN for a position, tests should expect NaN there, not a computed average."
+  },
+  {
+   "task": "b_424",
+   "text": "When a function reads an image file, don't assume the returned array matches the file's pixel values exactly; libraries like OpenCV load in BGR order, so the function may convert to RGB or not. Assert only properties the spec guarantees (shape, dtype, or round-trip through the same library), not exact equality with a differently-ordered array."
+  },
+  {
+   "task": "b_424",
+   "text": "Don't assume strict type validation beyond what the spec states. If the spec says 'positive integer', a boolean (subclass of int) or other edge type may be accepted by the reference; only test inputs the spec explicitly says must raise, and avoid inventing type-rejection cases."
+  },
+  {
+   "task": "b_424",
+   "text": "When the spec allows a degenerate case (e.g., a single cluster returning the original image), test that documented behavior rather than assuming it raises or behaves like the general case; read the note carefully for special-case semantics."
+  },
+  {
+   "task": "b_857",
+   "text": "When the spec says warnings are issued for files that could not be transferred, do not assume a missing source directory triggers a warning; only assert warnings for the specific failure conditions the description actually names, and verify the reference's behavior before asserting warning counts."
+  },
+  {
+   "task": "b_857",
+   "text": "Do not assume the function creates the destination directory; if the description does not say it creates missing directories, set up the destination directory in the test before calling the function."
+  },
+  {
+   "task": "b_857",
+   "text": "Assert only the documented return contract (e.g., a list of transferred names) and observable effects the description guarantees; avoid asserting extra side effects like directory creation or warning emission that the spec does not explicitly require."
+  },
+  {
+   "task": "b_587",
+   "text": "When a function returns a filename or path, do not assume the file content is raw binary ciphertext; the implementation may encode it (e.g., base64), so assert only properties the description guarantees (existence, non-emptiness, type) rather than exact byte lengths or numeric ranges."
+  },
+  {
+   "task": "b_587",
+   "text": "Do not assume a returned filename is an absolute path or resolvable relative to a particular directory; test existence using the returned string as given, or resolve it flexibly, rather than imposing a specific path convention."
+  },
+  {
+   "task": "b_587",
+   "text": "Only assert output properties explicitly stated in the task description (types, existence, count of outputs); avoid inferring cryptographic invariants like ciphertext length matching modulus size or value being below the modulus unless the description requires them."
+  }
+ ],
+ "merge_replies": [
+  "{\"lessons\": [{\"text\": \"When the task description does not specify exact formats, schemas, or conventions (input string layouts, column names, path conventions, file encodings), do not invent plausible ones; derive them from the description/examples or test only behaviors the spec explicitly guarantees, since setup failures from guessed formats indicate a wrong fixture, not a wrong implementation.\", \"tasks\": [\"b_917\", \"b_1077\", \"b_587\"]}, {\"text\": \"Assert only properties the specification explicitly guarantees (return types, existence, counts, documented statuses); avoid asserting extra side effects, decorations, exact numeric types, or invariants the description does not require.\", \"tasks\": [\"b_917\", \"b_553\", \"b_857\", \"b_587\"]}, {\"text\": \"When testing error paths, only assert exception types or raising behavior the spec explicitly names and the reference confirms; construct inputs that isolate exactly one error condition and satisfy all other preconditions, and do not assume which validation check takes precedence.\", \"tasks\": [\"b_509\", \"b_346\", \"b_988\"]}, {\"text\": \"Do not assume edge-case semantics (empty results, NaN for all-non-numeric positions, degenerate cases, which types count as numeric, or randomness being fresh each call) beyond what the description states; derive expected values from the described semantics and examples rather than intuition.\", \"tasks\": [\"b_509\", \"b_870\", \"b_553\", \"b_424\"]}, {\"text\": \"When the spec allows or documents special-case behavior (e.g., single-cluster returning the original image, 'no change' rows for identical files), test that documented behavior rather than assuming it raises or yields an empty/general-case result.\", \"tasks\": [\"b_509\", \"b_424\"]}, {\"text\": \"For functions that may block or run long (network/server calls), run them in a background thread with a join timeout and capture exceptions, so a blocking implementation fails cleanly instead of hanging the suite; keep tests self-contained by defining helpers rather than relying on unprovided fixtures.\", \"tasks\": [\"b_1040\"]}, {\"text\": \"Do not assume the function creates directories or performs other setup the description does not require; set up required preconditions (like destination directories) in the test yourself.\", \"tasks\": [\"b_857\"]}, {\"text\": \"When the spec says invalid inputs are filtered or deduplicated, verify what counts as valid before using it in tests, and prefer inputs the spec clearly treats as valid.\", \"tasks\": [\"b_988\"]}]}"
+ ],
+ "model_call_tokens": [
+  1379,
+  1025,
+  741,
+  1253,
+  1108,
+  1164,
+  1777,
+  1272,
+  1459,
+  1278,
+  1964,
+  2457
+ ]
+}

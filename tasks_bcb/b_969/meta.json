@@ -1,0 +1,25 @@
+{
+ "task_id": "b_969",
+ "source": "BigCodeBench/969",
+ "libs": [
+  "pandas",
+  "numpy",
+  "sklearn"
+ ],
+ "completion_file": "solution.py",
+ "tests": [
+  "tests/test_solution.py"
+ ],
+ "test_files": [
+  "tests/test_solution.py"
+ ],
+ "env_volume": "xc-env-bcb",
+ "gold_body": "    if df.select_dtypes(include=np.number).shape[1] != df.shape[1]:\n        raise TypeError(\"Input DataFrame contains non-numeric data types.\")\n    if df.empty or df.isnull().values.any():\n        raise ValueError(\"Input DataFrame is empty or contains NaN values.\")\n\n    df_cumsum = df.cumsum()\n    scaler = MinMaxScaler()\n    df_norm_cumsum = pd.DataFrame(scaler.fit_transform(df_cumsum), columns=df.columns)\n\n    return df_norm_cumsum",
+ "sample": {
+  "body_position": [
+   5,
+   5
+  ],
+  "indent": 4
+ }
+}

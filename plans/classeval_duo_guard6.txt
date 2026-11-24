@@ -1,0 +1,7 @@
+# Duo ClassEval runs that failed with "source worktree changed", rerun with the candidate path guard (same task and repeat)
+c_97 duo@s2+guard 0
+c_79 duo@s2+guard 1
+c_97 duo@s2+guard 1
+c_37 duo@s2+guard 2
+c_30 duo@s2+guard 2
+c_1 duo@s2+guard 2

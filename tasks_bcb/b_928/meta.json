@@ -1,0 +1,25 @@
+{
+ "task_id": "b_928",
+ "source": "BigCodeBench/928",
+ "libs": [
+  "collections",
+  "itertools",
+  "string"
+ ],
+ "completion_file": "solution.py",
+ "tests": [
+  "tests/test_solution.py"
+ ],
+ "test_files": [
+  "tests/test_solution.py"
+ ],
+ "env_volume": "xc-env-bcb",
+ "gold_body": "    ALPHABETS = string.ascii_lowercase\n    # Generate all two-letter combinations of alphabets\n    permutations = [''.join(x) for x in itertools.permutations(ALPHABETS, 2)]\n    combinations = permutations + [x*2 for x in ALPHABETS]\n    \n    # Generate all two-letter combinations in the word\n    word_combinations = [''.join(x) for x in zip(word, word[1:])]\n    # Count the occurrences of each two-letter combination in the word\n    word_counter = Counter(word_combinations)\n\n    # Create the dictionary with the counts\n    return {key: word_counter.get(key, 0) for key in combinations}",
+ "sample": {
+  "body_position": [
+   5,
+   5
+  ],
+  "indent": 4
+ }
+}

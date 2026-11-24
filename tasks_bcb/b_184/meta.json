@@ -1,0 +1,25 @@
+{
+ "task_id": "b_184",
+ "source": "BigCodeBench/184",
+ "libs": [
+  "pandas",
+  "re",
+  "sklearn"
+ ],
+ "completion_file": "solution.py",
+ "tests": [
+  "tests/test_solution.py"
+ ],
+ "test_files": [
+  "tests/test_solution.py"
+ ],
+ "env_volume": "xc-env-bcb",
+ "gold_body": "\n    def preprocess_text(text):\n        text = text.lower()\n        text = re.sub(r'\\d+', '', text)\n        text = re.sub(r'\\W+', ' ', text)\n        text = ' '.join(word for word in text.split() if word not in STOPWORDS)\n        return text\n\n    dataframe[text_column] = dataframe[text_column].apply(preprocess_text)\n    vectorizer = CountVectorizer()\n    vectorized_data = vectorizer.fit_transform(dataframe[text_column])\n\n    return pd.DataFrame(vectorized_data.toarray(), columns=vectorizer.get_feature_names_out())",
+ "sample": {
+  "body_position": [
+   14,
+   14
+  ],
+  "indent": 4
+ }
+}

@@ -1,0 +1,44 @@
+{
+ "rounds": [
+  {
+   "round": 1,
+   "start": "none",
+   "edits": [
+    {
+     "index": 0,
+     "op": "add",
+     "skill": "infer-unspecified-contracts",
+     "screen": {
+      "passed": false,
+      "hits": [
+       "content (b_509)",
+       "date (b_917)",
+       "name (b_509)"
+      ],
+      "verdict": "not_judged",
+      "reason": "names task-specific terms"
+     },
+     "result": "screened out"
+    },
+    {
+     "index": 1,
+     "op": "add",
+     "skill": "unspecified-edge-cases",
+     "screen": {
+      "passed": false,
+      "hits": [
+       "archive (b_785)",
+       "exception (b_346)"
+      ],
+      "verdict": "not_judged",
+      "reason": "names task-specific terms"
+     },
+     "result": "screened out"
+    }
+   ],
+   "end": "none"
+  }
+ ],
+ "current": "none",
+ "events": []
+}

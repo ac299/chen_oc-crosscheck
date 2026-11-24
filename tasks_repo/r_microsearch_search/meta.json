@@ -1,0 +1,46 @@
+{
+ "task_id": "r_microsearch_search",
+ "project": "microsearch",
+ "namespace": "microsearch.engine.SearchEngine.search",
+ "completion_file": "src/microsearch/engine.py",
+ "tests": [
+  "tests/test_engine.py::test_search_engine"
+ ],
+ "test_files": [
+  "tests/test_engine.py"
+ ],
+ "env_volume": "xc-env-microsearch",
+ "gold_body": "        keywords = normalize_string(query).split(\" \")\n        url_scores: dict[str, float] = {}\n        for kw in keywords:\n            kw_urls_score = self.bm25(kw)\n            url_scores = update_url_scores(url_scores, kw_urls_score)\n        return url_scores",
+ "sample": {
+  "namespace": "microsearch.engine.SearchEngine.search",
+  "type": "method",
+  "completion_path": "microsearch/src/microsearch/engine.py",
+  "signature_position": [
+   60,
+   60
+  ],
+  "body_position": [
+   61,
+   66
+  ],
+  "dependency": {
+   "intra_class": [
+    "microsearch.engine.SearchEngine.bm25"
+   ],
+   "intra_file": [
+    "microsearch.engine.normalize_string",
+    "microsearch.engine.update_url_scores"
+   ],
+   "cross_file": []
+  },
+  "tests": [
+   "tests/test_engine.py::test_search_engine"
+  ],
+  "requirement": {
+   "Functionality": "The function performs a search based on the input query. It normalizes the query string, splits it into keywords, and then calculates the BM25 score for each keyword across URLs. The scores for URLs are aggregated and returned as a dictionary where each URL is a key and its aggregated score is the value.\n",
+   "Arguments": ":param self: SearchEngine. An instance of the SearchEngine class.\n:param query: str, The search query input by the user. It is normalized and split into keywords for scoring.\n:return: dict[str, float], A dictionary where each key is a URL and its value is the aggregated BM25 score based on the input query's keywords."
+  },
+  "indent": 8,
+  "domain": "Internet"
+ }
+}

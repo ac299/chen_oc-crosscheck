@@ -1,0 +1,39 @@
+{
+ "lessons": [],
+ "dropped_single_task": [
+  {
+   "text": "When the input schema is not guaranteed, don't hardcode column names, index types, or field labels; discover them robustly (e.g. pick the numeric/only column, handle DatetimeIndex vs a date column) and fall back to positional steps when dates are unavailable.",
+   "tasks": [
+    "b_917"
+   ]
+  },
+  {
+   "text": "When a function must parse timestamps or dates from strings, don't assume ISO format; detect the actual format (e.g. day-first DD/MM/YY) and use strptime with the matching pattern, handling variants like 2-digit years and optional milliseconds.",
+   "tasks": [
+    "b_1077"
+   ]
+  },
+  {
+   "text": "When output content is derived from parsed structured data (e.g. CSV rows), preserve the parsed structure rather than rejoining into strings, and derive numbering from the final output sequence rather than per-source counters.",
+   "tasks": [
+    "b_509"
+   ]
+  },
+  {
+   "text": "When a function produces plots or other outputs that can fail on degenerate inputs, explicitly handle empty/zero-size cases (build the figure/axes yourself) instead of relying on library plotting calls that raise.",
+   "tasks": [
+    "b_553"
+   ]
+  }
+ ],
+ "body": "## Lessons\n",
+ "model_calls": [
+  {
+   "tokens": 2293,
+   "seconds": 2.8,
+   "status": "completed"
+  }
+ ],
+ "ok": false,
+ "why": "no lesson supported by >= 2 tasks"
+}

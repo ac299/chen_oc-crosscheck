@@ -1,0 +1,47 @@
+{
+ "task_id": "r_test_agent_run_cmd",
+ "project": "Test-Agent",
+ "namespace": "chat.utils.run_cmd",
+ "completion_file": "chat/utils.py",
+ "tests": [
+  "tests/test_cli.py::test_single_gpu",
+  "tests/test_cli.py::test_multi_gpu",
+  "tests/test_cli.py::test_8bit",
+  "tests/test_cli.py::test_hf_api"
+ ],
+ "test_files": [
+  "tests/test_cli.py"
+ ],
+ "env_volume": "xc-env-test-agent",
+ "gold_body": "    print(cmd)\n    return os.system(cmd)",
+ "sample": {
+  "namespace": "chat.utils.run_cmd",
+  "type": "function",
+  "completion_path": "Test-Agent/chat/utils.py",
+  "signature_position": [
+   265,
+   265
+  ],
+  "body_position": [
+   267,
+   268
+  ],
+  "dependency": {
+   "intra_class": [],
+   "intra_file": [],
+   "cross_file": []
+  },
+  "tests": [
+   "tests/test_cli.py::test_single_gpu",
+   "tests/test_cli.py::test_multi_gpu",
+   "tests/test_cli.py::test_8bit",
+   "tests/test_cli.py::test_hf_api"
+  ],
+  "requirement": {
+   "Functionality": "Executes a given bash command by printing it first and then using the system's command line interface to run it.",
+   "Arguments": ":param cmd: str, The bash command to be executed.\n:return: int, The exit status of the executed command. A value of 0 typically indicates that the command was executed successfully, while any other value indicates an error."
+  },
+  "indent": 4,
+  "domain": "System"
+ }
+}

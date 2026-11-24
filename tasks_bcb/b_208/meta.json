@@ -1,0 +1,25 @@
+{
+ "task_id": "b_208",
+ "source": "BigCodeBench/208",
+ "libs": [
+  "pandas",
+  "numpy",
+  "matplotlib"
+ ],
+ "completion_file": "solution.py",
+ "tests": [
+  "tests/test_solution.py"
+ ],
+ "test_files": [
+  "tests/test_solution.py"
+ ],
+ "env_volume": "xc-env-bcb",
+ "gold_body": "    np.random.seed(seed)\n    if not isinstance(elements, int) or elements <= 0:\n        raise ValueError(\"Element must be a positive integer.\")\n        \n    steps = np.random.choice([-1, 1], size=elements)\n    walk = np.cumsum(steps)\n    descriptive_stats = pd.Series(walk).describe(percentiles=[.05, .25, .5, .75, .95]).to_dict()\n    \n    plt.figure(figsize=(10, 6))\n    plt.plot(walk)\n    plt.title('Random Walk')\n    return descriptive_stats, plt.gca()",
+ "sample": {
+  "body_position": [
+   5,
+   5
+  ],
+  "indent": 4
+ }
+}

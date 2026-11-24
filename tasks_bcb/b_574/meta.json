@@ -1,0 +1,25 @@
+{
+ "task_id": "b_574",
+ "source": "BigCodeBench/574",
+ "libs": [
+  "numpy",
+  "matplotlib",
+  "scipy"
+ ],
+ "completion_file": "solution.py",
+ "tests": [
+  "tests/test_solution.py"
+ ],
+ "test_files": [
+  "tests/test_solution.py"
+ ],
+ "env_volume": "xc-env-bcb",
+ "gold_body": "    x = np.linspace(0, 4*np.pi, array_length)\n    y = np.sin(x) + noise_level * np.random.rand(array_length)\n\n    def func(x, a, b):\n        return a * np.sin(b * x)\n\n    popt, pcov = curve_fit(func, x, y, p0=[1, 1])\n\n    fig, ax = plt.subplots()\n    ax.plot(x, y, 'b-', label='data')\n    ax.plot(x, func(x, *popt), 'r-', label='fit: a=%5.3f, b=%5.3f' % tuple(popt))\n    ax.set_xlabel('x')\n    ax.set_ylabel('y')\n    ax.legend()\n    \n    return ax",
+ "sample": {
+  "body_position": [
+   5,
+   5
+  ],
+  "indent": 4
+ }
+}

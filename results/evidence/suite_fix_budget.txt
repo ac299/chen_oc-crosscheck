@@ -1,0 +1,13 @@
+ M opencollab/README.md
+ M opencollab/__init__.py
+ M opencollab/__main__.py
+ M opencollab/adapters/__init__.py
+ M opencollab/adapters/_candidate_increment.py
+ M opencollab/adapters/_candidate_physical.py
+ M opencollab/adapters/_candidate_source.py
+ M opencollab/adapters/_docker_snapshot.py
+ M opencollab/adapters/_env_base.py
+ M opencollab/adapters/_env_container_worktree.py
+FAILED tests/interfaces/test_sdk_api.py::test_public_class_and_method_shapes_stay_lean
+1 failed, 10315 passed, 87 skipped, 66 warnings in 1539.62s (0:25:39)
+SUITE DONE

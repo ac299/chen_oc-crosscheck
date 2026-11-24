@@ -1,0 +1,20 @@
+{
+ "after_turn_1": [
+  "done",
+  "completed"
+ ],
+ "final_state": [
+  "stopped",
+  "budget exhausted before model call: conservative input reservation requires 364 of 195 remaining tokens, leaving no output headroom",
+  5
+ ],
+ "session_terminal_records": [
+  [
+   "done",
+   "completed",
+   5
+  ]
+ ],
+ "last_record_matches_final_state": false
+}
+framework: OpenCollab-upstream@78ca8e37

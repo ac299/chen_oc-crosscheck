@@ -1,0 +1,1805 @@
+{
+ "b_1040": {
+  "gold": {
+   "test_large_data_transfer": "pass",
+   "test_multiple_connections": "pass",
+   "test_no_data_received": "pass",
+   "test_queue_empty_condition": "pass",
+   "test_server_closes_after_duration": "pass",
+   "test_server_response": "pass"
+  },
+  "runs": {
+   "test_large_data_transfer": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_multiple_connections": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_no_data_received": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_queue_empty_condition": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_server_closes_after_duration": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_server_response": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   }
+  }
+ },
+ "b_1077": {
+  "gold": {
+   "test_different_timezones": "pass",
+   "test_example_case": "pass",
+   "test_out_of_order_strings": "pass",
+   "test_single_time_string": "pass",
+   "test_span_across_days": "pass",
+   "test_varying_differences": "pass"
+  },
+  "runs": {
+   "test_different_timezones": {
+    "crosscheck:v7@s2": [
+     "ValueError: Invalid isoformat string: '01/04/21 12:00:00.000'",
+     "ValueError: Invalid isoformat string: '01/04/21 12:00:00.000'",
+     "ValueError: Invalid isoformat string: '01/04/21 12:00:00.000'"
+    ],
+    "duo@s2": [
+     "ValueError: time data '01/04/21 12:00:00.000' does not match format '%Y-%m-%d %H:%M:%S'",
+     "ValueError: time data '01/04/21 12:00:00.000' does not match format '%Y-%m-%d %H:%M:%S'",
+     "ValueError: Invalid isoformat string: '01/04/21 12:00:00.000'"
+    ],
+    "single": [
+     "ValueError: Invalid isoformat string: '01/04/21 12:00:00.000'",
+     "ValueError: Invalid isoformat string: '01/04/21 12:00:00.000'",
+     "ValueError: Invalid isoformat string: '01/04/21 12:00:00.000'"
+    ],
+    "team-collab@s2": [
+     "ValueError: Invalid isoformat string: '01/04/21 12:00:00.000'",
+     "ValueError: time data '01/04/21 12:00:00.000' does not match format '%Y-%m-%d %H:%M:%S'",
+     "ValueError: time data '01/04/21 12:00:00.000' does not match format '%Y-%m-%d %H:%M:%S'"
+    ]
+   },
+   "test_example_case": {
+    "crosscheck:v7@s2": [
+     "ValueError: Invalid isoformat string: '30/03/09 16:31:32.123'",
+     "ValueError: Invalid isoformat string: '30/03/09 16:31:32.123'",
+     "ValueError: Invalid isoformat string: '30/03/09 16:31:32.123'"
+    ],
+    "duo@s2": [
+     "ValueError: time data '30/03/09 16:31:32.123' does not match format '%Y-%m-%d %H:%M:%S'",
+     "ValueError: time data '30/03/09 16:31:32.123' does not match format '%Y-%m-%d %H:%M:%S'",
+     "ValueError: Invalid isoformat string: '30/03/09 16:31:32.123'"
+    ],
+    "single": [
+     "ValueError: Invalid isoformat string: '30/03/09 16:31:32.123'",
+     "ValueError: Invalid isoformat string: '30/03/09 16:31:32.123'",
+     "ValueError: Invalid isoformat string: '30/03/09 16:31:32.123'"
+    ],
+    "team-collab@s2": [
+     "ValueError: Invalid isoformat string: '30/03/09 16:31:32.123'",
+     "ValueError: time data '30/03/09 16:31:32.123' does not match format '%Y-%m-%d %H:%M:%S'",
+     "ValueError: time data '30/03/09 16:31:32.123' does not match format '%Y-%m-%d %H:%M:%S'"
+    ]
+   },
+   "test_out_of_order_strings": {
+    "crosscheck:v7@s2": [
+     "ValueError: Invalid isoformat string: '01/04/21 12:02:02.000'",
+     "ValueError: Invalid isoformat string: '01/04/21 12:02:02.000'",
+     "ValueError: Invalid isoformat string: '01/04/21 12:02:02.000'"
+    ],
+    "duo@s2": [
+     "ValueError: time data '01/04/21 12:02:02.000' does not match format '%Y-%m-%d %H:%M:%S'",
+     "ValueError: time data '01/04/21 12:02:02.000' does not match format '%Y-%m-%d %H:%M:%S'",
+     "ValueError: Invalid isoformat string: '01/04/21 12:02:02.000'"
+    ],
+    "single": [
+     "ValueError: Invalid isoformat string: '01/04/21 12:02:02.000'",
+     "ValueError: Invalid isoformat string: '01/04/21 12:02:02.000'",
+     "ValueError: Invalid isoformat string: '01/04/21 12:02:02.000'"
+    ],
+    "team-collab@s2": [
+     "ValueError: Invalid isoformat string: '01/04/21 12:02:02.000'",
+     "ValueError: time data '01/04/21 12:02:02.000' does not match format '%Y-%m-%d %H:%M:%S'",
+     "ValueError: time data '01/04/21 12:02:02.000' does not match format '%Y-%m-%d %H:%M:%S'"
+    ]
+   },
+   "test_single_time_string": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "ValueError: Invalid isoformat string: '01/04/21 12:00:00.000'",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_span_across_days": {
+    "crosscheck:v7@s2": [
+     "ValueError: Invalid isoformat string: '31/03/21 23:59:00.000'",
+     "ValueError: Invalid isoformat string: '31/03/21 23:59:00.000'",
+     "ValueError: Invalid isoformat string: '31/03/21 23:59:00.000'"
+    ],
+    "duo@s2": [
+     "ValueError: time data '31/03/21 23:59:00.000' does not match format '%Y-%m-%d %H:%M:%S'",
+     "ValueError: time data '31/03/21 23:59:00.000' does not match format '%Y-%m-%d %H:%M:%S'",
+     "ValueError: Invalid isoformat string: '31/03/21 23:59:00.000'"
+    ],
+    "single": [
+     "ValueError: Invalid isoformat string: '31/03/21 23:59:00.000'",
+     "ValueError: Invalid isoformat string: '31/03/21 23:59:00.000'",
+     "ValueError: Invalid isoformat string: '31/03/21 23:59:00.000'"
+    ],
+    "team-collab@s2": [
+     "ValueError: Invalid isoformat string: '31/03/21 23:59:00.000'",
+     "ValueError: time data '31/03/21 23:59:00.000' does not match format '%Y-%m-%d %H:%M:%S'",
+     "ValueError: time data '31/03/21 23:59:00.000' does not match format '%Y-%m-%d %H:%M:%S'"
+    ]
+   },
+   "test_varying_differences": {
+    "crosscheck:v7@s2": [
+     "ValueError: Invalid isoformat string: '01/04/21 12:00:00.000'",
+     "ValueError: Invalid isoformat string: '01/04/21 12:00:00.000'",
+     "ValueError: Invalid isoformat string: '01/04/21 12:00:00.000'"
+    ],
+    "duo@s2": [
+     "ValueError: time data '01/04/21 12:00:00.000' does not match format '%Y-%m-%d %H:%M:%S'",
+     "ValueError: time data '01/04/21 12:00:00.000' does not match format '%Y-%m-%d %H:%M:%S'",
+     "ValueError: Invalid isoformat string: '01/04/21 12:00:00.000'"
+    ],
+    "single": [
+     "ValueError: Invalid isoformat string: '01/04/21 12:00:00.000'",
+     "ValueError: Invalid isoformat string: '01/04/21 12:00:00.000'",
+     "ValueError: Invalid isoformat string: '01/04/21 12:00:00.000'"
+    ],
+    "team-collab@s2": [
+     "ValueError: Invalid isoformat string: '01/04/21 12:00:00.000'",
+     "ValueError: time data '01/04/21 12:00:00.000' does not match format '%Y-%m-%d %H:%M:%S'",
+     "ValueError: time data '01/04/21 12:00:00.000' does not match format '%Y-%m-%d %H:%M:%S'"
+    ]
+   }
+  }
+ },
+ "b_346": {
+  "gold": {
+   "test_case_1": "pass",
+   "test_case_2": "pass",
+   "test_case_3": "pass",
+   "test_case_4": "pass",
+   "test_case_5": "pass"
+  },
+  "runs": {
+   "test_case_1": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_case_2": {
+    "crosscheck:v7@s2": [
+     "subprocess.CalledProcessError: Command '['/env/venv/bin/python', '/tmp/tmpt_ckfgvm/test/script2.py']' returned non-zero exit status 1.",
+     "subprocess.CalledProcessError: Command '['/env/venv/bin/python', '/tmp/tmpk0frjqxb/test/script2.py']' returned non-zero exit status 1.",
+     "pass"
+    ],
+    "duo@s2": [
+     "subprocess.CalledProcessError: Command '['/env/venv/bin/python', '/tmp/tmpzwksdh8v/test/script2.py']' returned non-zero exit status 1.",
+     "subprocess.CalledProcessError: Command '['/env/venv/bin/python', '/tmp/tmpl3k_c7i1/test/script2.py']' returned non-zero exit status 1.",
+     "subprocess.CalledProcessError: Command '['/env/venv/bin/python', '/tmp/tmphrj1nfkd/test/script2.py']' returned non-zero exit status 1."
+    ],
+    "single": [
+     "subprocess.CalledProcessError: Command '['/env/venv/bin/python', '/tmp/tmpqouval9l/test/script2.py']' returned non-zero exit status 1.",
+     "subprocess.CalledProcessError: Command '['/env/venv/bin/python', '/tmp/tmpme_4aavw/test/script2.py']' returned non-zero exit status 1.",
+     "subprocess.CalledProcessError: Command '['/env/venv/bin/python', '/tmp/tmpy7namsj8/test/script2.py']' returned non-zero exit status 1."
+    ],
+    "team-collab@s2": [
+     "subprocess.CalledProcessError: Command '['/env/venv/bin/python', '/tmp/tmp460sigw7/test/script2.py']' returned non-zero exit status 1.",
+     "subprocess.CalledProcessError: Command '['/env/venv/bin/python', '/tmp/tmpyzjlbrft/test/script2.py']' returned non-zero exit status 1.",
+     "subprocess.CalledProcessError: Command '['/env/venv/bin/python', '/tmp/tmpgr8pvo5c/test/script2.py']' returned non-zero exit status 1."
+    ]
+   },
+   "test_case_3": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_case_4": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_case_5": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   }
+  }
+ },
+ "b_424": {
+  "gold": {
+   "test_invalid_n_clusters": "pass",
+   "test_n_clusters_as_non_integer": "pass",
+   "test_non_existent_file": "pass",
+   "test_normal_functionality": "pass",
+   "test_single_cluster_returns_original_image": "pass"
+  },
+  "runs": {
+   "test_invalid_n_clusters": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_n_clusters_as_non_integer": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_non_existent_file": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_normal_functionality": {
+    "crosscheck:v7@s2": [
+     "AssertionError: False is not true : The arrays should be equal",
+     "AssertionError: False is not true : The arrays should be equal",
+     "AssertionError: False is not true : The arrays should be equal"
+    ],
+    "duo@s2": [
+     "AssertionError: False is not true : The arrays should be equal",
+     "AssertionError: False is not true : The arrays should be equal",
+     "AssertionError: False is not true : The arrays should be equal"
+    ],
+    "single": [
+     "AssertionError: False is not true : The arrays should be equal",
+     "AssertionError: False is not true : The arrays should be equal",
+     "AssertionError: False is not true : The arrays should be equal"
+    ],
+    "team-collab@s2": [
+     "AssertionError: False is not true : The arrays should be equal",
+     "AssertionError: False is not true : The arrays should be equal",
+     "AssertionError: False is not true : The arrays should be equal"
+    ]
+   },
+   "test_single_cluster_returns_original_image": {
+    "crosscheck:v7@s2": [
+     "AssertionError: ",
+     "AssertionError: ",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   }
+  }
+ },
+ "b_509": {
+  "gold": {
+   "test_custom_delimiter": "pass",
+   "test_difference_report": "pass",
+   "test_empty_files": "pass",
+   "test_file_not_found": "pass",
+   "test_invalid_file_path": "pass"
+  },
+  "runs": {
+   "test_custom_delimiter": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_difference_report": {
+    "crosscheck:v7@s2": [
+     "AssertionError: Lists differ: ['1, ,name,age', '2,-,Alice,30', '2,+,Alic[15 chars],25'] != [\"1, ,('name', 'age')\", \"2,-,('Alice', '30[43 chars]5')\"]",
+     "AssertionError: Lists differ: ['2,-,Alice,30', '2,+,Alice,31'] != [\"1, ,('name', 'age')\", \"2,-,('Alice', '30[43 chars]5')\"]",
+     "AssertionError: Lists differ: ['1, ,name,age', '2,-,Alice,30', '2,+,Alic[15 chars],25'] != [\"1, ,('name', 'age')\", \"2,-,('Alice', '30[43 chars]5')\"]"
+    ],
+    "duo@s2": [
+     "AssertionError: Lists differ: ['1, ,name,age', '2,-,Alice,30', '3,+,Alic[15 chars],25'] != [\"1, ,('name', 'age')\", \"2,-,('Alice', '30[43 chars]5')\"]",
+     "AssertionError: Lists differ: ['1, ,name,age', '2,-,Alice,30', '2,+,Alic[15 chars],25'] != [\"1, ,('name', 'age')\", \"2,-,('Alice', '30[43 chars]5')\"]",
+     "AssertionError: Lists differ: ['1, ,name,age', '2,-,Alice,30', '2,?,    [51 chars],25'] != [\"1, ,('name', 'age')\", \"2,-,('Alice', '30[43 chars]5')\"]"
+    ],
+    "single": [
+     "AssertionError: Lists differ: ['1, ,name,age', '2,-,Alice,30', '3,+,Alic[15 chars],25'] != [\"1, ,('name', 'age')\", \"2,-,('Alice', '30[43 chars]5')\"]",
+     "AssertionError: Lists differ: ['1, ,name,age', '2,-,Alice,30', '2,+,Alic[15 chars],25'] != [\"1, ,('name', 'age')\", \"2,-,('Alice', '30[43 chars]5')\"]",
+     "AssertionError: Lists differ: ['1, ,name,age', '2,-,Alice,30', '2,+,Alic[15 chars],25'] != [\"1, ,('name', 'age')\", \"2,-,('Alice', '30[43 chars]5')\"]"
+    ],
+    "team-collab@s2": [
+     "AssertionError: Lists differ: ['1, ,name,age', '2,-,Alice,30', '2,+,Alic[15 chars],25'] != [\"1, ,('name', 'age')\", \"2,-,('Alice', '30[43 chars]5')\"]",
+     "AssertionError: Lists differ: ['1, ,name,age', '2,-,Alice,30', '3,+,Alic[15 chars],25'] != [\"1, ,('name', 'age')\", \"2,-,('Alice', '30[43 chars]5')\"]",
+     "AssertionError: Lists differ: ['2,-,Alice,30', '2,?,       ^\\n', '3,+,Al[21 chars]^\\n'] != [\"1, ,('name', 'age')\", \"2,-,('Alice', '30[43 chars]5')\"]"
+    ]
+   },
+   "test_empty_files": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_file_not_found": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_invalid_file_path": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   }
+  }
+ },
+ "b_553": {
+  "gold": {
+   "test_a_list_longer_than_columns": "pass",
+   "test_both_lists_empty": "pass",
+   "test_empty_a_list": "pass",
+   "test_empty_b_list": "pass",
+   "test_non_empty_lists": "pass"
+  },
+  "runs": {
+   "test_a_list_longer_than_columns": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_both_lists_empty": {
+    "crosscheck:v7@s2": [
+     "TypeError: no numeric data to plot",
+     "TypeError: no numeric data to plot",
+     "TypeError: no numeric data to plot"
+    ],
+    "duo@s2": [
+     "TypeError: no numeric data to plot",
+     "TypeError: no numeric data to plot",
+     "TypeError: no numeric data to plot"
+    ],
+    "single": [
+     "TypeError: no numeric data to plot",
+     "TypeError: no numeric data to plot",
+     "TypeError: no numeric data to plot"
+    ],
+    "team-collab@s2": [
+     "TypeError: no numeric data to plot",
+     "TypeError: no numeric data to plot",
+     "TypeError: no numeric data to plot"
+    ]
+   },
+   "test_empty_a_list": {
+    "crosscheck:v7@s2": [
+     "IndexError: index 0 is out of bounds for axis 0 with size 0",
+     "IndexError: index 0 is out of bounds for axis 0 with size 0",
+     "IndexError: index 0 is out of bounds for axis 0 with size 0"
+    ],
+    "duo@s2": [
+     "IndexError: index 0 is out of bounds for axis 0 with size 0",
+     "IndexError: index 0 is out of bounds for axis 0 with size 0",
+     "IndexError: index 0 is out of bounds for axis 0 with size 0"
+    ],
+    "single": [
+     "IndexError: index 0 is out of bounds for axis 0 with size 0",
+     "IndexError: index 0 is out of bounds for axis 0 with size 0",
+     "IndexError: index 0 is out of bounds for axis 0 with size 0"
+    ],
+    "team-collab@s2": [
+     "IndexError: index 0 is out of bounds for axis 0 with size 0",
+     "IndexError: index 0 is out of bounds for axis 0 with size 0",
+     "IndexError: index 0 is out of bounds for axis 0 with size 0"
+    ]
+   },
+   "test_empty_b_list": {
+    "crosscheck:v7@s2": [
+     "TypeError: no numeric data to plot",
+     "TypeError: no numeric data to plot",
+     "TypeError: no numeric data to plot"
+    ],
+    "duo@s2": [
+     "TypeError: no numeric data to plot",
+     "TypeError: no numeric data to plot",
+     "TypeError: no numeric data to plot"
+    ],
+    "single": [
+     "TypeError: no numeric data to plot",
+     "TypeError: no numeric data to plot",
+     "TypeError: no numeric data to plot"
+    ],
+    "team-collab@s2": [
+     "TypeError: no numeric data to plot",
+     "TypeError: no numeric data to plot",
+     "TypeError: no numeric data to plot"
+    ]
+   },
+   "test_non_empty_lists": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   }
+  }
+ },
+ "b_587": {
+  "gold": {
+   "test_aes_key_file_content": "pass",
+   "test_encrypted_file_content": "pass",
+   "test_encrypted_key_file_creation": "pass",
+   "test_file_encryption": "pass",
+   "test_non_existent_file": "pass",
+   "test_public_key_type": "pass"
+  },
+  "runs": {
+   "test_aes_key_file_content": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_encrypted_file_content": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_encrypted_key_file_creation": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_file_encryption": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_non_existent_file": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_public_key_type": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   }
+  }
+ },
+ "b_771": {
+  "gold": {
+   "test_empty_directory": "pass",
+   "test_exception_handling": "pass",
+   "test_file_creation_and_content": "pass",
+   "test_mixed_file_types": "pass",
+   "test_non_matching_files": "pass"
+  },
+  "runs": {
+   "test_empty_directory": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_exception_handling": {
+    "crosscheck:v7@s2": [
+     "AssertionError: OSError not raised",
+     "AssertionError: OSError not raised",
+     "AssertionError: OSError not raised"
+    ],
+    "duo@s2": [
+     "AssertionError: OSError not raised",
+     "AssertionError: OSError not raised",
+     "pass"
+    ],
+    "single": [
+     "AssertionError: OSError not raised",
+     "AssertionError: OSError not raised",
+     "AssertionError: OSError not raised"
+    ],
+    "team-collab@s2": [
+     "AssertionError: OSError not raised",
+     "AssertionError: OSError not raised",
+     "AssertionError: OSError not raised"
+    ]
+   },
+   "test_file_creation_and_content": {
+    "crosscheck:v7@s2": [
+     "AssertionError: Lists differ: [] != ['Shan.csv', 'Shannon.csv']",
+     "AssertionError: Lists differ: [] != ['Shan.csv', 'Shannon.csv']",
+     "AssertionError: Lists differ: [] != ['Shan.csv', 'Shannon.csv']"
+    ],
+    "duo@s2": [
+     "AssertionError: Lists differ: [] != ['Shan.csv', 'Shannon.csv']",
+     "AssertionError: Lists differ: [] != ['Shan.csv', 'Shannon.csv']",
+     "AssertionError: Lists differ: ['Shan-new.csv', 'Shannon-new.csv'] != ['Shan.csv', 'Shannon.csv']"
+    ],
+    "single": [
+     "AssertionError: Lists differ: [] != ['Shan.csv', 'Shannon.csv']",
+     "AssertionError: Lists differ: [] != ['Shan.csv', 'Shannon.csv']",
+     "AssertionError: Lists differ: [] != ['Shan.csv', 'Shannon.csv']"
+    ],
+    "team-collab@s2": [
+     "AssertionError: Lists differ: [] != ['Shan.csv', 'Shannon.csv']",
+     "AssertionError: Lists differ: [] != ['Shan.csv', 'Shannon.csv']",
+     "AssertionError: Lists differ: [] != ['Shan.csv', 'Shannon.csv']"
+    ]
+   },
+   "test_mixed_file_types": {
+    "crosscheck:v7@s2": [
+     "AssertionError: Lists differ: [] != ['Shan.csv']",
+     "AssertionError: Lists differ: [] != ['Shan.csv']",
+     "AssertionError: Lists differ: [] != ['Shan.csv']"
+    ],
+    "duo@s2": [
+     "AssertionError: Lists differ: [] != ['Shan.csv']",
+     "AssertionError: Lists differ: [] != ['Shan.csv']",
+     "AssertionError: Lists differ: ['Shan-new.csv'] != ['Shan.csv']"
+    ],
+    "single": [
+     "AssertionError: Lists differ: [] != ['Shan.csv']",
+     "AssertionError: Lists differ: [] != ['Shan.csv']",
+     "AssertionError: Lists differ: [] != ['Shan.csv']"
+    ],
+    "team-collab@s2": [
+     "AssertionError: Lists differ: [] != ['Shan.csv']",
+     "AssertionError: Lists differ: [] != ['Shan.csv']",
+     "AssertionError: Lists differ: [] != ['Shan.csv']"
+    ]
+   },
+   "test_non_matching_files": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   }
+  }
+ },
+ "b_785": {
+  "gold": {
+   "test_archive_image_files": "pass",
+   "test_archive_txt_files": "pass",
+   "test_archiving_in_nonexistent_directory": "pass",
+   "test_multiple_archiving_unique_naming": "pass",
+   "test_no_matching_files": "pass"
+  },
+  "runs": {
+   "test_archive_image_files": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_archive_txt_files": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_archiving_in_nonexistent_directory": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "AssertionError: True is not false"
+    ],
+    "duo@s2": [
+     "AssertionError: True is not false",
+     "AssertionError: True is not false",
+     "AssertionError: True is not false"
+    ],
+    "single": [
+     "FileNotFoundError: No files matched the pattern: /tmp/archive/*.txt",
+     "AssertionError: True is not false",
+     "AssertionError: True is not false"
+    ],
+    "team-collab@s2": [
+     "AssertionError: True is not false",
+     "TypeError: stat: path should be string, bytes, os.PathLike or integer, not NoneType",
+     "TypeError: stat: path should be string, bytes, os.PathLike or integer, not NoneType"
+    ]
+   },
+   "test_multiple_archiving_unique_naming": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "AssertionError: '/tmp/archive/star.txt_1.zip' != '/tmp/archive/star.txt_2.zip'",
+     "pass",
+     "AssertionError: '/tmp/archive/test_files___txt_1.tar.gz' != '/tmp/archive/test_files___txt_2.tar.gz'"
+    ],
+    "single": [
+     "FileNotFoundError: No files matched the pattern: ./test_files/*.txt",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "AssertionError: '/tmp/archive/archive___test_files___txt_1.tar.gz' != '/tmp/archive/archive___test_files___txt_2.tar.gz'",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_no_matching_files": {
+    "crosscheck:v7@s2": [
+     "AssertionError: '/tmp/archive/test_files_.pdf.tar.gz' != 'No files found matching the pattern.'",
+     "AssertionError: '/tmp/archive/archive.tar.gz' != 'No files found matching the pattern.'",
+     "AssertionError: '/tmp/archive/._test_files__.pdf.tar.gz' != 'No files found matching the pattern.'"
+    ],
+    "duo@s2": [
+     "AssertionError: '/tmp/archive/star.pdf.zip' != 'No files found matching the pattern.'",
+     "AssertionError: '/tmp/archive/archive.tar.gz' != 'No files found matching the pattern.'",
+     "AssertionError: '/tmp/archive/test_files___pdf.tar.gz' != 'No files found matching the pattern.'"
+    ],
+    "single": [
+     "FileNotFoundError: No files matched the pattern: ./test_files/*.pdf",
+     "AssertionError: '/tmp/archive/._test_files_star.pdf.tar.gz' != 'No files found matching the pattern.'",
+     "AssertionError: '/tmp/archive/._test_files_star.pdf.tar.gz' != 'No files found matching the pattern.'"
+    ],
+    "team-collab@s2": [
+     "AssertionError: '/tmp/archive/archive___test_files___pdf.tar.gz' != 'No files found matching the pattern.'",
+     "AssertionError: None != 'No files found matching the pattern.'",
+     "AssertionError: None != 'No files found matching the pattern.'"
+    ]
+   }
+  }
+ },
+ "b_857": {
+  "gold": {
+   "test_all_extensions": "pass",
+   "test_empty_source_directory": "pass",
+   "test_exception_handling": "pass",
+   "test_invalid_file_extensions": "pass",
+   "test_successful_transfer": "pass"
+  },
+  "runs": {
+   "test_all_extensions": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "AssertionError: Lists differ: [] != ['file1.txt', 'file2.csv', 'file3.xlsx', 'file4.jpg']",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "AssertionError: Lists differ: ['file1.txt', 'file2.csv', 'file3.xlsx', 'file4.jpg', 'invalid file name.jpg'] != ['file1.txt', 'file2.csv', 'file3.xlsx', 'file4.",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_empty_source_directory": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "AssertionError: Lists differ: ['file1.txt', 'file2.csv'] != []",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_exception_handling": {
+    "crosscheck:v7@s2": [
+     "AssertionError: False is not true",
+     "AssertionError: False is not true",
+     "AssertionError: False is not true"
+    ],
+    "duo@s2": [
+     "AssertionError: False is not true",
+     "AssertionError: Lists differ: ['file4.jpg', 'invalid file name.jpg'] != []",
+     "AssertionError: False is not true"
+    ],
+    "single": [
+     "AssertionError: False is not true",
+     "AssertionError: False is not true",
+     "AssertionError: False is not true"
+    ],
+    "team-collab@s2": [
+     "AssertionError: False is not true",
+     "AssertionError: False is not true",
+     "AssertionError: False is not true"
+    ]
+   },
+   "test_invalid_file_extensions": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_successful_transfer": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "AssertionError: Lists differ: [] != ['file1.txt', 'file2.csv']",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   }
+  }
+ },
+ "b_870": {
+  "gold": {
+   "test_custom_data": "pass",
+   "test_default_data": "pass",
+   "test_empty_data": "pass",
+   "test_incomplete_data": "pass",
+   "test_non_numeric_data": "pass"
+  },
+  "runs": {
+   "test_custom_data": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "NotImplementedError",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_default_data": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "NotImplementedError",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_empty_data": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "NotImplementedError",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_incomplete_data": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "NotImplementedError",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_non_numeric_data": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "NotImplementedError",
+     "pass",
+     "pass"
+    ]
+   }
+  }
+ },
+ "b_917": {
+  "gold": {
+   "test_case_1": "pass",
+   "test_case_2": "pass",
+   "test_case_3": "pass",
+   "test_case_4": "pass",
+   "test_case_5": "pass"
+  },
+  "runs": {
+   "test_case_1": {
+    "crosscheck:v7@s2": [
+     "KeyError: 'Close'",
+     "pass",
+     "KeyError: 'Close'"
+    ],
+    "duo@s2": [
+     "KeyError: 'Close'",
+     "KeyError: 'Close'",
+     "KeyError: 'Close'"
+    ],
+    "single": [
+     "pass",
+     "TypeError: Cannot cast DatetimeArray to dtype float64",
+     "KeyError: 'Close'"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "KeyError: 'Close'"
+    ]
+   },
+   "test_case_2": {
+    "crosscheck:v7@s2": [
+     "KeyError: 'Close'",
+     "pass",
+     "KeyError: 'Close'"
+    ],
+    "duo@s2": [
+     "KeyError: 'Close'",
+     "KeyError: 'Close'",
+     "KeyError: 'Close'"
+    ],
+    "single": [
+     "AssertionError: 212.9939584509638 != 212.99999869216418 within 2 places (0.006040241200395258 difference)",
+     "TypeError: Cannot cast DatetimeArray to dtype float64",
+     "KeyError: 'Close'"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "KeyError: 'Close'"
+    ]
+   },
+   "test_case_3": {
+    "crosscheck:v7@s2": [
+     "KeyError: 'Close'",
+     "pass",
+     "KeyError: 'Close'"
+    ],
+    "duo@s2": [
+     "KeyError: 'Close'",
+     "KeyError: 'Close'",
+     "KeyError: 'Close'"
+    ],
+    "single": [
+     "pass",
+     "TypeError: Cannot cast DatetimeArray to dtype float64",
+     "KeyError: 'Close'"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "KeyError: 'Close'"
+    ]
+   },
+   "test_case_4": {
+    "crosscheck:v7@s2": [
+     "KeyError: 'Close'",
+     "pass",
+     "KeyError: 'Close'"
+    ],
+    "duo@s2": [
+     "KeyError: 'Close'",
+     "KeyError: 'Close'",
+     "KeyError: 'Close'"
+    ],
+    "single": [
+     "pass",
+     "TypeError: Cannot cast DatetimeArray to dtype float64",
+     "KeyError: 'Close'"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "KeyError: 'Close'"
+    ]
+   },
+   "test_case_5": {
+    "crosscheck:v7@s2": [
+     "KeyError: 'Close'",
+     "pass",
+     "KeyError: 'Close'"
+    ],
+    "duo@s2": [
+     "KeyError: 'Close'",
+     "KeyError: 'Close'",
+     "KeyError: 'Close'"
+    ],
+    "single": [
+     "pass",
+     "TypeError: Cannot cast DatetimeArray to dtype float64",
+     "KeyError: 'Close'"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "KeyError: 'Close'"
+    ]
+   }
+  }
+ },
+ "b_988": {
+  "gold": {
+   "test_deduplicate_predicates": "pass",
+   "test_dir_is_dir": "pass",
+   "test_dir_is_not_file": "pass",
+   "test_empty_predicates": "pass",
+   "test_file_is_file": "pass",
+   "test_file_is_not_dir": "pass",
+   "test_has_no_special_char": "pass",
+   "test_has_numbers": "pass",
+   "test_has_special_char": "pass",
+   "test_invalid_predicates": "pass",
+   "test_multiple_predicates": "pass",
+   "test_nonexistent_directory_error": "pass"
+  },
+  "runs": {
+   "test_deduplicate_predicates": {
+    "crosscheck:v7@s2": [
+     "ValueError: No valid predicates were provided.",
+     "ValueError: No valid predicates provided.",
+     "ValueError: No valid predicates provided."
+    ],
+    "duo@s2": [
+     "AssertionError: False is not true",
+     "ValueError: No valid predicates provided.",
+     "AssertionError: False is not true"
+    ],
+    "single": [
+     "AssertionError: False is not true",
+     "AssertionError: False is not true",
+     "AssertionError: False is not true"
+    ],
+    "team-collab@s2": [
+     "ValueError: No valid predicates provided",
+     "ValueError: No valid predicates provided.",
+     "ValueError: At least one callable predicate is required"
+    ]
+   },
+   "test_dir_is_dir": {
+    "crosscheck:v7@s2": [
+     "ValueError: No valid predicates were provided.",
+     "ValueError: No valid predicates provided.",
+     "ValueError: No valid predicates provided."
+    ],
+    "duo@s2": [
+     "TypeError: list indices must be integers or slices, not str",
+     "ValueError: No valid predicates provided.",
+     "TypeError: list indices must be integers or slices, not str"
+    ],
+    "single": [
+     "TypeError: list indices must be integers or slices, not str",
+     "TypeError: list indices must be integers or slices, not str",
+     "TypeError: list indices must be integers or slices, not str"
+    ],
+    "team-collab@s2": [
+     "ValueError: No valid predicates provided",
+     "ValueError: No valid predicates provided.",
+     "ValueError: At least one callable predicate is required"
+    ]
+   },
+   "test_dir_is_not_file": {
+    "crosscheck:v7@s2": [
+     "ValueError: No valid predicates were provided.",
+     "ValueError: No valid predicates provided.",
+     "ValueError: No valid predicates provided."
+    ],
+    "duo@s2": [
+     "TypeError: list indices must be integers or slices, not str",
+     "ValueError: No valid predicates provided.",
+     "TypeError: list indices must be integers or slices, not str"
+    ],
+    "single": [
+     "TypeError: list indices must be integers or slices, not str",
+     "TypeError: list indices must be integers or slices, not str",
+     "TypeError: list indices must be integers or slices, not str"
+    ],
+    "team-collab@s2": [
+     "ValueError: No valid predicates provided",
+     "ValueError: No valid predicates provided.",
+     "ValueError: At least one callable predicate is required"
+    ]
+   },
+   "test_empty_predicates": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_file_is_file": {
+    "crosscheck:v7@s2": [
+     "ValueError: No valid predicates were provided.",
+     "ValueError: No valid predicates provided.",
+     "ValueError: No valid predicates provided."
+    ],
+    "duo@s2": [
+     "TypeError: list indices must be integers or slices, not str",
+     "ValueError: No valid predicates provided.",
+     "TypeError: list indices must be integers or slices, not str"
+    ],
+    "single": [
+     "TypeError: list indices must be integers or slices, not str",
+     "TypeError: list indices must be integers or slices, not str",
+     "TypeError: list indices must be integers or slices, not str"
+    ],
+    "team-collab@s2": [
+     "ValueError: No valid predicates provided",
+     "ValueError: No valid predicates provided.",
+     "ValueError: At least one callable predicate is required"
+    ]
+   },
+   "test_file_is_not_dir": {
+    "crosscheck:v7@s2": [
+     "ValueError: No valid predicates were provided.",
+     "ValueError: No valid predicates provided.",
+     "ValueError: No valid predicates provided."
+    ],
+    "duo@s2": [
+     "TypeError: list indices must be integers or slices, not str",
+     "ValueError: No valid predicates provided.",
+     "TypeError: list indices must be integers or slices, not str"
+    ],
+    "single": [
+     "TypeError: list indices must be integers or slices, not str",
+     "TypeError: list indices must be integers or slices, not str",
+     "TypeError: list indices must be integers or slices, not str"
+    ],
+    "team-collab@s2": [
+     "ValueError: No valid predicates provided",
+     "ValueError: No valid predicates provided.",
+     "ValueError: At least one callable predicate is required"
+    ]
+   },
+   "test_has_no_special_char": {
+    "crosscheck:v7@s2": [
+     "ValueError: No valid predicates were provided.",
+     "ValueError: No valid predicates provided.",
+     "ValueError: No valid predicates provided."
+    ],
+    "duo@s2": [
+     "TypeError: list indices must be integers or slices, not str",
+     "ValueError: No valid predicates provided.",
+     "TypeError: list indices must be integers or slices, not str"
+    ],
+    "single": [
+     "TypeError: list indices must be integers or slices, not str",
+     "TypeError: list indices must be integers or slices, not str",
+     "TypeError: list indices must be integers or slices, not str"
+    ],
+    "team-collab@s2": [
+     "ValueError: No valid predicates provided",
+     "ValueError: No valid predicates provided.",
+     "ValueError: At least one callable predicate is required"
+    ]
+   },
+   "test_has_numbers": {
+    "crosscheck:v7@s2": [
+     "ValueError: No valid predicates were provided.",
+     "ValueError: No valid predicates provided.",
+     "ValueError: No valid predicates provided."
+    ],
+    "duo@s2": [
+     "TypeError: list indices must be integers or slices, not str",
+     "ValueError: No valid predicates provided.",
+     "TypeError: list indices must be integers or slices, not str"
+    ],
+    "single": [
+     "TypeError: list indices must be integers or slices, not str",
+     "TypeError: list indices must be integers or slices, not str",
+     "TypeError: list indices must be integers or slices, not str"
+    ],
+    "team-collab@s2": [
+     "ValueError: No valid predicates provided",
+     "ValueError: No valid predicates provided.",
+     "ValueError: At least one callable predicate is required"
+    ]
+   },
+   "test_has_special_char": {
+    "crosscheck:v7@s2": [
+     "ValueError: No valid predicates were provided.",
+     "ValueError: No valid predicates provided.",
+     "ValueError: No valid predicates provided."
+    ],
+    "duo@s2": [
+     "TypeError: list indices must be integers or slices, not str",
+     "ValueError: No valid predicates provided.",
+     "TypeError: list indices must be integers or slices, not str"
+    ],
+    "single": [
+     "TypeError: list indices must be integers or slices, not str",
+     "TypeError: list indices must be integers or slices, not str",
+     "TypeError: list indices must be integers or slices, not str"
+    ],
+    "team-collab@s2": [
+     "ValueError: No valid predicates provided",
+     "ValueError: No valid predicates provided.",
+     "ValueError: At least one callable predicate is required"
+    ]
+   },
+   "test_invalid_predicates": {
+    "crosscheck:v7@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "duo@s2": [
+     "AssertionError: ValueError not raised",
+     "pass",
+     "AssertionError: ValueError not raised"
+    ],
+    "single": [
+     "AssertionError: ValueError not raised",
+     "AssertionError: ValueError not raised",
+     "AssertionError: ValueError not raised"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ]
+   },
+   "test_multiple_predicates": {
+    "crosscheck:v7@s2": [
+     "ValueError: No valid predicates were provided.",
+     "ValueError: No valid predicates provided.",
+     "ValueError: No valid predicates provided."
+    ],
+    "duo@s2": [
+     "AssertionError: False is not true",
+     "ValueError: No valid predicates provided.",
+     "AssertionError: False is not true"
+    ],
+    "single": [
+     "AssertionError: False is not true",
+     "AssertionError: False is not true",
+     "AssertionError: False is not true"
+    ],
+    "team-collab@s2": [
+     "ValueError: No valid predicates provided",
+     "ValueError: No valid predicates provided.",
+     "ValueError: At least one callable predicate is required"
+    ]
+   },
+   "test_nonexistent_directory_error": {
+    "crosscheck:v7@s2": [
+     "ValueError: No valid predicates were provided.",
+     "ValueError: No valid predicates provided.",
+     "ValueError: No valid predicates provided."
+    ],
+    "duo@s2": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "single": [
+     "pass",
+     "pass",
+     "pass"
+    ],
+    "team-collab@s2": [
+     "pass",
+     "ValueError: No valid predicates provided.",
+     "pass"
+    ]
+   }
+  }
+ }
+}

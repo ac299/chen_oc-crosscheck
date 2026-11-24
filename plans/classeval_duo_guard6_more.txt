@@ -1,0 +1,13 @@
+# Same six failed Duo ClassEval cases, guard on, repeats 2 and 3. rep = original rep + 10 (2nd) / + 20 (3rd); reps 0-2 in classeval_duo_guard6.txt are the 1st
+c_97 duo@s2+guard 10
+c_79 duo@s2+guard 11
+c_97 duo@s2+guard 11
+c_37 duo@s2+guard 12
+c_30 duo@s2+guard 12
+c_1 duo@s2+guard 12
+c_97 duo@s2+guard 20
+c_79 duo@s2+guard 21
+c_97 duo@s2+guard 21
+c_37 duo@s2+guard 22
+c_30 duo@s2+guard 22
+c_1 duo@s2+guard 22

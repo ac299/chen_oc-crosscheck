@@ -1,0 +1,17 @@
+{
+ "task_id": "c_6",
+ "source": "ClassEval_6",
+ "class_name": "AvgPartition",
+ "modules": [
+  "unittest"
+ ],
+ "completion_file": "solution.py",
+ "tests": [
+  "tests/test_solution.py"
+ ],
+ "test_files": [
+  "tests/test_solution.py"
+ ],
+ "env_volume": "xc-env-bcb",
+ "gold_source": "class AvgPartition:\n    def __init__(self, lst, limit):\n        self.lst = lst\n        self.limit = limit\n\n    def setNum(self):\n        size = len(self.lst) // self.limit\n        remainder = len(self.lst) % self.limit\n        return size, remainder\n\n        \n    def get(self, index):\n        size, remainder = self.setNum()\n        start = index * size + min(index, remainder)\n        end = start + size\n        if index + 1 <= remainder:\n            end += 1\n        return self.lst[start:end]"
+}

@@ -1,0 +1,17 @@
+{
+ "ok": false,
+ "why": "no usable reply",
+ "reply": "{\"body\": \"## When to use\\nAny task: implement one function from a description, no tests given. Load this, then write a checklist of THIS task's requirements before coding.\\n\\n## Build the checklist\\nRead the description and examples; extract only what they pin down:\\n- Signature/imports: keep exactly as given; don't add/remove params or reorder.\\n- Return type & shape: scalar, tuple order, DataFrame columns/index names, Axes vs Figure, list vs generator. Quote exact names.\\n- Exceptions: only those named, raised in the stated condition, in the stated order (e.g. missing file before empty file). Use the exact class; don't substitute.\\n- Edge cases explicitly mentioned (empty input, <2 items, single cluster, defaults). Note the stated return for each.\\n- Formats shown in examples: print layout, dtypes, rounding, string casing.\\n- Side effects: files created, plots drawn, processes started; note what must exist afterward.\\n- Defaults: default args and module constants must be honored.\\nWrite 5-10 numbered items, each checkable by a command. Keep it in your message, not a file.\\n\\n## Check it\\nFor each item write a tiny script in /tmp (not the repo) that calls the function and asserts the item:\\n- `type(...)`, `isinstance`, `len`, `list(df.columns)`, `df.index.tolist()`, tuple unpacking order.\\n- Exceptions: `try/except` and assert the exact class and that it fires for the named trigger; also assert it does NOT fire for valid input.\\n- Edge cases: pass the empty/short inputs and compare to the stated result.\\n- Side effects: list the target dir or check `os.path.exists` after the call.\\n- Plots: assert the returned object is an `Axes`; call `plt.close('all')` between runs.\\nRun with `python /tmp/check.py`; fix failures, rerun. Also run the module import once to catch syntax/import errors.\\n\\n## Pitfalls\\n- Don't invent exceptions or validation the description didn't name.\\n- Don't change the signature or drop given imports/constants.\\n- Match column/index labels and tuple order exactly; tests often compare them.\\n- Respect stated defaults; don't hardcode example values.\\n- Close figures and clean temp files so repeated calls don't interfere.\\n- If behavior is ambiguous, pick the reading most consistent with the examples and note it.\", \"reason\": \"Shortened to fit under 2000 chars while keeping procedure, conditional rules, and checkable steps.\"}",
+ "model_calls": [
+  {
+   "tokens": 4319,
+   "seconds": 7.3,
+   "status": "completed"
+  },
+  {
+   "tokens": 4372,
+   "seconds": 5.2,
+   "status": "completed"
+  }
+ ]
+}

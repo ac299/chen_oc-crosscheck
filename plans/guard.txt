@@ -1,0 +1,25 @@
+# improvement: candidate path guard ON (GUARD=1). Compare against main.txt runs (guard off).
+t1_semver duo+guard 0
+t3_lruttl duo+guard 0
+t4_allocate duo+guard 0
+t5_toposort duo+guard 0
+t7_bizdays duo+guard 0
+h1_cron duo+guard 0
+h2_calc duo+guard 0
+h3_glob duo+guard 0
+t1_semver duo+guard 1
+t3_lruttl duo+guard 1
+t4_allocate duo+guard 1
+t5_toposort duo+guard 1
+t7_bizdays duo+guard 1
+h1_cron duo+guard 1
+h2_calc duo+guard 1
+h3_glob duo+guard 1
+t1_semver duo+guard 2
+t3_lruttl duo+guard 2
+t4_allocate duo+guard 2
+t5_toposort duo+guard 2
+t7_bizdays duo+guard 2
+h1_cron duo+guard 2
+h2_calc duo+guard 2
+h3_glob duo+guard 2

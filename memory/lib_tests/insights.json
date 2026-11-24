@@ -1,0 +1,61 @@
+[
+ {
+  "text": "When the task description does not specify exact formats, schemas, or conventions (input string layouts, column names, path conventions, file encodings), do not invent plausible ones; derive them from the description/examples or test only behaviors the spec explicitly guarantees, since setup failures from guessed formats indicate a wrong fixture, not a wrong implementation.",
+  "tasks": [
+   "b_1077",
+   "b_587",
+   "b_917"
+  ]
+ },
+ {
+  "text": "Assert only properties the specification explicitly guarantees (return types, existence, counts, documented statuses); avoid asserting extra side effects, decorations, exact numeric types, or invariants the description does not require.",
+  "tasks": [
+   "b_553",
+   "b_587",
+   "b_857",
+   "b_917"
+  ]
+ },
+ {
+  "text": "When testing error paths, only assert exception types or raising behavior the spec explicitly names and the reference confirms; construct inputs that isolate exactly one error condition and satisfy all other preconditions, and do not assume which validation check takes precedence.",
+  "tasks": [
+   "b_346",
+   "b_509",
+   "b_988"
+  ]
+ },
+ {
+  "text": "Do not assume edge-case semantics (empty results, NaN for all-non-numeric positions, degenerate cases, which types count as numeric, or randomness being fresh each call) beyond what the description states; derive expected values from the described semantics and examples rather than intuition.",
+  "tasks": [
+   "b_424",
+   "b_509",
+   "b_553",
+   "b_870"
+  ]
+ },
+ {
+  "text": "When the spec allows or documents special-case behavior (e.g., single-cluster returning the original image, 'no change' rows for identical files), test that documented behavior rather than assuming it raises or yields an empty/general-case result.",
+  "tasks": [
+   "b_424",
+   "b_509"
+  ]
+ },
+ {
+  "text": "For functions that may block or run long (network/server calls), run them in a background thread with a join timeout and capture exceptions, so a blocking implementation fails cleanly instead of hanging the suite; keep tests self-contained by defining helpers rather than relying on unprovided fixtures.",
+  "tasks": [
+   "b_1040"
+  ]
+ },
+ {
+  "text": "Do not assume the function creates directories or performs other setup the description does not require; set up required preconditions (like destination directories) in the test yourself.",
+  "tasks": [
+   "b_857"
+  ]
+ },
+ {
+  "text": "When the spec says invalid inputs are filtered or deduplicated, verify what counts as valid before using it in tests, and prefer inputs the spec clearly treats as valid.",
+  "tasks": [
+   "b_988"
+  ]
+ }
+]

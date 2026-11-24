@@ -1,0 +1,26 @@
+{
+ "task_id": "b_914",
+ "source": "BigCodeBench/914",
+ "libs": [
+  "pandas",
+  "numpy",
+  "matplotlib",
+  "sklearn"
+ ],
+ "completion_file": "solution.py",
+ "tests": [
+  "tests/test_solution.py"
+ ],
+ "test_files": [
+  "tests/test_solution.py"
+ ],
+ "env_volume": "xc-env-bcb",
+ "gold_body": "    # Convert date to timestamp\n    df['date'] = pd.to_datetime(df['date'])\n    df['date'] = df['date'].map(pd.Timestamp.timestamp)\n    \n    # Prepare data\n    X = df['date'].values.reshape(-1, 1)\n    y = df['closing_price'].values\n    \n    # Fit model\n    model = LinearRegression()\n    model.fit(X, y)\n    \n    # Predict future prices\n    future_dates = np.array([df['date'].max() + i*24*60*60 for i in range(1, 8)]).reshape(-1, 1)\n    pred_prices = model.predict(future_dates)\n    \n    # Plot\n    fig, ax = plt.subplots()\n    ax.scatter(df['date'], df['closing_price'], color='black')\n    ax.plot(future_dates, pred_prices, color='blue', linewidth=3)\n    \n    return pred_prices.tolist(), ax",
+ "sample": {
+  "body_position": [
+   6,
+   6
+  ],
+  "indent": 4
+ }
+}

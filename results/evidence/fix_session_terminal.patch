@@ -1,0 +1,54 @@
+diff --git a/opencollab/application/session_run.py b/opencollab/application/session_run.py
+index f918454..0623667 100644
+--- a/opencollab/application/session_run.py
++++ b/opencollab/application/session_run.py
+@@ -327,6 +327,10 @@ class SessionRunUseCase(_SessionRunControlMixin, _SessionRunCompletionMixin):
+         else:
+             self._turn_start_message_index = len(self.state.messages)
+             self.state.start_active_turn(self._turn_start_message_index)
++            # A new active turn can reach a new end state, e.g. a teammate that
++            # a message wakes after DONE and that then exhausts its allowance.
++            # Only the read-only DONE re-entry above keeps the earlier record.
++            self._session_terminal_traced = False
+ 
+         if entry_phase is SessionPhase.AWAITING_EVENTS:
+             self._resume_from_awaiting()
+diff --git a/tests/agents/test_session_run_loop.py b/tests/agents/test_session_run_loop.py
+index 4466f0d..61899d0 100644
+--- a/tests/agents/test_session_run_loop.py
++++ b/tests/agents/test_session_run_loop.py
+@@ -882,3 +882,34 @@ def test_a_finished_session_re_entered_for_its_answer_does_not_sign_off_twice():
+     run(runner.run_loop())
+ 
+     assert len([s for s in tracer.steps if s["step_type"] == "session_terminal"]) == 1
++
++@pytest.mark.parametrize("through_add_user_message", [False, True])
++def test_a_finished_session_woken_by_new_work_records_its_later_stop(through_add_user_message):
++    """A DONE session that a new turn reopens records the end state it reaches.
++
++    ``Session.add_user_message`` (how a team message reaches a teammate) also
++    resets the phase to IDLE before the runner sees the turn.
++    """
++    tracer = FakeTracer()
++    state = SessionState(messages=[{"role": "system", "content": "sys"}, {"role": "user", "content": "task"}])
++    runner = build_runner(
++        state=state,
++        llm=FakeLLM([
++            llm_response(content="first answer", total_tokens=5),
++            llm_response(content="second answer", total_tokens=500),
++        ]),
++        tracer=tracer,
++        max_budget_tokens=200,
++    )
++
++    run(runner.run_loop())
++    state.append_queued_external_user_turn("message from a teammate")
++    if through_add_user_message:
++        state.reset_for_user_turn()
++        runner.reset_runtime_for_user_turn()
++    run(runner.run_loop())
++
++    terminal = [s["payload"] for s in tracer.steps if s["step_type"] == "session_terminal"]
++    assert [p["phase"] for p in terminal] == ["done", "stopped"]
++    assert terminal[-1]["terminal_reason"] == state.terminal_reason
++    assert state.phase is SessionPhase.STOPPED

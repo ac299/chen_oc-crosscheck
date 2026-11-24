@@ -1,0 +1,1 @@
+- g0: rejected; mean hidden-test pass-rate change -0.003 over 60 paired held-out runs, resolved 35 vs 32 (6 wins, 3 losses)

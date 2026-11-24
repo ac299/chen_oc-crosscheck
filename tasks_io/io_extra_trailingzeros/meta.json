@@ -1,0 +1,9 @@
+{
+ "task": "Extra_TrailingZeros",
+ "function": "process",
+ "input_type": "list[int]",
+ "kind": "list",
+ "visible": 8,
+ "held_out": 15,
+ "seed": 20261121
+}

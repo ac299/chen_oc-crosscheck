@@ -1,0 +1,25 @@
+# EvoCodeBench v7 (fast path + slow path): 8 x 3
+r_camp_zipnerf_resample crosscheck:v7@s2 0
+r_deluder_destroy crosscheck:v7@s2 0
+r_microagents_find_closest_agent crosscheck:v7@s2 0
+r_microsearch_search crosscheck:v7@s2 0
+r_searcharray_edismax crosscheck:v7@s2 0
+r_tanuki_py_add crosscheck:v7@s2 0
+r_test_agent_run_cmd crosscheck:v7@s2 0
+r_uhgeval_statistics crosscheck:v7@s2 0
+r_camp_zipnerf_resample crosscheck:v7@s2 1
+r_deluder_destroy crosscheck:v7@s2 1
+r_microagents_find_closest_agent crosscheck:v7@s2 1
+r_microsearch_search crosscheck:v7@s2 1
+r_searcharray_edismax crosscheck:v7@s2 1
+r_tanuki_py_add crosscheck:v7@s2 1
+r_test_agent_run_cmd crosscheck:v7@s2 1
+r_uhgeval_statistics crosscheck:v7@s2 1
+r_camp_zipnerf_resample crosscheck:v7@s2 2
+r_deluder_destroy crosscheck:v7@s2 2
+r_microagents_find_closest_agent crosscheck:v7@s2 2
+r_microsearch_search crosscheck:v7@s2 2
+r_searcharray_edismax crosscheck:v7@s2 2
+r_tanuki_py_add crosscheck:v7@s2 2
+r_test_agent_run_cmd crosscheck:v7@s2 2
+r_uhgeval_statistics crosscheck:v7@s2 2

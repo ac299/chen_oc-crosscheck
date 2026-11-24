@@ -1,0 +1,247 @@
+[
+ {
+  "run": "b_988__crosscheck-v7@s2__r0__1795235611",
+  "case": "xc_tests.test_xc_core::test_r1_returns_dict_keyed_by_item_names",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.py\", \"gamma.md\"):\n        with open(os.path.join(root, name), \"w\") as f:\n            f.write(\"x\")\n    return root\n\ndef test_r1_returns_dict_keyed_by_item_names(tmp_path):\n    root = _make_tree(tmp_path / \"data\")\n    result = task_func(root, [lambda name: True])\n    assert isinstance(result, dict)\n    assert set(result.keys()) == {\"alpha.txt\", \"beta.py\", \"gamma.md\", \"subdir\"}"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r0__1795235611",
+  "case": "xc_tests.test_xc_core::test_r2_keys_are_names_not_full_paths",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.py\", \"gamma.md\"):\n        with open(os.path.join(root, name), \"w\") as f:\n            f.write(\"x\")\n    return root\n\ndef test_r2_keys_are_names_not_full_paths(tmp_path):\n    root = _make_tree(tmp_path / \"data\")\n    result = task_func(root, [lambda name: True])\n    for key in result:\n        assert os.sep not in key\n        assert key != root\n        assert not os.path.isabs(key)"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r0__1795235611",
+  "case": "xc_tests.test_xc_core::test_r3_values_are_predicate_results",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.py\", \"gamma.md\"):\n        with open(os.path.join(root, name), \"w\") as f:\n            f.write(\"x\")\n    return root\n\ndef test_r3_values_are_predicate_results(tmp_path):\n    root = _make_tree(tmp_path / \"data\")\n    result = task_func(root, [lambda name: name.endswith(\".py\")])\n    assert result[\"beta.py\"] is True\n    assert result[\"alpha.txt\"] is False\n    assert result[\"gamma.md\"] is False\n    assert result[\"subdir\"] is False"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r0__1795235611",
+  "case": "xc_tests.test_xc_core::test_r4_predicate_receives_name_only",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.py\", \"gamma.md\"):\n        with open(os.path.join(root, name), \"w\") as f:\n            f.write(\"x\")\n    return root\n\ndef test_r4_predicate_receives_name_only(tmp_path):\n    root = _make_tree(tmp_path / \"data\")\n    seen = []\n\n    def pred(name):\n        seen.append(name)\n        return True\n\n    task_func(root, [pred])\n    assert sorted(seen) == [\"alpha.txt\", \"beta.py\", \"gamma.md\", \"subdir\"]\n    for name in seen:\n        assert os.sep not in name"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r0__1795235611",
+  "case": "xc_tests.test_xc_core::test_r5_directories_are_evaluated_too",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.py\", \"gamma.md\"):\n        with open(os.path.join(root, name), \"w\") as f:\n            f.write(\"x\")\n    return root\n\ndef test_r5_directories_are_evaluated_too(tmp_path):\n    root = _make_tree(tmp_path / \"data\")\n    result = task_func(root, [lambda name: os.path.isdir(os.path.join(root, name))])\n    assert result[\"subdir\"] is True\n    assert result[\"alpha.txt\"] is False"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r0__1795235611",
+  "case": "xc_tests.test_xc_core::test_r6_empty_directory_gives_empty_dict",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def test_r6_empty_directory_gives_empty_dict(tmp_path):\n    root = str(tmp_path / \"empty\")\n    os.makedirs(root)\n    assert task_func(root, [lambda name: True]) == {}"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r0__1795235611",
+  "case": "xc_tests.test_xc_core::test_r7_accepts_pathlib_path",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.py\", \"gamma.md\"):\n        with open(os.path.join(root, name), \"w\") as f:\n            f.write(\"x\")\n    return root\n\ndef test_r7_accepts_pathlib_path(tmp_path):\n    root = _make_tree(tmp_path / \"data\")\n    result = task_func(Path(root), [lambda name: name == \"beta.py\"])\n    assert result[\"beta.py\"] is True\n    assert result[\"alpha.txt\"] is False"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r0__1795235611",
+  "case": "xc_tests.test_xc_errors::test_r8_missing_directory_raises_file_not_found",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def test_r8_missing_directory_raises_file_not_found(tmp_path):\n    missing = str(tmp_path / \"does_not_exist\")\n    with pytest.raises(FileNotFoundError):\n        task_func(missing, [lambda name: True])"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r0__1795235611",
+  "case": "xc_tests.test_xc_errors::test_r9_file_path_raises_file_not_found",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def test_r9_file_path_raises_file_not_found(tmp_path):\n    path = tmp_path / \"plain.txt\"\n    path.write_text(\"hello\")\n    with pytest.raises(FileNotFoundError):\n        task_func(str(path), [lambda name: True])"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r0__1795235611",
+  "case": "xc_tests.test_xc_errors::test_r10_empty_predicates_raises_value_error",
+  "held": true,
+  "message": "",
+  "source": "def _make_tree(root):\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.py\", \"gamma.md\"):\n        with open(os.path.join(root, name), \"w\") as f:\n            f.write(\"x\")\n    return root\n\ndef test_r10_empty_predicates_raises_value_error(tmp_path):\n    root = _make_tree(tmp_path / \"data\")\n    with pytest.raises(ValueError):\n        task_func(root, [])"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r0__1795235611",
+  "case": "xc_tests.test_xc_errors::test_r11_none_predicates_raises_value_error",
+  "held": false,
+  "message": "TypeError: 'NoneType' object is not iterable",
+  "source": "def _make_tree(root):\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.py\", \"gamma.md\"):\n        with open(os.path.join(root, name), \"w\") as f:\n            f.write(\"x\")\n    return root\n\ndef test_r11_none_predicates_raises_value_error(tmp_path):\n    root = _make_tree(tmp_path / \"data\")\n    with pytest.raises(ValueError):\n        task_func(root, None)"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r0__1795235611",
+  "case": "xc_tests.test_xc_errors::test_r12_duplicate_predicates_are_deduplicated",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.py\", \"gamma.md\"):\n        with open(os.path.join(root, name), \"w\") as f:\n            f.write(\"x\")\n    return root\n\ndef test_r12_duplicate_predicates_are_deduplicated(tmp_path):\n    root = _make_tree(tmp_path / \"data\")\n    calls = []\n\n    def pred(name):\n        calls.append(name)\n        return True\n\n    result = task_func(root, [pred, pred, pred])\n    assert result == {\n        \"alpha.txt\": True,\n        \"beta.py\": True,\n        \"gamma.md\": True,\n        \"subdir\": True,\n    }\n    assert len(calls) == 4"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r0__1795235611",
+  "case": "xc_tests.test_xc_errors::test_r13_distinct_predicates_are_all_applied",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.py\", \"gamma.md\"):\n        with open(os.path.join(root, name), \"w\") as f:\n            f.write(\"x\")\n    return root\n\ndef test_r13_distinct_predicates_are_all_applied(tmp_path):\n    root = _make_tree(tmp_path / \"data\")\n    calls = []\n\n    def pred_a(name):\n        calls.append((\"a\", name))\n        return True\n\n    def pred_b(name):\n        calls.append((\"b\", name))\n        return False\n\n    result = task_func(root, [pred_a, pred_b])\n    assert len(calls) == 8\n    assert set(result.keys()) == {\"alpha.txt\", \"beta.py\", \"gamma.md\", \"subdir\"}"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r1__1795236892",
+  "case": "xc_tests.test_xc_core::test_r1_returns_dict_keyed_by_item_names",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    \"\"\"Create a small directory tree and return the root as str.\"\"\"\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.py\", \"gamma.txt\"):\n        with open(os.path.join(root, name), \"w\") as fh:\n            fh.write(\"x\")\n    with open(os.path.join(root, \"subdir\", \"inner.txt\"), \"w\") as fh:\n        fh.write(\"y\")\n    return root\n\ndef test_r1_returns_dict_keyed_by_item_names(tmp_path):\n    root = _make_tree(tmp_path / \"root\")\n    result = task_func(root, [lambda name: True])\n    assert isinstance(result, dict)\n    assert set(result.keys()) == {\"alpha.txt\", \"beta.py\", \"gamma.txt\", \"subdir\"}"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r1__1795236892",
+  "case": "xc_tests.test_xc_core::test_r2_values_are_predicate_results",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    \"\"\"Create a small directory tree and return the root as str.\"\"\"\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.py\", \"gamma.txt\"):\n        with open(os.path.join(root, name), \"w\") as fh:\n            fh.write(\"x\")\n    with open(os.path.join(root, \"subdir\", \"inner.txt\"), \"w\") as fh:\n        fh.write(\"y\")\n    return root\n\ndef test_r2_values_are_predicate_results(tmp_path):\n    root = _make_tree(tmp_path / \"root\")\n    result = task_func(root, [lambda name: name.endswith(\".txt\")])\n    assert result[\"alpha.txt\"] is True\n    assert result[\"gamma.txt\"] is True\n    assert result[\"beta.py\"] is False\n    assert result[\"subdir\"] is False"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r1__1795236892",
+  "case": "xc_tests.test_xc_core::test_r3_names_not_full_paths",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    \"\"\"Create a small directory tree and return the root as str.\"\"\"\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.py\", \"gamma.txt\"):\n        with open(os.path.join(root, name), \"w\") as fh:\n            fh.write(\"x\")\n    with open(os.path.join(root, \"subdir\", \"inner.txt\"), \"w\") as fh:\n        fh.write(\"y\")\n    return root\n\ndef test_r3_names_not_full_paths(tmp_path):\n    root = _make_tree(tmp_path / \"root\")\n    seen = []\n\n    def recorder(name):\n        seen.append(name)\n        return True\n\n    task_func(root, [recorder])\n    assert sorted(seen) == [\"alpha.txt\", \"beta.py\", \"gamma.txt\", \"subdir\"]\n    for name in seen:\n        assert os.sep not in name\n        assert root not in name"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r1__1795236892",
+  "case": "xc_tests.test_xc_core::test_r4_multiple_predicates_all_must_pass",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    \"\"\"Create a small directory tree and return the root as str.\"\"\"\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.py\", \"gamma.txt\"):\n        with open(os.path.join(root, name), \"w\") as fh:\n            fh.write(\"x\")\n    with open(os.path.join(root, \"subdir\", \"inner.txt\"), \"w\") as fh:\n        fh.write(\"y\")\n    return root\n\ndef test_r4_multiple_predicates_all_must_pass(tmp_path):\n    root = _make_tree(tmp_path / \"root\")\n    result = task_func(\n        root,\n        [lambda name: name.endswith(\".txt\"), lambda name: name.startswith(\"a\")],\n    )\n    assert result[\"alpha.txt\"] is True\n    assert result[\"gamma.txt\"] is False\n    assert result[\"beta.py\"] is False\n    assert result[\"subdir\"] is False"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r1__1795236892",
+  "case": "xc_tests.test_xc_core::test_r5_duplicate_predicates_deduplicated",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    \"\"\"Create a small directory tree and return the root as str.\"\"\"\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.py\", \"gamma.txt\"):\n        with open(os.path.join(root, name), \"w\") as fh:\n            fh.write(\"x\")\n    with open(os.path.join(root, \"subdir\", \"inner.txt\"), \"w\") as fh:\n        fh.write(\"y\")\n    return root\n\ndef test_r5_duplicate_predicates_deduplicated(tmp_path):\n    root = _make_tree(tmp_path / \"root\")\n    calls = []\n\n    def pred(name):\n        calls.append(name)\n        return True\n\n    result = task_func(root, [pred, pred, pred])\n    # Each item must be evaluated only once per distinct predicate.\n    assert len(calls) == 4\n    assert set(result.keys()) == {\"alpha.txt\", \"beta.py\", \"gamma.txt\", \"subdir\"}\n    assert all(v is True for v in result.values())"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r1__1795236892",
+  "case": "xc_tests.test_xc_core::test_r6_duplicate_lambdas_deduplicated",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    \"\"\"Create a small directory tree and return the root as str.\"\"\"\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.py\", \"gamma.txt\"):\n        with open(os.path.join(root, name), \"w\") as fh:\n            fh.write(\"x\")\n    with open(os.path.join(root, \"subdir\", \"inner.txt\"), \"w\") as fh:\n        fh.write(\"y\")\n    return root\n\ndef test_r6_duplicate_lambdas_deduplicated(tmp_path):\n    root = _make_tree(tmp_path / \"root\")\n    calls = []\n\n    def make():\n        def pred(name):\n            calls.append(name)\n            return name.endswith(\".txt\")\n        return pred\n\n    p = make()\n    result = task_func(root, [p, p])\n    assert len(calls) == 4\n    assert result[\"alpha.txt\"] is True\n    assert result[\"beta.py\"] is False"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r1__1795236892",
+  "case": "xc_tests.test_xc_core::test_r7_empty_predicates_raises_value_error",
+  "held": true,
+  "message": "",
+  "source": "def _make_tree(root):\n    \"\"\"Create a small directory tree and return the root as str.\"\"\"\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.py\", \"gamma.txt\"):\n        with open(os.path.join(root, name), \"w\") as fh:\n            fh.write(\"x\")\n    with open(os.path.join(root, \"subdir\", \"inner.txt\"), \"w\") as fh:\n        fh.write(\"y\")\n    return root\n\ndef test_r7_empty_predicates_raises_value_error(tmp_path):\n    root = _make_tree(tmp_path / \"root\")\n    with pytest.raises(ValueError):\n        task_func(root, [])"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r1__1795236892",
+  "case": "xc_tests.test_xc_core::test_r8_missing_directory_raises_file_not_found",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def test_r8_missing_directory_raises_file_not_found(tmp_path):\n    missing = str(tmp_path / \"does_not_exist\")\n    with pytest.raises(FileNotFoundError):\n        task_func(missing, [lambda name: True])"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r1__1795236892",
+  "case": "xc_tests.test_xc_core::test_r9_file_path_raises_file_not_found",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    \"\"\"Create a small directory tree and return the root as str.\"\"\"\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.py\", \"gamma.txt\"):\n        with open(os.path.join(root, name), \"w\") as fh:\n            fh.write(\"x\")\n    with open(os.path.join(root, \"subdir\", \"inner.txt\"), \"w\") as fh:\n        fh.write(\"y\")\n    return root\n\ndef test_r9_file_path_raises_file_not_found(tmp_path):\n    root = _make_tree(tmp_path / \"root\")\n    file_path = os.path.join(root, \"alpha.txt\")\n    with pytest.raises(FileNotFoundError):\n        task_func(file_path, [lambda name: True])"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r1__1795236892",
+  "case": "xc_tests.test_xc_core::test_r10_empty_directory_returns_empty_dict",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def test_r10_empty_directory_returns_empty_dict(tmp_path):\n    empty = tmp_path / \"empty\"\n    empty.mkdir()\n    assert task_func(str(empty), [lambda name: True]) == {}"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r1__1795236892",
+  "case": "xc_tests.test_xc_core::test_r11_directories_and_files_both_evaluated",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    \"\"\"Create a small directory tree and return the root as str.\"\"\"\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.py\", \"gamma.txt\"):\n        with open(os.path.join(root, name), \"w\") as fh:\n            fh.write(\"x\")\n    with open(os.path.join(root, \"subdir\", \"inner.txt\"), \"w\") as fh:\n        fh.write(\"y\")\n    return root\n\ndef test_r11_directories_and_files_both_evaluated(tmp_path):\n    root = _make_tree(tmp_path / \"root\")\n    result = task_func(root, [lambda name: os.path.isdir(os.path.join(root, name))])\n    assert result[\"subdir\"] is True\n    assert result[\"alpha.txt\"] is False\n    assert result[\"beta.py\"] is False\n    assert result[\"gamma.txt\"] is False"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r1__1795236892",
+  "case": "xc_tests.test_xc_core::test_r12_does_not_recurse_into_subdirectories",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    \"\"\"Create a small directory tree and return the root as str.\"\"\"\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.py\", \"gamma.txt\"):\n        with open(os.path.join(root, name), \"w\") as fh:\n            fh.write(\"x\")\n    with open(os.path.join(root, \"subdir\", \"inner.txt\"), \"w\") as fh:\n        fh.write(\"y\")\n    return root\n\ndef test_r12_does_not_recurse_into_subdirectories(tmp_path):\n    root = _make_tree(tmp_path / \"root\")\n    result = task_func(root, [lambda name: True])\n    assert \"inner.txt\" not in result\n    assert len(result) == 4"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r2__1795238460",
+  "case": "xc_tests.test_xc_core::test_r1_returns_dict_keyed_by_item_names",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    \"\"\"Create a small directory tree and return the root path as str.\"\"\"\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.log\", \"gamma.txt\"):\n        with open(os.path.join(root, name), \"w\") as fh:\n            fh.write(\"x\")\n    with open(os.path.join(root, \"subdir\", \"nested.txt\"), \"w\") as fh:\n        fh.write(\"y\")\n    return root\n\ndef test_r1_returns_dict_keyed_by_item_names(tmp_path):\n    root = _make_tree(tmp_path / \"data\")\n    result = task_func(root, [lambda name: True])\n    assert isinstance(result, dict)\n    assert set(result.keys()) == {\"alpha.txt\", \"beta.log\", \"gamma.txt\", \"subdir\"}"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r2__1795238460",
+  "case": "xc_tests.test_xc_core::test_r2_values_are_predicate_results",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    \"\"\"Create a small directory tree and return the root path as str.\"\"\"\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.log\", \"gamma.txt\"):\n        with open(os.path.join(root, name), \"w\") as fh:\n            fh.write(\"x\")\n    with open(os.path.join(root, \"subdir\", \"nested.txt\"), \"w\") as fh:\n        fh.write(\"y\")\n    return root\n\ndef test_r2_values_are_predicate_results(tmp_path):\n    root = _make_tree(tmp_path / \"data\")\n    result = task_func(root, [lambda name: name.endswith(\".txt\")])\n    assert result[\"alpha.txt\"] is True\n    assert result[\"gamma.txt\"] is True\n    assert result[\"beta.log\"] is False\n    assert result[\"subdir\"] is False"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r2__1795238460",
+  "case": "xc_tests.test_xc_core::test_r3_names_not_full_paths",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    \"\"\"Create a small directory tree and return the root path as str.\"\"\"\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.log\", \"gamma.txt\"):\n        with open(os.path.join(root, name), \"w\") as fh:\n            fh.write(\"x\")\n    with open(os.path.join(root, \"subdir\", \"nested.txt\"), \"w\") as fh:\n        fh.write(\"y\")\n    return root\n\ndef test_r3_names_not_full_paths(tmp_path):\n    root = _make_tree(tmp_path / \"data\")\n    seen = []\n\n    def record(name):\n        seen.append(name)\n        return True\n\n    task_func(root, [record])\n    assert sorted(seen) == [\"alpha.txt\", \"beta.log\", \"gamma.txt\", \"subdir\"]\n    for name in seen:\n        assert os.sep not in name\n        assert root not in name"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r2__1795238460",
+  "case": "xc_tests.test_xc_core::test_r4_multiple_predicates_all_must_hold",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    \"\"\"Create a small directory tree and return the root path as str.\"\"\"\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.log\", \"gamma.txt\"):\n        with open(os.path.join(root, name), \"w\") as fh:\n            fh.write(\"x\")\n    with open(os.path.join(root, \"subdir\", \"nested.txt\"), \"w\") as fh:\n        fh.write(\"y\")\n    return root\n\ndef test_r4_multiple_predicates_all_must_hold(tmp_path):\n    root = _make_tree(tmp_path / \"data\")\n    result = task_func(\n        root,\n        [lambda name: name.endswith(\".txt\"), lambda name: name.startswith(\"a\")],\n    )\n    assert result[\"alpha.txt\"] is True\n    assert result[\"gamma.txt\"] is False\n    assert result[\"beta.log\"] is False\n    assert result[\"subdir\"] is False"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r2__1795238460",
+  "case": "xc_tests.test_xc_core::test_r5_directories_included_as_items",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    \"\"\"Create a small directory tree and return the root path as str.\"\"\"\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.log\", \"gamma.txt\"):\n        with open(os.path.join(root, name), \"w\") as fh:\n            fh.write(\"x\")\n    with open(os.path.join(root, \"subdir\", \"nested.txt\"), \"w\") as fh:\n        fh.write(\"y\")\n    return root\n\ndef test_r5_directories_included_as_items(tmp_path):\n    root = _make_tree(tmp_path / \"data\")\n    result = task_func(root, [lambda name: os.path.isdir(os.path.join(root, name))])\n    assert result[\"subdir\"] is True\n    assert result[\"alpha.txt\"] is False"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r2__1795238460",
+  "case": "xc_tests.test_xc_core::test_r6_empty_directory_gives_empty_dict",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def test_r6_empty_directory_gives_empty_dict(tmp_path):\n    root = str(tmp_path / \"empty\")\n    os.makedirs(root)\n    assert task_func(root, [lambda name: True]) == {}"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r2__1795238460",
+  "case": "xc_tests.test_xc_core::test_r7_duplicate_predicates_deduplicated",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def _make_tree(root):\n    \"\"\"Create a small directory tree and return the root path as str.\"\"\"\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.log\", \"gamma.txt\"):\n        with open(os.path.join(root, name), \"w\") as fh:\n            fh.write(\"x\")\n    with open(os.path.join(root, \"subdir\", \"nested.txt\"), \"w\") as fh:\n        fh.write(\"y\")\n    return root\n\ndef test_r7_duplicate_predicates_deduplicated(tmp_path):\n    root = _make_tree(tmp_path / \"data\")\n    calls = []\n\n    def pred(name):\n        calls.append(name)\n        return True\n\n    result = task_func(root, [pred, pred, pred])\n    assert result == {\n        \"alpha.txt\": True,\n        \"beta.log\": True,\n        \"gamma.txt\": True,\n        \"subdir\": True,\n    }\n    assert len(calls) == 4"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r2__1795238460",
+  "case": "xc_tests.test_xc_core::test_r8_no_valid_predicates_raises_value_error",
+  "held": true,
+  "message": "",
+  "source": "def _make_tree(root):\n    \"\"\"Create a small directory tree and return the root path as str.\"\"\"\n    root = str(root)\n    os.makedirs(os.path.join(root, \"subdir\"))\n    for name in (\"alpha.txt\", \"beta.log\", \"gamma.txt\"):\n        with open(os.path.join(root, name), \"w\") as fh:\n            fh.write(\"x\")\n    with open(os.path.join(root, \"subdir\", \"nested.txt\"), \"w\") as fh:\n        fh.write(\"y\")\n    return root\n\ndef test_r8_no_valid_predicates_raises_value_error(tmp_path):\n    root = _make_tree(tmp_path / \"data\")\n    with pytest.raises(ValueError):\n        task_func(root, [])"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r2__1795238460",
+  "case": "xc_tests.test_xc_core::test_r9_missing_directory_raises_file_not_found",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def test_r9_missing_directory_raises_file_not_found(tmp_path):\n    missing = str(tmp_path / \"does_not_exist\")\n    with pytest.raises(FileNotFoundError):\n        task_func(missing, [lambda name: True])"
+ },
+ {
+  "run": "b_988__crosscheck-v7@s2__r2__1795238460",
+  "case": "xc_tests.test_xc_core::test_r10_path_is_file_raises_file_not_found",
+  "held": false,
+  "message": "ValueError: No valid predicates provided.",
+  "source": "def test_r10_path_is_file_raises_file_not_found(tmp_path):\n    file_path = tmp_path / \"plain.txt\"\n    file_path.write_text(\"x\")\n    with pytest.raises(FileNotFoundError):\n        task_func(str(file_path), [lambda name: True])"
+ }
+]

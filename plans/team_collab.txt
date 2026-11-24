@@ -1,0 +1,25 @@
+# fair Team baseline: configs/team.collab.yaml with prebuild_team=True (all seats get bash)
+t1_semver team-collab 0
+t3_lruttl team-collab 0
+t4_allocate team-collab 0
+t5_toposort team-collab 0
+t7_bizdays team-collab 0
+h1_cron team-collab 0
+h2_calc team-collab 0
+h3_glob team-collab 0
+t1_semver team-collab 1
+t3_lruttl team-collab 1
+t4_allocate team-collab 1
+t5_toposort team-collab 1
+t7_bizdays team-collab 1
+h1_cron team-collab 1
+h2_calc team-collab 1
+h3_glob team-collab 1
+t1_semver team-collab 2
+t3_lruttl team-collab 2
+t4_allocate team-collab 2
+t5_toposort team-collab 2
+t7_bizdays team-collab 2
+h1_cron team-collab 2
+h2_calc team-collab 2
+h3_glob team-collab 2

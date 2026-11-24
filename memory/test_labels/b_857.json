@@ -1,0 +1,163 @@
+[
+ {
+  "run": "b_857__crosscheck-v7@s2__r0__1795236396",
+  "case": "xc_tests.test_xc_transfer::test_r1_transfers_matching_extensions",
+  "held": false,
+  "message": "NotADirectoryError: [Errno 20] Not a directory: '/tmp/pytest-of-root/pytest-0/test_r1_transfers_matching_ext0/dst'",
+  "source": "def _make(path, name, content=\"data\"):\n    os.makedirs(path, exist_ok=True)\n    with open(os.path.join(path, name), \"w\") as f:\n        f.write(content)\n    return os.path.join(path, name)\n\ndef test_r1_transfers_matching_extensions(tmp_path):\n    src = tmp_path / \"src\"\n    dst = tmp_path / \"dst\"\n    _make(str(src), \"a.txt\")\n    _make(str(src), \"b.csv\")\n    _make(str(src), \"c.log\")\n    result = task_func(str(src), str(dst), [\".txt\", \".csv\"])\n    assert sorted(result) == [\"a.txt\", \"b.csv\"]\n    assert sorted(os.listdir(str(dst))) == [\"a.txt\", \"b.csv\"]\n    assert os.listdir(str(src)) == [\"c.log\"]"
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r0__1795236396",
+  "case": "xc_tests.test_xc_transfer::test_r2_returns_list_of_transferred_names",
+  "held": true,
+  "message": "",
+  "source": "def _make(path, name, content=\"data\"):\n    os.makedirs(path, exist_ok=True)\n    with open(os.path.join(path, name), \"w\") as f:\n        f.write(content)\n    return os.path.join(path, name)\n\ndef test_r2_returns_list_of_transferred_names(tmp_path):\n    src = tmp_path / \"src\"\n    dst = tmp_path / \"dst\"\n    _make(str(src), \"one.txt\")\n    result = task_func(str(src), str(dst), [\".txt\"])\n    assert isinstance(result, list)\n    assert result == [\"one.txt\"]"
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r0__1795236396",
+  "case": "xc_tests.test_xc_transfer::test_r3_no_matching_files_returns_empty_list",
+  "held": true,
+  "message": "",
+  "source": "def _make(path, name, content=\"data\"):\n    os.makedirs(path, exist_ok=True)\n    with open(os.path.join(path, name), \"w\") as f:\n        f.write(content)\n    return os.path.join(path, name)\n\ndef test_r3_no_matching_files_returns_empty_list(tmp_path):\n    src = tmp_path / \"src\"\n    dst = tmp_path / \"dst\"\n    _make(str(src), \"keep.md\")\n    result = task_func(str(src), str(dst), [\".txt\"])\n    assert result == []\n    assert os.path.exists(os.path.join(str(src), \"keep.md\"))"
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r0__1795236396",
+  "case": "xc_tests.test_xc_transfer::test_r4_creates_destination_directory",
+  "held": false,
+  "message": "AssertionError: assert [] == ['x.txt']\n  \n  Right contains one more item: 'x.txt'\n  Use -v to get more diff",
+  "source": "def _make(path, name, content=\"data\"):\n    os.makedirs(path, exist_ok=True)\n    with open(os.path.join(path, name), \"w\") as f:\n        f.write(content)\n    return os.path.join(path, name)\n\ndef test_r4_creates_destination_directory(tmp_path):\n    src = tmp_path / \"src\"\n    dst = tmp_path / \"nested\" / \"dst\"\n    _make(str(src), \"x.txt\")\n    assert not dst.exists()\n    result = task_func(str(src), str(dst), [\".txt\"])\n    assert result == [\"x.txt\"]\n    assert os.path.isfile(str(dst / \"x.txt\"))"
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r0__1795236396",
+  "case": "xc_tests.test_xc_transfer::test_r5_file_content_preserved",
+  "held": false,
+  "message": "NotADirectoryError: [Errno 20] Not a directory: '/tmp/pytest-of-root/pytest-0/test_r5_file_content_preserved0/dst/data.txt'",
+  "source": "def _make(path, name, content=\"data\"):\n    os.makedirs(path, exist_ok=True)\n    with open(os.path.join(path, name), \"w\") as f:\n        f.write(content)\n    return os.path.join(path, name)\n\ndef test_r5_file_content_preserved(tmp_path):\n    src = tmp_path / \"src\"\n    dst = tmp_path / \"dst\"\n    _make(str(src), \"data.txt\", content=\"hello world\")\n    task_func(str(src), str(dst), [\".txt\"])\n    with open(str(dst / \"data.txt\")) as f:\n        assert f.read() == \"hello world\""
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r0__1795236396",
+  "case": "xc_tests.test_xc_transfer::test_r7_warns_on_untransferable_file",
+  "held": false,
+  "message": "assert 0 >= 1\n +  where 0 = len([])",
+  "source": "def _make(path, name, content=\"data\"):\n    os.makedirs(path, exist_ok=True)\n    with open(os.path.join(path, name), \"w\") as f:\n        f.write(content)\n    return os.path.join(path, name)\n\ndef test_r7_warns_on_untransferable_file(tmp_path):\n    src = tmp_path / \"src\"\n    dst = tmp_path / \"dst\"\n    _make(str(src), \"ok.txt\")\n    # a dangling symlink matching the extension cannot be transferred\n    os.symlink(str(src / \"missing_target\"), str(src / \"broken.txt\"))\n    with warnings.catch_warnings(record=True) as caught:\n        warnings.simplefilter(\"always\")\n        result = task_func(str(src), str(dst), [\".txt\"])\n    assert \"ok.txt\" in result\n    assert len(caught) >= 1"
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r0__1795236396",
+  "case": "xc_tests.test_xc_transfer::test_r8_multiple_extensions_all_transferred",
+  "held": false,
+  "message": "NotADirectoryError: [Errno 20] Not a directory: '/tmp/pytest-of-root/pytest-0/test_r8_multiple_extensions_al0/dst'",
+  "source": "def _make(path, name, content=\"data\"):\n    os.makedirs(path, exist_ok=True)\n    with open(os.path.join(path, name), \"w\") as f:\n        f.write(content)\n    return os.path.join(path, name)\n\ndef test_r8_multiple_extensions_all_transferred(tmp_path):\n    src = tmp_path / \"src\"\n    dst = tmp_path / \"dst\"\n    for name in [\"a.txt\", \"b.py\", \"c.json\", \"d.md\"]:\n        _make(str(src), name)\n    result = task_func(str(src), str(dst), [\".txt\", \".py\", \".json\"])\n    assert sorted(result) == [\"a.txt\", \"b.py\", \"c.json\"]\n    assert sorted(os.listdir(str(dst))) == [\"a.txt\", \"b.py\", \"c.json\"]\n    assert os.listdir(str(src)) == [\"d.md\"]"
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r1__1795237999",
+  "case": "xc_tests.test_xc_transfer::test_r1_transfers_matching_extension",
+  "held": true,
+  "message": "",
+  "source": "def _make(path, content=\"data\"):\n    os.makedirs(os.path.dirname(path), exist_ok=True)\n    with open(path, \"w\") as fh:\n        fh.write(content)\n    return path\n\ndef test_r1_transfers_matching_extension(tmp_path):\n    src = tmp_path / \"src\"\n    dst = tmp_path / \"dst\"\n    src.mkdir()\n    dst.mkdir()\n    _make(str(src / \"a.txt\"), \"alpha\")\n    _make(str(src / \"b.txt\"), \"beta\")\n\n    with warnings.catch_warnings():\n        warnings.simplefilter(\"ignore\")\n        result = task_func(str(src), str(dst), [\".txt\"])\n\n    assert sorted(result) == [\"a.txt\", \"b.txt\"]\n    assert sorted(os.listdir(str(dst))) == [\"a.txt\", \"b.txt\"]\n    assert os.listdir(str(src)) == []\n    with open(str(dst / \"a.txt\")) as fh:\n        assert fh.read() == \"alpha\"\n    with open(str(dst / \"b.txt\")) as fh:\n        assert fh.read() == \"beta\""
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r1__1795237999",
+  "case": "xc_tests.test_xc_transfer::test_r2_ignores_non_matching_extensions",
+  "held": true,
+  "message": "",
+  "source": "def _make(path, content=\"data\"):\n    os.makedirs(os.path.dirname(path), exist_ok=True)\n    with open(path, \"w\") as fh:\n        fh.write(content)\n    return path\n\ndef test_r2_ignores_non_matching_extensions(tmp_path):\n    src = tmp_path / \"src\"\n    dst = tmp_path / \"dst\"\n    src.mkdir()\n    dst.mkdir()\n    _make(str(src / \"keep.txt\"))\n    _make(str(src / \"skip.log\"))\n    _make(str(src / \"skip.csv\"))\n\n    with warnings.catch_warnings():\n        warnings.simplefilter(\"ignore\")\n        result = task_func(str(src), str(dst), [\".txt\"])\n\n    assert result == [\"keep.txt\"]\n    assert os.listdir(str(dst)) == [\"keep.txt\"]\n    assert sorted(os.listdir(str(src))) == [\"skip.csv\", \"skip.log\"]"
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r1__1795237999",
+  "case": "xc_tests.test_xc_transfer::test_r3_multiple_extensions",
+  "held": true,
+  "message": "",
+  "source": "def _make(path, content=\"data\"):\n    os.makedirs(os.path.dirname(path), exist_ok=True)\n    with open(path, \"w\") as fh:\n        fh.write(content)\n    return path\n\ndef test_r3_multiple_extensions(tmp_path):\n    src = tmp_path / \"src\"\n    dst = tmp_path / \"dst\"\n    src.mkdir()\n    dst.mkdir()\n    _make(str(src / \"one.txt\"))\n    _make(str(src / \"two.csv\"))\n    _make(str(src / \"three.md\"))\n\n    with warnings.catch_warnings():\n        warnings.simplefilter(\"ignore\")\n        result = task_func(str(src), str(dst), [\".txt\", \".csv\"])\n\n    assert sorted(result) == [\"one.txt\", \"two.csv\"]\n    assert sorted(os.listdir(str(dst))) == [\"one.txt\", \"two.csv\"]\n    assert os.listdir(str(src)) == [\"three.md\"]"
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r1__1795237999",
+  "case": "xc_tests.test_xc_transfer::test_r4_returns_list_of_names_only",
+  "held": true,
+  "message": "",
+  "source": "def _make(path, content=\"data\"):\n    os.makedirs(os.path.dirname(path), exist_ok=True)\n    with open(path, \"w\") as fh:\n        fh.write(content)\n    return path\n\ndef test_r4_returns_list_of_names_only(tmp_path):\n    src = tmp_path / \"src\"\n    dst = tmp_path / \"dst\"\n    src.mkdir()\n    dst.mkdir()\n    _make(str(src / \"only.txt\"))\n\n    with warnings.catch_warnings():\n        warnings.simplefilter(\"ignore\")\n        result = task_func(str(src), str(dst), [\".txt\"])\n\n    assert isinstance(result, list)\n    assert result == [\"only.txt\"]\n    assert all(os.path.basename(name) == name for name in result)"
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r1__1795237999",
+  "case": "xc_tests.test_xc_transfer::test_r5_creates_destination_when_missing",
+  "held": false,
+  "message": "AssertionError: assert [] == ['made.txt']\n  \n  Right contains one more item: 'made.txt'\n  Use -v to get more diff",
+  "source": "def _make(path, content=\"data\"):\n    os.makedirs(os.path.dirname(path), exist_ok=True)\n    with open(path, \"w\") as fh:\n        fh.write(content)\n    return path\n\ndef test_r5_creates_destination_when_missing(tmp_path):\n    src = tmp_path / \"src\"\n    dst = tmp_path / \"nested\" / \"dst\"\n    src.mkdir()\n    _make(str(src / \"made.txt\"))\n\n    with warnings.catch_warnings():\n        warnings.simplefilter(\"ignore\")\n        result = task_func(str(src), str(dst), [\".txt\"])\n\n    assert result == [\"made.txt\"]\n    assert os.path.isfile(str(dst / \"made.txt\"))"
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r1__1795237999",
+  "case": "xc_tests.test_xc_transfer::test_r6_no_matching_files_returns_empty",
+  "held": true,
+  "message": "",
+  "source": "def _make(path, content=\"data\"):\n    os.makedirs(os.path.dirname(path), exist_ok=True)\n    with open(path, \"w\") as fh:\n        fh.write(content)\n    return path\n\ndef test_r6_no_matching_files_returns_empty(tmp_path):\n    src = tmp_path / \"src\"\n    dst = tmp_path / \"dst\"\n    src.mkdir()\n    dst.mkdir()\n    _make(str(src / \"a.log\"))\n\n    with warnings.catch_warnings():\n        warnings.simplefilter(\"ignore\")\n        result = task_func(str(src), str(dst), [\".txt\"])\n\n    assert result == []\n    assert os.listdir(str(dst)) == []\n    assert os.listdir(str(src)) == [\"a.log\"]"
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r1__1795237999",
+  "case": "xc_tests.test_xc_transfer::test_r7_warns_when_source_missing",
+  "held": false,
+  "message": "assert 0 >= 1\n +  where 0 = len([])",
+  "source": "def test_r7_warns_when_source_missing(tmp_path):\n    src = tmp_path / \"does_not_exist\"\n    dst = tmp_path / \"dst\"\n    dst.mkdir()\n\n    with warnings.catch_warnings(record=True) as caught:\n        warnings.simplefilter(\"always\")\n        result = task_func(str(src), str(dst), [\".txt\"])\n\n    assert result == []\n    assert len(caught) >= 1\n    assert all(issubclass(w.category, Warning) for w in caught)"
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r1__1795237999",
+  "case": "xc_tests.test_xc_transfer::test_r8_warns_on_failed_transfer",
+  "held": true,
+  "message": "",
+  "source": "def _make(path, content=\"data\"):\n    os.makedirs(os.path.dirname(path), exist_ok=True)\n    with open(path, \"w\") as fh:\n        fh.write(content)\n    return path\n\ndef test_r8_warns_on_failed_transfer(tmp_path):\n    src = tmp_path / \"src\"\n    dst = tmp_path / \"dst\"\n    src.mkdir()\n    dst.mkdir()\n    _make(str(src / \"blocked.txt\"))\n    # A directory occupying the destination name makes the copy fail.\n    os.makedirs(str(dst / \"blocked.txt\"))\n\n    with warnings.catch_warnings(record=True) as caught:\n        warnings.simplefilter(\"always\")\n        result = task_func(str(src), str(dst), [\".txt\"])\n\n    assert \"blocked.txt\" not in result\n    assert len(caught) >= 1\n    assert all(issubclass(w.category, Warning) for w in caught)"
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r2__1795239636",
+  "case": "xc_tests.test_xc_transfer::test_r1_transfers_matching_extension",
+  "held": true,
+  "message": "",
+  "source": "def _make(path, content=\"data\"):\n    with open(path, \"w\") as fh:\n        fh.write(content)\n\ndef _names(directory):\n    return sorted(os.listdir(directory))\n\ndef test_r1_transfers_matching_extension(tmp_path):\n    src = tmp_path / \"src\"\n    dst = tmp_path / \"dst\"\n    src.mkdir()\n    dst.mkdir()\n    _make(str(src / \"a.txt\"))\n    _make(str(src / \"b.txt\"))\n\n    result = task_func(str(src), str(dst), [\".txt\"])\n\n    assert sorted(result) == [\"a.txt\", \"b.txt\"]\n    assert _names(str(dst)) == [\"a.txt\", \"b.txt\"]\n    assert _names(str(src)) == []"
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r2__1795239636",
+  "case": "xc_tests.test_xc_transfer::test_r2_returns_list_of_transferred_names",
+  "held": true,
+  "message": "",
+  "source": "def _make(path, content=\"data\"):\n    with open(path, \"w\") as fh:\n        fh.write(content)\n\ndef test_r2_returns_list_of_transferred_names(tmp_path):\n    src = tmp_path / \"src\"\n    dst = tmp_path / \"dst\"\n    src.mkdir()\n    dst.mkdir()\n    _make(str(src / \"one.csv\"))\n\n    result = task_func(str(src), str(dst), [\".csv\"])\n\n    assert isinstance(result, list)\n    assert result == [\"one.csv\"]"
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r2__1795239636",
+  "case": "xc_tests.test_xc_transfer::test_r3_non_matching_files_stay_in_source",
+  "held": true,
+  "message": "",
+  "source": "def _make(path, content=\"data\"):\n    with open(path, \"w\") as fh:\n        fh.write(content)\n\ndef _names(directory):\n    return sorted(os.listdir(directory))\n\ndef test_r3_non_matching_files_stay_in_source(tmp_path):\n    src = tmp_path / \"src\"\n    dst = tmp_path / \"dst\"\n    src.mkdir()\n    dst.mkdir()\n    _make(str(src / \"keep.md\"))\n    _make(str(src / \"move.txt\"))\n\n    result = task_func(str(src), str(dst), [\".txt\"])\n\n    assert result == [\"move.txt\"]\n    assert _names(str(src)) == [\"keep.md\"]\n    assert _names(str(dst)) == [\"move.txt\"]"
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r2__1795239636",
+  "case": "xc_tests.test_xc_transfer::test_r4_multiple_extensions",
+  "held": true,
+  "message": "",
+  "source": "def _make(path, content=\"data\"):\n    with open(path, \"w\") as fh:\n        fh.write(content)\n\ndef _names(directory):\n    return sorted(os.listdir(directory))\n\ndef test_r4_multiple_extensions(tmp_path):\n    src = tmp_path / \"src\"\n    dst = tmp_path / \"dst\"\n    src.mkdir()\n    dst.mkdir()\n    _make(str(src / \"a.txt\"))\n    _make(str(src / \"b.py\"))\n    _make(str(src / \"c.md\"))\n\n    result = task_func(str(src), str(dst), [\".txt\", \".py\"])\n\n    assert sorted(result) == [\"a.txt\", \"b.py\"]\n    assert _names(str(dst)) == [\"a.txt\", \"b.py\"]\n    assert _names(str(src)) == [\"c.md\"]"
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r2__1795239636",
+  "case": "xc_tests.test_xc_transfer::test_r5_no_matching_files_returns_empty_list",
+  "held": true,
+  "message": "",
+  "source": "def _make(path, content=\"data\"):\n    with open(path, \"w\") as fh:\n        fh.write(content)\n\ndef _names(directory):\n    return sorted(os.listdir(directory))\n\ndef test_r5_no_matching_files_returns_empty_list(tmp_path):\n    src = tmp_path / \"src\"\n    dst = tmp_path / \"dst\"\n    src.mkdir()\n    dst.mkdir()\n    _make(str(src / \"a.md\"))\n\n    result = task_func(str(src), str(dst), [\".txt\"])\n\n    assert result == []\n    assert _names(str(src)) == [\"a.md\"]\n    assert _names(str(dst)) == []"
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r2__1795239636",
+  "case": "xc_tests.test_xc_transfer::test_r6_empty_source_returns_empty_list",
+  "held": true,
+  "message": "",
+  "source": "def _names(directory):\n    return sorted(os.listdir(directory))\n\ndef test_r6_empty_source_returns_empty_list(tmp_path):\n    src = tmp_path / \"src\"\n    dst = tmp_path / \"dst\"\n    src.mkdir()\n    dst.mkdir()\n\n    result = task_func(str(src), str(dst), [\".txt\"])\n\n    assert result == []\n    assert _names(str(dst)) == []"
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r2__1795239636",
+  "case": "xc_tests.test_xc_transfer::test_r7_file_content_preserved",
+  "held": true,
+  "message": "",
+  "source": "def _make(path, content=\"data\"):\n    with open(path, \"w\") as fh:\n        fh.write(content)\n\ndef test_r7_file_content_preserved(tmp_path):\n    src = tmp_path / \"src\"\n    dst = tmp_path / \"dst\"\n    src.mkdir()\n    dst.mkdir()\n    _make(str(src / \"a.txt\"), \"hello world\")\n\n    task_func(str(src), str(dst), [\".txt\"])\n\n    with open(str(dst / \"a.txt\")) as fh:\n        assert fh.read() == \"hello world\""
+ },
+ {
+  "run": "b_857__crosscheck-v7@s2__r2__1795239636",
+  "case": "xc_tests.test_xc_transfer::test_r8_warns_when_source_dir_missing",
+  "held": false,
+  "message": "assert 0 >= 1\n +  where 0 = len([])",
+  "source": "def test_r8_warns_when_source_dir_missing(tmp_path):\n    src = tmp_path / \"missing\"\n    dst = tmp_path / \"dst\"\n    dst.mkdir()\n\n    with warnings.catch_warnings(record=True) as caught:\n        warnings.simplefilter(\"always\")\n        result = task_func(str(src), str(dst), [\".txt\"])\n\n    assert result == []\n    assert len(caught) >= 1"
+ }
+]

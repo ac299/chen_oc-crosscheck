@@ -1,0 +1,25 @@
+{
+ "task_id": "b_267",
+ "source": "BigCodeBench/267",
+ "libs": [
+  "numpy",
+  "matplotlib",
+  "scipy"
+ ],
+ "completion_file": "solution.py",
+ "tests": [
+  "tests/test_solution.py"
+ ],
+ "test_files": [
+  "tests/test_solution.py"
+ ],
+ "env_volume": "xc-env-bcb",
+ "gold_body": "    # Add new key 'a' with value 1\n    data['a'] = 1\n\n    # Generate a signal based on the values in `data`\n    signal = np.array(list(data.values()))\n    time = np.linspace(0, 2, 2 * sample_rate, False)\n    signal = np.sin(np.outer(time, signal) * np.pi)\n\n    # Perform a Fast Fourier Transform (FFT) on the signal\n    fft = fftpack.fft(signal)\n\n    # Plot the FFT\n    fig, ax = plt.subplots(figsize=(12, 6))\n    ax.plot(np.abs(fft))\n    ax.set_title('FFT of the Signal')\n    ax.set_xlabel('Frequency [Hz]')\n    ax.set_ylabel('Frequency Spectrum Magnitude')\n    \n    return fft, ax",
+ "sample": {
+  "body_position": [
+   5,
+   5
+  ],
+  "indent": 4
+ }
+}

@@ -1,0 +1,56 @@
+[
+ {
+  "text": "When a spec says a function takes variadic arguments, consider that callers may pass a single list/tuple of arguments rather than spread positional values; normalize both forms before building the command.",
+  "tasks": [
+   "b_346"
+  ]
+ },
+ {
+  "text": "Distinguish 'the subprocess failed' from 'the subprocess raised an exception': a non-zero exit code alone may not warrant raising, so inspect captured stderr/output for an actual traceback before raising the error type the spec names.",
+  "tasks": [
+   "b_346"
+  ]
+ },
+ {
+  "text": "For a 'do not wait' mode, still handle the case where the child fails immediately; a brief bounded wait lets you surface required errors while returning None for long-running processes, matching the documented return contract.",
+  "tasks": [
+   "b_346"
+  ]
+ },
+ {
+  "text": "When a library model (like a time-series forecaster) may choke on a non-default index such as irregular dates, pass raw values (e.g. the underlying array) to the model and reconstruct the index only for plotting, rather than feeding the indexed series directly.",
+  "tasks": [
+   "b_917"
+  ]
+ },
+ {
+  "text": "Handle missing or unexpected input columns defensively: if the documented column name may be absent, fall back to a sensible alternative (e.g. the last column) instead of assuming it exists and raising a KeyError.",
+  "tasks": [
+   "b_917"
+  ]
+ },
+ {
+  "text": "Keep the returned values and plot consistent and minimal: convert forecast outputs to plain floats, and avoid adding extra labels/axis decorations that could conflict with hidden test expectations about the returned Axes.",
+  "tasks": [
+   "b_917"
+  ]
+ },
+ {
+  "text": "When the task provides a function stub with a body that raises NotImplementedError, you must actually implement the logic; leaving the stub unchanged guarantees failure.",
+  "tasks": [
+   "b_870"
+  ]
+ },
+ {
+  "text": "Read the full specification carefully, including edge cases (empty input, missing values, non-numeric filtering) and implement each explicitly rather than only the happy path.",
+  "tasks": [
+   "b_870"
+  ]
+ },
+ {
+  "text": "Verify your implementation against the provided example outputs before finishing, since the examples encode exact expected formatting and behavior.",
+  "tasks": [
+   "b_870"
+  ]
+ }
+]

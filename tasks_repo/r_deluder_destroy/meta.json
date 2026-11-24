@@ -1,0 +1,46 @@
+{
+ "task_id": "r_deluder_destroy",
+ "project": "deluder",
+ "namespace": "deluder.interceptors.proxifier.interceptor.ProxifierMessageInterceptor.destroy",
+ "completion_file": "deluder/interceptors/proxifier/interceptor.py",
+ "tests": [
+  "tests/interceptors/proxifier/test_proxifier_buffer_strategy.py::test_proxifier_interceptor_buffer_strategy"
+ ],
+ "test_files": [
+  "tests/interceptors/proxifier/test_proxifier_buffer_strategy.py"
+ ],
+ "env_volume": "xc-env-deluder",
+ "gold_body": "        if hasattr(self, 'connections'):\n            for connection in self.connections.values():\n                connection.stop()\n        if hasattr(self, 'server'):\n            self.server.stop()",
+ "sample": {
+  "namespace": "deluder.interceptors.proxifier.interceptor.ProxifierMessageInterceptor.destroy",
+  "type": "method",
+  "completion_path": "deluder/deluder/interceptors/proxifier/interceptor.py",
+  "signature_position": [
+   64,
+   64
+  ],
+  "body_position": [
+   65,
+   69
+  ],
+  "dependency": {
+   "intra_class": [
+    "deluder.interceptors.proxifier.interceptor.ProxifierMessageInterceptor.connections",
+    "deluder.interceptors.proxifier.interceptor.ProxifierMessageInterceptor.server"
+   ],
+   "intra_file": [],
+   "cross_file": [
+    "deluder.interceptors.proxifier.server.Server.stop"
+   ]
+  },
+  "tests": [
+   "tests/interceptors/proxifier/test_proxifier_buffer_strategy.py::test_proxifier_interceptor_buffer_strategy"
+  ],
+  "requirement": {
+   "Functionality": "The destroy method is responsible for stopping all connections managed by the ProxifierMessageInterceptor instance and then stopping the server associated with it, if any. This method ensures that all active connections are properly terminated before stopping the server.\n",
+   "Arguments": ":param self: ProxifierMessageInterceptor. An instance of the ProxifierMessageInterceptor class. It uses its 'connections' attribute to manage individual connections and a 'server' attribute to manage the server instance.\n:return: No return values."
+  },
+  "indent": 8,
+  "domain": "Communications"
+ }
+}

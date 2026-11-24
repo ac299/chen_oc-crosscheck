@@ -1,0 +1,218 @@
+[
+ {
+  "text": "When the spec describes comparing files line by line and reporting line numbers, decide explicitly whether 'line' means a raw text line or a parsed record; parsing and re-joining records can silently alter content (quoting, embedded delimiters) and break expected output, so preserve the original representation the spec implies.",
+  "tasks": [
+   "b_509"
+  ]
+ },
+ {
+  "text": "Do not invent extra filtering or renumbering logic beyond the spec: skipping certain diff markers or incrementing counters conditionally can drop or misalign rows; keep the mapping from source differences to output rows simple and faithful to the documented columns.",
+  "tasks": [
+   "b_509"
+  ]
+ },
+ {
+  "text": "Handle the full exception contract precisely: catch the specific exception types the spec names (missing file, empty file, other IO errors) and let each map to the required exception, rather than catching broad Exception or only a subset, so edge cases behave as tested.",
+  "tasks": [
+   "b_509"
+  ]
+ },
+ {
+  "text": "When a spec says a function returns None in a non-waiting mode, return immediately after launching the process; do not add extra waiting or error-checking logic that changes the documented behavior for that mode.",
+  "tasks": [
+   "b_346"
+  ]
+ },
+ {
+  "text": "Distinguish documented error conditions from incidental ones: only raise the specified exception for the specified cause, and let other non-zero exits return normally rather than raising on every non-zero return code.",
+  "tasks": [
+   "b_346"
+  ]
+ },
+ {
+  "text": "Handle argument-passing conventions explicitly (e.g., whether a single iterable should be expanded) and keep the launch command construction consistent across both waiting and non-waiting paths.",
+  "tasks": [
+   "b_346"
+  ]
+ },
+ {
+  "text": "When a library (like a time-series model) may reject or mishandle a non-default index, pass raw values (e.g., the underlying array) to the model and reconstruct the index only for plotting, rather than feeding the indexed Series directly.",
+  "tasks": [
+   "b_917"
+  ]
+ },
+ {
+  "text": "Handle optional or missing input columns defensively: if the description implies a specific column but the data may not contain it, fall back to a sensible alternative (e.g., the last column) instead of assuming it exists and raising a KeyError.",
+  "tasks": [
+   "b_917"
+  ]
+ },
+ {
+  "text": "Keep the implementation minimal and aligned with the stated contract; avoid adding extra assumptions (like requiring a specific column name or extra axis labels) that could break on inputs the hidden tests exercise.",
+  "tasks": [
+   "b_917"
+  ]
+ },
+ {
+  "text": "When a description implies inputs may be empty or degenerate (e.g., zero-length lists), handle those edge cases explicitly so the function still returns a valid object of the required type instead of raising or returning None.",
+  "tasks": [
+   "b_553"
+  ]
+ },
+ {
+  "text": "When a spec says a list determines a count and predefined names are available, slice the predefined names to that count rather than assuming the count always matches the full list; guard against mismatches.",
+  "tasks": [
+   "b_553"
+  ]
+ },
+ {
+  "text": "Return the exact type promised by the output contract (e.g., an Axes object) on every code path, including fallback paths, so callers and tests always receive the documented type.",
+  "tasks": [
+   "b_553"
+  ]
+ },
+ {
+  "text": "When a description says timestamps are 'converted to a timezone', decide explicitly how naive inputs are interpreted (e.g., assume UTC) and handle both naive and tz-aware inputs; a solution that only parses one string format may fail on other valid formats the tests use.",
+  "tasks": [
+   "b_1077"
+  ]
+ },
+ {
+  "text": "Guard against edge-case inputs the spec mentions or implies (empty/None lists, single element, unsupported types) before indexing or iterating, so the function returns the documented fallback instead of raising.",
+  "tasks": [
+   "b_1077"
+  ]
+ },
+ {
+  "text": "Prefer robust, tolerant parsing (try multiple common formats and ISO variants) over a single strict parser, since hidden tests often exercise formats not shown in the prompt.",
+  "tasks": [
+   "b_1077"
+  ]
+ },
+ {
+  "text": "When a task specifies a precise output format (e.g., a particular timestamp string representation), match it exactly rather than choosing an equivalent-looking alternative; hidden tests often compare exact strings.",
+  "tasks": [
+   "b_1040"
+  ]
+ },
+ {
+  "text": "Handle all exceptional conditions per socket without aborting the whole loop: a single select/accept/recv error should be logged or skipped and the server should keep running, not break out of the main loop.",
+  "tasks": [
+   "b_1040"
+  ]
+ },
+ {
+  "text": "Ensure the full send path is implemented: queue outgoing data, register sockets in the writable set, and drain queues on writability, removing sockets when done—an incomplete send loop means clients never receive responses.",
+  "tasks": [
+   "b_1040"
+  ]
+ },
+ {
+  "text": "When the task provides a starting code skeleton with a body to implement, actually implement the function instead of leaving a placeholder like raise NotImplementedError; an unimplemented body guarantees failure.",
+  "tasks": [
+   "b_870"
+  ]
+ },
+ {
+  "text": "Handle the empty-input edge case explicitly and return the specified empty structure with the correct column names, since hidden tests commonly check boundary conditions.",
+  "tasks": [
+   "b_870"
+  ]
+ },
+ {
+  "text": "Derive the output shape from the data (e.g., maximum tuple length) rather than assuming a fixed width, and skip missing positions while computing aggregates so partial data is handled correctly.",
+  "tasks": [
+   "b_870"
+  ]
+ },
+ {
+  "text": "When a function receives aggregate values to add to data read from a file, clarify whether the inputs are scalars or per-key mappings; the description's wording (plural, 'given goals and penalties') and the return type hint at per-entity updates, so design for the richer interpretation and handle both gracefully.",
+  "tasks": [
+   "b_800"
+  ]
+ },
+ {
+  "text": "Preserve the existing file structure and rows when the task says 'update' a file; rewriting it with a single summary row destroys data and will fail tests that inspect the file contents afterward.",
+  "tasks": [
+   "b_800"
+  ]
+ },
+ {
+  "text": "Return the exact container type and key semantics the spec names (e.g., a Counter keyed by the counted categories), and make sure the returned counts reflect the full updated totals rather than only the newly supplied values.",
+  "tasks": [
+   "b_800"
+  ]
+ },
+ {
+  "text": "When a description says to add an element, match the literal value and type it specifies (e.g., a string vs. an integer); a subtle type mismatch can change downstream arithmetic or comparisons and cause hidden-test failures.",
+  "tasks": [
+   "b_123"
+  ]
+ },
+ {
+  "text": "Compute derived quantities (like counts) from the mutated input in the order the spec implies, and make sure the mutation happens before any logic that depends on it; verify the resulting value is what the spec intends rather than assuming.",
+  "tasks": [
+   "b_123"
+  ]
+ },
+ {
+  "text": "Handle the specified error conditions explicitly and defensively: check for missing directories as well as empty file matches, and raise the exact exception type the spec requires rather than relying on incidental failures.",
+  "tasks": [
+   "b_123"
+  ]
+ },
+ {
+  "text": "When a spec says the output length 'matches the number of days in the range' while also calling both endpoints inclusive, resolve the ambiguity by checking how the count is likely computed (e.g., difference in days) rather than assuming inclusivity implies an extra element; off-by-one in the number of generated items is a common hidden-test failure.",
+  "tasks": [
+   "b_120"
+  ]
+ },
+ {
+  "text": "Re-read the description's stated output size and any example/default behavior to pin down exact cardinality before coding; when two phrases conflict (inclusive endpoints vs. length equals day count), prefer the explicit length statement and keep the generation count consistent with it.",
+  "tasks": [
+   "b_120"
+  ]
+ },
+ {
+  "text": "Match error messages and validation order to the spec's wording only where tests may assert them, but prioritize the observable structural properties (type, length, value range, reproducibility) that hidden tests most often check.",
+  "tasks": [
+   "b_120"
+  ]
+ },
+ {
+  "text": "When a description gives a numeric bound for random values, treat it as inclusive unless explicitly stated otherwise; hidden tests often check the full range including the endpoint.",
+  "tasks": [
+   "b_618"
+  ]
+ },
+ {
+  "text": "Match the exact column names, labels, and output structure implied by the description rather than paraphrasing them, since tests may assert on exact strings.",
+  "tasks": [
+   "b_618"
+  ]
+ },
+ {
+  "text": "Keep the returned objects consistent with the stated contract (e.g., the same plot objects returned and used), and avoid subtle off-by-one changes that alter observable outputs.",
+  "tasks": [
+   "b_618"
+  ]
+ },
+ {
+  "text": "When a spec describes a chart over a fixed categorical axis (e.g. days of a week), plot every category in the canonical order with zero counts for missing ones, rather than filtering to only observed categories; hidden tests often check the full axis contents.",
+  "tasks": [
+   "b_367"
+  ]
+ },
+ {
+  "text": "Prefer straightforward per-item validation loops over clever aggregate expressions like all(...); both can work, but ensure the validation covers the exact condition and raises the specified exception type before any other processing.",
+  "tasks": [
+   "b_367"
+  ]
+ },
+ {
+  "text": "Match the described output contract precisely (axis labels, title, returned object) and keep the plotting logic simple and deterministic so tests comparing axes properties pass.",
+  "tasks": [
+   "b_367"
+  ]
+ }
+]

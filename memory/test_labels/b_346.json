@@ -1,0 +1,219 @@
+[
+ {
+  "run": "b_346__crosscheck-v7@s2__r0__1795233313",
+  "case": "xc_tests.test_xc_run::test_r1_returns_zero_return_code_for_successful_script",
+  "held": true,
+  "message": "",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r1_returns_zero_return_code_for_successful_script(tmp_path):\n    script = _write_script(tmp_path, \"ok.py\", \"print('hello')\\n\")\n    result = task_func(script)\n    assert result == 0\n    assert isinstance(result, int)"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r0__1795233313",
+  "case": "xc_tests.test_xc_run::test_r2_waits_for_process_to_complete_by_default",
+  "held": true,
+  "message": "",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r2_waits_for_process_to_complete_by_default(tmp_path):\n    marker = tmp_path / \"marker.txt\"\n    script = _write_script(\n        tmp_path,\n        \"slow.py\",\n        \"import time\\n\"\n        \"time.sleep(0.5)\\n\"\n        \"open({!r}, 'w').write('done')\\n\".format(str(marker)),\n    )\n    result = task_func(script)\n    assert result == 0\n    assert marker.exists()\n    assert marker.read_text() == \"done\""
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r0__1795233313",
+  "case": "xc_tests.test_xc_run::test_r3_wait_false_returns_none",
+  "held": true,
+  "message": "",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r3_wait_false_returns_none(tmp_path):\n    script = _write_script(tmp_path, \"quick.py\", \"print('x')\\n\")\n    result = task_func(script, False)\n    assert result is None"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r0__1795233313",
+  "case": "xc_tests.test_xc_run::test_r4_wait_false_does_not_block_on_long_script",
+  "held": false,
+  "message": "assert 5.01294469833374 < 3.0",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r4_wait_false_does_not_block_on_long_script(tmp_path):\n    script = _write_script(\n        tmp_path,\n        \"long.py\",\n        \"import time\\ntime.sleep(5)\\n\",\n    )\n    start = time.time()\n    result = task_func(script, False)\n    elapsed = time.time() - start\n    assert result is None\n    assert elapsed < 3.0"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r0__1795233313",
+  "case": "xc_tests.test_xc_run::test_r5_missing_script_raises_value_error",
+  "held": true,
+  "message": "",
+  "source": "def test_r5_missing_script_raises_value_error(tmp_path):\n    missing = str(tmp_path / \"does_not_exist.py\")\n    with pytest.raises(ValueError):\n        task_func(missing)"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r0__1795233313",
+  "case": "xc_tests.test_xc_run::test_r6_script_raising_exception_raises_called_process_error",
+  "held": false,
+  "message": "Failed: DID NOT RAISE CalledProcessError",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r6_script_raising_exception_raises_called_process_error(tmp_path):\n    script = _write_script(\n        tmp_path,\n        \"boom.py\",\n        \"raise RuntimeError('boom')\\n\",\n    )\n    with pytest.raises(subprocess.CalledProcessError):\n        task_func(script)"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r0__1795233313",
+  "case": "xc_tests.test_xc_run::test_r7_called_process_error_carries_nonzero_returncode",
+  "held": false,
+  "message": "Failed: DID NOT RAISE CalledProcessError",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r7_called_process_error_carries_nonzero_returncode(tmp_path):\n    script = _write_script(\n        tmp_path,\n        \"boom2.py\",\n        \"raise ValueError('bad')\\n\",\n    )\n    with pytest.raises(subprocess.CalledProcessError) as excinfo:\n        task_func(script)\n    assert excinfo.value.returncode != 0"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r0__1795233313",
+  "case": "xc_tests.test_xc_run::test_r8_extra_args_are_passed_to_script",
+  "held": true,
+  "message": "",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r8_extra_args_are_passed_to_script(tmp_path):\n    out = tmp_path / \"args.txt\"\n    script = _write_script(\n        tmp_path,\n        \"args.py\",\n        \"import sys\\n\"\n        \"open({!r}, 'w').write('|'.join(sys.argv[1:]))\\n\".format(str(out)),\n    )\n    result = task_func(script, True, \"alpha\", \"beta\")\n    assert result == 0\n    assert out.read_text() == \"alpha|beta\""
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r0__1795233313",
+  "case": "xc_tests.test_xc_run::test_r9_script_output_is_not_required_but_exit_code_reported",
+  "held": true,
+  "message": "",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r9_script_output_is_not_required_but_exit_code_reported(tmp_path):\n    script = _write_script(\n        tmp_path,\n        \"noisy.py\",\n        \"import sys\\n\"\n        \"print('to stdout')\\n\"\n        \"print('to stderr', file=sys.stderr)\\n\",\n    )\n    assert task_func(script) == 0"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r0__1795233313",
+  "case": "xc_tests.test_xc_run::test_r10_script_path_with_spaces",
+  "held": true,
+  "message": "",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r10_script_path_with_spaces(tmp_path):\n    script = _write_script(tmp_path, \"with space.py\", \"print('spaced')\\n\")\n    assert task_func(script) == 0"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r1__1795233649",
+  "case": "xc_tests.test_xc_args::test_r7_extra_args_are_passed_to_script",
+  "held": true,
+  "message": "",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r7_extra_args_are_passed_to_script(tmp_path):\n    script = _write_script(\n        tmp_path,\n        \"echo_args.py\",\n        \"import sys\\n\"\n        \"expected = ['alpha', 'beta']\\n\"\n        \"sys.exit(0 if sys.argv[1:] == expected else 7)\\n\",\n    )\n    assert task_func(script, True, \"alpha\", \"beta\") == 0"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r1__1795233649",
+  "case": "xc_tests.test_xc_args::test_r8_extra_args_passed_when_wait_false",
+  "held": true,
+  "message": "",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r8_extra_args_passed_when_wait_false(tmp_path):\n    script = _write_script(\n        tmp_path,\n        \"echo_args_nowait.py\",\n        \"import sys\\n\"\n        \"expected = ['gamma']\\n\"\n        \"sys.exit(0 if sys.argv[1:] == expected else 7)\\n\",\n    )\n    assert task_func(script, False, \"gamma\") is None"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r1__1795233649",
+  "case": "xc_tests.test_xc_args::test_r9_default_wait_completes_before_return",
+  "held": true,
+  "message": "",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r9_default_wait_completes_before_return(tmp_path):\n    script = _write_script(\n        tmp_path,\n        \"marker.py\",\n        \"import sys\\n\"\n        \"open(sys.argv[1], 'w').write('done')\\n\"\n        \"sys.exit(0)\\n\",\n    )\n    marker = tmp_path / \"marker.txt\"\n    assert task_func(script, True, str(marker)) == 0\n    assert marker.read_text() == \"done\""
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r1__1795233649",
+  "case": "xc_tests.test_xc_args::test_r10_missing_script_raises_value_error_even_without_wait",
+  "held": true,
+  "message": "",
+  "source": "def test_r10_missing_script_raises_value_error_even_without_wait(tmp_path):\n    missing = str(tmp_path / \"nope.py\")\n    with pytest.raises(ValueError):\n        task_func(missing, False)"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r1__1795233649",
+  "case": "xc_tests.test_xc_args::test_r11_exception_raises_called_process_error_with_args",
+  "held": false,
+  "message": "Failed: DID NOT RAISE CalledProcessError",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r11_exception_raises_called_process_error_with_args(tmp_path):\n    script = _write_script(\n        tmp_path, \"boom_args.py\", \"raise ValueError('bad')\\n\"\n    )\n    with pytest.raises(subprocess.CalledProcessError):\n        task_func(script, True, \"x\")"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r1__1795233649",
+  "case": "xc_tests.test_xc_core::test_r1_returns_zero_for_successful_script",
+  "held": true,
+  "message": "",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r1_returns_zero_for_successful_script(tmp_path):\n    script = _write_script(tmp_path, \"ok.py\", \"import sys\\nsys.exit(0)\\n\")\n    assert task_func(script) == 0"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r1__1795233649",
+  "case": "xc_tests.test_xc_core::test_r2_returns_int_return_code",
+  "held": true,
+  "message": "",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r2_returns_int_return_code(tmp_path):\n    script = _write_script(tmp_path, \"ok2.py\", \"import sys\\nsys.exit(0)\\n\")\n    result = task_func(script)\n    assert isinstance(result, int)\n    assert result == 0"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r1__1795233649",
+  "case": "xc_tests.test_xc_core::test_r3_missing_script_raises_value_error",
+  "held": true,
+  "message": "",
+  "source": "def test_r3_missing_script_raises_value_error(tmp_path):\n    missing = str(tmp_path / \"does_not_exist.py\")\n    with pytest.raises(ValueError):\n        task_func(missing)"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r1__1795233649",
+  "case": "xc_tests.test_xc_core::test_r4_script_exception_raises_called_process_error",
+  "held": false,
+  "message": "Failed: DID NOT RAISE CalledProcessError",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r4_script_exception_raises_called_process_error(tmp_path):\n    script = _write_script(\n        tmp_path, \"boom.py\", \"raise RuntimeError('boom')\\n\"\n    )\n    with pytest.raises(subprocess.CalledProcessError):\n        task_func(script)"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r1__1795233649",
+  "case": "xc_tests.test_xc_core::test_r5_wait_false_returns_none",
+  "held": true,
+  "message": "",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r5_wait_false_returns_none(tmp_path):\n    script = _write_script(\n        tmp_path, \"slow.py\", \"import time\\ntime.sleep(0.5)\\n\"\n    )\n    assert task_func(script, False) is None"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r1__1795233649",
+  "case": "xc_tests.test_xc_core::test_r6_wait_false_does_not_block",
+  "held": false,
+  "message": "assert 5.010518547999993 < 3.0",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r6_wait_false_does_not_block(tmp_path):\n    script = _write_script(\n        tmp_path, \"slow2.py\", \"import time\\ntime.sleep(5)\\n\"\n    )\n    start = time.monotonic()\n    result = task_func(script, False)\n    elapsed = time.monotonic() - start\n    assert result is None\n    assert elapsed < 3.0"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r2__1795233897",
+  "case": "xc_tests.test_xc_run::test_r1_returns_zero_return_code_for_successful_script",
+  "held": true,
+  "message": "",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r1_returns_zero_return_code_for_successful_script(tmp_path):\n    script = _write_script(tmp_path, \"ok.py\", \"import sys\\nsys.exit(0)\\n\")\n    result = task_func(script)\n    assert result == 0\n    assert isinstance(result, int)"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r2__1795233897",
+  "case": "xc_tests.test_xc_run::test_r2_returns_nonzero_return_code_of_failing_script",
+  "held": true,
+  "message": "",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r2_returns_nonzero_return_code_of_failing_script(tmp_path):\n    script = _write_script(tmp_path, \"fail.py\", \"import sys\\nsys.exit(3)\\n\")\n    result = task_func(script)\n    assert result == 3"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r2__1795233897",
+  "case": "xc_tests.test_xc_run::test_r3_waits_for_process_to_complete_by_default",
+  "held": true,
+  "message": "",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r3_waits_for_process_to_complete_by_default(tmp_path):\n    marker = tmp_path / \"marker.txt\"\n    script = _write_script(\n        tmp_path,\n        \"slow.py\",\n        \"import time\\n\"\n        \"time.sleep(1.0)\\n\"\n        \"open({!r}, 'w').write('done')\\n\".format(str(marker)),\n    )\n    result = task_func(script)\n    assert marker.exists()\n    assert result == 0"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r2__1795233897",
+  "case": "xc_tests.test_xc_run::test_r4_wait_false_returns_none",
+  "held": true,
+  "message": "",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r4_wait_false_returns_none(tmp_path):\n    script = _write_script(tmp_path, \"quick.py\", \"import sys\\nsys.exit(0)\\n\")\n    result = task_func(script, False)\n    assert result is None"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r2__1795233897",
+  "case": "xc_tests.test_xc_run::test_r5_wait_false_does_not_block_on_long_script",
+  "held": false,
+  "message": "assert 5.012587308883667 < 3.0",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r5_wait_false_does_not_block_on_long_script(tmp_path):\n    marker = tmp_path / \"late.txt\"\n    script = _write_script(\n        tmp_path,\n        \"long.py\",\n        \"import time\\n\"\n        \"time.sleep(5.0)\\n\"\n        \"open({!r}, 'w').write('done')\\n\".format(str(marker)),\n    )\n    start = time.time()\n    result = task_func(script, False)\n    elapsed = time.time() - start\n    assert result is None\n    assert elapsed < 3.0\n    assert not marker.exists()"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r2__1795233897",
+  "case": "xc_tests.test_xc_run::test_r6_missing_script_raises_value_error",
+  "held": true,
+  "message": "",
+  "source": "def test_r6_missing_script_raises_value_error(tmp_path):\n    missing = str(tmp_path / \"does_not_exist.py\")\n    with pytest.raises(ValueError):\n        task_func(missing)"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r2__1795233897",
+  "case": "xc_tests.test_xc_run::test_r7_script_raising_exception_raises_called_process_error",
+  "held": false,
+  "message": "Failed: DID NOT RAISE CalledProcessError",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r7_script_raising_exception_raises_called_process_error(tmp_path):\n    script = _write_script(\n        tmp_path,\n        \"boom.py\",\n        \"raise RuntimeError('boom')\\n\",\n    )\n    with pytest.raises(subprocess.CalledProcessError):\n        task_func(script)"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r2__1795233897",
+  "case": "xc_tests.test_xc_run::test_r8_script_raising_exception_with_wait_false_raises_called_process_error",
+  "held": false,
+  "message": "Failed: DID NOT RAISE CalledProcessError",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef test_r8_script_raising_exception_with_wait_false_raises_called_process_error(\n    tmp_path,\n):\n    script = _write_script(\n        tmp_path,\n        \"boom_async.py\",\n        \"raise RuntimeError('boom')\\n\",\n    )\n    with pytest.raises(subprocess.CalledProcessError):\n        task_func(script, False)"
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r2__1795233897",
+  "case": "xc_tests.test_xc_run::test_r9_script_receives_predefined_arguments",
+  "held": true,
+  "message": "",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef _wait_for_file(path, timeout=10.0):\n    deadline = time.time() + timeout\n    while time.time() < deadline:\n        if os.path.exists(path):\n            return True\n        time.sleep(0.05)\n    return False\n\ndef test_r9_script_receives_predefined_arguments(tmp_path):\n    out = tmp_path / \"args.txt\"\n    script = _write_script(\n        tmp_path,\n        \"echo_args.py\",\n        \"import sys\\n\"\n        \"open({!r}, 'w').write('|'.join(sys.argv[1:]))\\n\".format(str(out)),\n    )\n    task_func(script, True, \"alpha\", \"beta\")\n    assert _wait_for_file(str(out))\n    assert out.read_text() == \"alpha|beta\""
+ },
+ {
+  "run": "b_346__crosscheck-v7@s2__r2__1795233897",
+  "case": "xc_tests.test_xc_run::test_r10_script_runs_in_separate_process",
+  "held": true,
+  "message": "",
+  "source": "def _write_script(tmp_path, name, body):\n    path = tmp_path / name\n    path.write_text(body)\n    return str(path)\n\ndef _wait_for_file(path, timeout=10.0):\n    deadline = time.time() + timeout\n    while time.time() < deadline:\n        if os.path.exists(path):\n            return True\n        time.sleep(0.05)\n    return False\n\ndef test_r10_script_runs_in_separate_process(tmp_path):\n    out = tmp_path / \"pid.txt\"\n    script = _write_script(\n        tmp_path,\n        \"pid.py\",\n        \"import os\\n\"\n        \"open({!r}, 'w').write(str(os.getpid()))\\n\".format(str(out)),\n    )\n    task_func(script)\n    assert _wait_for_file(str(out))\n    assert int(out.read_text()) != os.getpid()"
+ }
+]

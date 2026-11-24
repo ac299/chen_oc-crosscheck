@@ -1,0 +1,19 @@
+{
+ "accept": false,
+ "wins": 3,
+ "losses": 6,
+ "pairs": 60,
+ "p": 0.5078,
+ "reason": "rejected: 3 wins, 6 losses over 60 pairs",
+ "base": {
+  "method": "single",
+  "n": 60,
+  "rate": 0.5833
+ },
+ "cand": {
+  "method": "single+skills-r1e0",
+  "n": 60,
+  "rate": 0.5333,
+  "skills_loaded_runs": 52
+ }
+}

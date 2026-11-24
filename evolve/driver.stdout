@@ -1,0 +1,99 @@
+18:14:05 == round 1, current library none
+18:14:05 batch single on 13 tasks x 3 (lib=-)
+18:14:12 batch single on 20 tasks x 3 (lib=-)
+step reflect failed:
+Traceback (most recent call last):
+  File "/kaohe/oc-crosscheck/evolve/step.py", line 304, in <module>
+    main()
+  File "/kaohe/oc-crosscheck/evolve/step.py", line 296, in main
+    result = globals()[f"cmd_{a.cmd}"](a)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaohe/oc-crosscheck/evolve/step.py", line 201, in cmd_reflect
+    runs = outcomes(a.method, tasks, evidence=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaohe/oc-crosscheck/evolve/step.py", line 144, in outcomes
+    for r in records(method, tasks):
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaohe/oc-crosscheck/evolve/step.py", line 117, in records
+    r = json.loads(line)
+        ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+18:26:00 == round 1, current library none
+18:26:00 batch single on 13 tasks x 3 (lib=-)
+18:27:04 reconcile: missing from runs.jsonl: 0
+18:27:04 batch single on 20 tasks x 3 (lib=-)
+18:28:09 reconcile: missing from runs.jsonl: 0
+18:29:56 round 1: 2 proposals
+18:29:56   edit 0 add infer-unspecified-contracts: screened out (names task-specific terms)
+18:29:56   edit 1 add unspecified-edge-cases: screened out (names task-specific terms)
+18:29:57 == round 2, current library none
+18:29:57 batch single on 13 tasks x 3 (lib=-)
+18:32:06 == round 1, current library none
+18:32:06 batch single on 13 tasks x 3 (lib=-)
+18:32:33 reconcile: missing from runs.jsonl: 0
+18:32:33 batch single on 20 tasks x 3 (lib=-)
+18:32:39 reconcile: missing from runs.jsonl: 0
+18:32:57 round 1: 2 proposals
+18:33:04 batch single+skills-r1e0 on 20 tasks x 3 (lib=r1e0)
+18:44:23 reconcile: missing from runs.jsonl: 12
+18:45:11   edit 0 add infer-unspecified-contracts: rejected (rejected: 3 wins, 6 losses over 60 pairs)
+18:45:11   edit 1 add unspecified-edge-cases: screened out (The body encodes details from specific tasks (FileNotFoundError, CalledProcessError, exit-code/subprocess contracts, pandas/matplotlib empty-frame behavior, archive/path return values) rather than a general procedure, and several rules (e.g. 'return the code', 'empty archive/path') are one-fix generalizations not supported by two distinct tasks.)
+18:45:11 == round 2, current library none
+18:45:11 batch single on 13 tasks x 3 (lib=-)
+18:46:31 reconcile: missing from runs.jsonl: 0
+18:46:31 batch single on 20 tasks x 3 (lib=-)
+18:47:28 reconcile: missing from runs.jsonl: 0
+18:49:39 round 2: 2 proposals
+18:49:45 batch single+skills-r2e0 on 20 tasks x 3 (lib=r2e0)
+18:56:00 == round 2 (r2b), current library none
+18:56:00 batch single on 13 tasks x 3 (lib=-)
+18:57:58 reconcile: missing from runs.jsonl: 3
+18:57:58 batch single on 20 tasks x 3 (lib=-)
+18:58:54 reconcile: missing from runs.jsonl: 0
+Traceback (most recent call last):
+  File "evolve/driver.py", line 308, in <module>
+    {"evolve": evolve, "oneshot": oneshot, "test": test, "status": status}[sys.argv[1]]()
+  File "evolve/driver.py", line 200, in evolve
+    step("reflect", "--lib", cpath(LIB), "--method", method_for(cur), "--tasks", ",".join(TRAIN),
+  File "evolve/driver.py", line 93, in step
+    return json.loads(text.splitlines()[-1])
+  File "D:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "D:\Program Files\Python38\lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "D:\Program Files\Python38\lib\json\decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+json.decoder.JSONDecodeError: Unterminated string starting at: line 1 column 1764 (char 1763)
+exit 1
+19:01:46 == round 2 (r2b), current library none
+19:01:46 batch single on 13 tasks x 3 (lib=-)
+19:03:26 reconcile: missing from runs.jsonl: 0
+19:03:26 batch single on 20 tasks x 3 (lib=-)
+19:03:30 reconcile: missing from runs.jsonl: 0
+19:03:37 round 2: 2 proposals
+19:03:42 batch single+skills-r2be0 on 20 tasks x 3 (lib=r2be0)
+19:11:23 reconcile: missing from runs.jsonl: 2
+19:11:54   edit 0 add mirror-example-representation: rejected (rejected: 3 wins, 3 losses over 60 pairs)
+19:11:54   edit 1 add silent-edge-cases-return-not-raise: screened out (It encodes a blanket rule (return instead of raising for all unstated edge cases, including nonzero exits) derived from one fix, and its examples (Axes/DataFrame, CalledProcessError, FileNotFoundError) reflect specific tasks rather than a supported general procedure.)
+19:11:54 == round 3 (r3), current library none
+19:11:54 batch single on 13 tasks x 3 (lib=-)
+19:12:00 reconcile: missing from runs.jsonl: 0
+19:12:00 batch single on 20 tasks x 3 (lib=-)
+19:12:04 reconcile: missing from runs.jsonl: 0
+20:02:57 one-shot library ready
+20:02:58 evolved library is empty: final arms skipped
+20:02:58 batch single+skills-empty on 20 tasks x 3 (lib=empty)
+20:08:13 reconcile: missing from runs.jsonl: 1
+20:08:13 batch single+skills-oneshot on 20 tasks x 3 (lib=oneshot)
+20:13:07 reconcile: missing from runs.jsonl: 5
+20:13:07 test runs finished
+exit 0

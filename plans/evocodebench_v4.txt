@@ -1,0 +1,25 @@
+# v4 on EvoCodeBench: 8 x 3 (frozen before any EvoCodeBench result was seen)
+r_camp_zipnerf_resample crosscheck:v4@s2 0
+r_deluder_destroy crosscheck:v4@s2 0
+r_microagents_find_closest_agent crosscheck:v4@s2 0
+r_microsearch_search crosscheck:v4@s2 0
+r_searcharray_edismax crosscheck:v4@s2 0
+r_tanuki_py_add crosscheck:v4@s2 0
+r_test_agent_run_cmd crosscheck:v4@s2 0
+r_uhgeval_statistics crosscheck:v4@s2 0
+r_camp_zipnerf_resample crosscheck:v4@s2 1
+r_deluder_destroy crosscheck:v4@s2 1
+r_microagents_find_closest_agent crosscheck:v4@s2 1
+r_microsearch_search crosscheck:v4@s2 1
+r_searcharray_edismax crosscheck:v4@s2 1
+r_tanuki_py_add crosscheck:v4@s2 1
+r_test_agent_run_cmd crosscheck:v4@s2 1
+r_uhgeval_statistics crosscheck:v4@s2 1
+r_camp_zipnerf_resample crosscheck:v4@s2 2
+r_deluder_destroy crosscheck:v4@s2 2
+r_microagents_find_closest_agent crosscheck:v4@s2 2
+r_microsearch_search crosscheck:v4@s2 2
+r_searcharray_edismax crosscheck:v4@s2 2
+r_tanuki_py_add crosscheck:v4@s2 2
+r_test_agent_run_cmd crosscheck:v4@s2 2
+r_uhgeval_statistics crosscheck:v4@s2 2

@@ -1,0 +1,26 @@
+{
+ "task_id": "b_93",
+ "source": "BigCodeBench/93",
+ "libs": [
+  "pandas",
+  "numpy",
+  "matplotlib",
+  "sklearn"
+ ],
+ "completion_file": "solution.py",
+ "tests": [
+  "tests/test_solution.py"
+ ],
+ "test_files": [
+  "tests/test_solution.py"
+ ],
+ "env_volume": "xc-env-bcb",
+ "gold_body": "    np.random.seed(42)\n    if not isinstance(n_components, int) or n_components <= 0:\n        raise ValueError(\"n_components must be a positive integer\")\n\n    pca = PCA(n_components=n_components)\n    transformed_data = pca.fit_transform(data)\n\n    fig, ax = plt.subplots()\n    ax.scatter(transformed_data[:, 0], transformed_data[:, 1])\n\n    return pd.DataFrame(transformed_data, columns=[f'PC{i+1}' for i in range(n_components)]), ax",
+ "sample": {
+  "body_position": [
+   6,
+   6
+  ],
+  "indent": 4
+ }
+}

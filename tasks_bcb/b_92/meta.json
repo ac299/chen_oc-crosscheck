@@ -1,0 +1,25 @@
+{
+ "task_id": "b_92",
+ "source": "BigCodeBench/92",
+ "libs": [
+  "pandas",
+  "matplotlib",
+  "sklearn"
+ ],
+ "completion_file": "solution.py",
+ "tests": [
+  "tests/test_solution.py"
+ ],
+ "test_files": [
+  "tests/test_solution.py"
+ ],
+ "env_volume": "xc-env-bcb",
+ "gold_body": "    if not isinstance(data, pd.DataFrame):\n        raise ValueError(\"Input 'data' must be a pandas DataFrame.\")\n    if not isinstance(n_clusters, int) or n_clusters <= 1:\n        raise ValueError(\"'n_clusters' must be an integer greater than 1.\")\n\n    kmeans = KMeans(n_clusters=n_clusters)\n    labels = kmeans.fit_predict(data)\n    centroids = kmeans.cluster_centers_\n\n    fig, ax = plt.subplots()\n    ax.scatter(data.iloc[:, 0], data.iloc[:, 1], c=labels, cmap='viridis', alpha=0.6, label='Data points')\n    ax.scatter(centroids[:, 0], centroids[:, 1], marker='x', s=200, c='red', label='Centroids')\n    ax.set_xlabel('Feature 1')\n    ax.set_ylabel('Feature 2')\n    ax.set_title('K-Means Clustering')\n    ax.legend()\n\n    return labels, ax",
+ "sample": {
+  "body_position": [
+   6,
+   6
+  ],
+  "indent": 4
+ }
+}

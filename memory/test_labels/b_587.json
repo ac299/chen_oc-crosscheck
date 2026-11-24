@@ -1,0 +1,261 @@
+[
+ {
+  "run": "b_587__crosscheck-v7@s2__r0__1795236524",
+  "case": "xc_tests.test_xc_hybrid::test_r1_returns_three_values",
+  "held": true,
+  "message": "",
+  "source": "def _write_plaintext(tmp_path, name=\"plain.txt\", data=PLAINTEXT):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef test_r1_returns_three_values(tmp_path):\n    result = task_func(_write_plaintext(tmp_path))\n    assert isinstance(result, tuple)\n    assert len(result) == 3"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r0__1795236524",
+  "case": "xc_tests.test_xc_hybrid::test_r2_public_key_type",
+  "held": true,
+  "message": "",
+  "source": "def _write_plaintext(tmp_path, name=\"plain.txt\", data=PLAINTEXT):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef test_r2_public_key_type(tmp_path):\n    public_key, _, _ = task_func(_write_plaintext(tmp_path))\n    assert isinstance(public_key, rsa.PublicKey)"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r0__1795236524",
+  "case": "xc_tests.test_xc_hybrid::test_r3_public_key_usable",
+  "held": true,
+  "message": "",
+  "source": "def _write_plaintext(tmp_path, name=\"plain.txt\", data=PLAINTEXT):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef test_r3_public_key_usable(tmp_path):\n    public_key, _, _ = task_func(_write_plaintext(tmp_path))\n    assert public_key.e == 65537\n    assert public_key.n > 0\n    ciphertext = rsa.encrypt(b\"probe\", public_key)\n    assert isinstance(ciphertext, bytes)\n    assert len(ciphertext) > 0"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r0__1795236524",
+  "case": "xc_tests.test_xc_hybrid::test_r4_encrypted_file_name_is_str",
+  "held": true,
+  "message": "",
+  "source": "def _write_plaintext(tmp_path, name=\"plain.txt\", data=PLAINTEXT):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef test_r4_encrypted_file_name_is_str(tmp_path):\n    _, encrypted_file, _ = task_func(_write_plaintext(tmp_path))\n    assert isinstance(encrypted_file, str)\n    assert encrypted_file"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r0__1795236524",
+  "case": "xc_tests.test_xc_hybrid::test_r5_encrypted_key_file_name_is_str",
+  "held": true,
+  "message": "",
+  "source": "def _write_plaintext(tmp_path, name=\"plain.txt\", data=PLAINTEXT):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef test_r5_encrypted_key_file_name_is_str(tmp_path):\n    _, _, encrypted_key_file = task_func(_write_plaintext(tmp_path))\n    assert isinstance(encrypted_key_file, str)\n    assert encrypted_key_file"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r0__1795236524",
+  "case": "xc_tests.test_xc_hybrid::test_r6_encrypted_file_exists",
+  "held": true,
+  "message": "",
+  "source": "def _write_plaintext(tmp_path, name=\"plain.txt\", data=PLAINTEXT):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef test_r6_encrypted_file_exists(tmp_path):\n    _, encrypted_file, _ = task_func(_write_plaintext(tmp_path))\n    assert os.path.isfile(encrypted_file)"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r0__1795236524",
+  "case": "xc_tests.test_xc_hybrid::test_r7_encrypted_key_file_exists",
+  "held": true,
+  "message": "",
+  "source": "def _write_plaintext(tmp_path, name=\"plain.txt\", data=PLAINTEXT):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef test_r7_encrypted_key_file_exists(tmp_path):\n    _, _, encrypted_key_file = task_func(_write_plaintext(tmp_path))\n    assert os.path.isfile(encrypted_key_file)"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r0__1795236524",
+  "case": "xc_tests.test_xc_hybrid::test_r8_separate_new_files",
+  "held": true,
+  "message": "",
+  "source": "def _write_plaintext(tmp_path, name=\"plain.txt\", data=PLAINTEXT):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef test_r8_separate_new_files(tmp_path):\n    plain_path = _write_plaintext(tmp_path)\n    _, encrypted_file, encrypted_key_file = task_func(plain_path)\n    assert os.path.abspath(encrypted_file) != os.path.abspath(encrypted_key_file)\n    assert os.path.abspath(encrypted_file) != os.path.abspath(plain_path)\n    assert os.path.abspath(encrypted_key_file) != os.path.abspath(plain_path)"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r0__1795236524",
+  "case": "xc_tests.test_xc_hybrid::test_r9_encrypted_file_differs_from_plaintext",
+  "held": true,
+  "message": "",
+  "source": "def _write_plaintext(tmp_path, name=\"plain.txt\", data=PLAINTEXT):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef test_r9_encrypted_file_differs_from_plaintext(tmp_path):\n    plain_path = _write_plaintext(tmp_path)\n    _, encrypted_file, _ = task_func(plain_path)\n    with open(encrypted_file, \"rb\") as fh:\n        content = fh.read()\n    assert content\n    assert content != PLAINTEXT\n    assert PLAINTEXT not in content"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r0__1795236524",
+  "case": "xc_tests.test_xc_hybrid::test_r10_encrypted_key_is_rsa_ciphertext",
+  "held": false,
+  "message": "AssertionError: assert 88 == ((512 + 7) // 8)\n +  where 88 = len(b'aX3N79JF7lSH7r54+NZwKn2CXbEHx9PtzeUnv0d+Ya+Pf72ZqFpShH1Wmtl1uFchdy75RDJTb/KCb+LbFrlcug==')\n +  and   512 = <built-in method bit_length of int object at 0x7bbfc7f215f0>()\n +    where <built-in method bit_length of int object at 0x7bbfc7f215f0> = 869487791422322574...0353895259953757629.bit_length\n[+1 more line; full report in elemen",
+  "source": "def _write_plaintext(tmp_path, name=\"plain.txt\", data=PLAINTEXT):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef test_r10_encrypted_key_is_rsa_ciphertext(tmp_path):\n    public_key, _, encrypted_key_file = task_func(_write_plaintext(tmp_path))\n    with open(encrypted_key_file, \"rb\") as fh:\n        encrypted_key = fh.read()\n    assert isinstance(encrypted_key, bytes)\n    assert encrypted_key\n    # RSA ciphertext for an n-bit modulus is exactly n/8 bytes.\n    assert len(encrypted_key) == (public_key.n.bit_length() + 7) // 8"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r0__1795236524",
+  "case": "xc_tests.test_xc_hybrid::test_r11_encrypted_file_is_block_cipher_output",
+  "held": true,
+  "message": "",
+  "source": "def _write_plaintext(tmp_path, name=\"plain.txt\", data=PLAINTEXT):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef test_r11_encrypted_file_is_block_cipher_output(tmp_path):\n    _, encrypted_file, _ = task_func(_write_plaintext(tmp_path))\n    with open(encrypted_file, \"rb\") as fh:\n        blob = fh.read()\n    assert len(blob) >= 16\n    # AES-CBC output is a whole number of 16-byte blocks.\n    assert len(blob) % 16 == 0"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r0__1795236524",
+  "case": "xc_tests.test_xc_hybrid::test_r12_plaintext_file_untouched",
+  "held": true,
+  "message": "",
+  "source": "def _write_plaintext(tmp_path, name=\"plain.txt\", data=PLAINTEXT):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef test_r12_plaintext_file_untouched(tmp_path):\n    plain_path = _write_plaintext(tmp_path)\n    task_func(plain_path)\n    with open(plain_path, \"rb\") as fh:\n        assert fh.read() == PLAINTEXT"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r1__1795238090",
+  "case": "xc_tests.test_xc_hybrid::test_r1_returns_three_tuple",
+  "held": true,
+  "message": "",
+  "source": "def _run(tmp_path, content=b\"Hello hybrid world!\", name=\"plain.txt\"):\n    file_path, plain = _make_plain_file(tmp_path, name=name, content=content)\n    result = task_func(file_path)\n    return file_path, plain, result\n\ndef test_r1_returns_three_tuple(tmp_path):\n    _, _, result = _run(tmp_path)\n    assert isinstance(result, tuple)\n    assert len(result) == 3"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r1__1795238090",
+  "case": "xc_tests.test_xc_hybrid::test_r1_first_element_is_rsa_public_key",
+  "held": true,
+  "message": "",
+  "source": "def _run(tmp_path, content=b\"Hello hybrid world!\", name=\"plain.txt\"):\n    file_path, plain = _make_plain_file(tmp_path, name=name, content=content)\n    result = task_func(file_path)\n    return file_path, plain, result\n\ndef test_r1_first_element_is_rsa_public_key(tmp_path):\n    _, _, result = _run(tmp_path)\n    public_key = result[0]\n    assert isinstance(public_key, rsa.PublicKey)\n    assert isinstance(public_key.n, int) and public_key.n > 0\n    assert isinstance(public_key.e, int) and public_key.e > 1"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r1__1795238090",
+  "case": "xc_tests.test_xc_hybrid::test_r1_filenames_are_strings",
+  "held": true,
+  "message": "",
+  "source": "def _run(tmp_path, content=b\"Hello hybrid world!\", name=\"plain.txt\"):\n    file_path, plain = _make_plain_file(tmp_path, name=name, content=content)\n    result = task_func(file_path)\n    return file_path, plain, result\n\ndef test_r1_filenames_are_strings(tmp_path):\n    _, _, result = _run(tmp_path)\n    assert isinstance(result[1], str) and result[1]\n    assert isinstance(result[2], str) and result[2]"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r1__1795238090",
+  "case": "xc_tests.test_xc_hybrid::test_r2_encrypted_file_exists",
+  "held": true,
+  "message": "",
+  "source": "def _resolve(candidate, tmp_path, file_path):\n    \"\"\"Return an existing path for a returned filename, or None.\"\"\"\n    if not isinstance(candidate, str) or not candidate:\n        return None\n    options = [candidate]\n    if not os.path.isabs(candidate):\n        options.append(os.path.join(str(tmp_path), candidate))\n        options.append(os.path.join(os.path.dirname(file_path), candidate))\n        options.append(os.path.join(os.getcwd(), candidate))\n    for option in options:\n        if os.path.isfile(option):\n            return option\n    return None\n\ndef _run(tmp_path, content=b\"Hello hybrid world!\", name=\"plain.txt\"):\n    file_path, plain = _make_plain_file(tmp_path, name=name, content=content)\n    result = task_func(file_path)\n    return file_path, plain, result\n\ndef test_r2_encrypted_file_exists(tmp_path):\n    file_path, _, result = _run(tmp_path)\n    assert _resolve(result[1], tmp_path, file_path) is not None"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r1__1795238090",
+  "case": "xc_tests.test_xc_hybrid::test_r2_encrypted_key_file_exists",
+  "held": true,
+  "message": "",
+  "source": "def _resolve(candidate, tmp_path, file_path):\n    \"\"\"Return an existing path for a returned filename, or None.\"\"\"\n    if not isinstance(candidate, str) or not candidate:\n        return None\n    options = [candidate]\n    if not os.path.isabs(candidate):\n        options.append(os.path.join(str(tmp_path), candidate))\n        options.append(os.path.join(os.path.dirname(file_path), candidate))\n        options.append(os.path.join(os.getcwd(), candidate))\n    for option in options:\n        if os.path.isfile(option):\n            return option\n    return None\n\ndef _run(tmp_path, content=b\"Hello hybrid world!\", name=\"plain.txt\"):\n    file_path, plain = _make_plain_file(tmp_path, name=name, content=content)\n    result = task_func(file_path)\n    return file_path, plain, result\n\ndef test_r2_encrypted_key_file_exists(tmp_path):\n    file_path, _, result = _run(tmp_path)\n    assert _resolve(result[2], tmp_path, file_path) is not None"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r1__1795238090",
+  "case": "xc_tests.test_xc_hybrid::test_r2_files_are_distinct_from_input",
+  "held": true,
+  "message": "",
+  "source": "def _resolve(candidate, tmp_path, file_path):\n    \"\"\"Return an existing path for a returned filename, or None.\"\"\"\n    if not isinstance(candidate, str) or not candidate:\n        return None\n    options = [candidate]\n    if not os.path.isabs(candidate):\n        options.append(os.path.join(str(tmp_path), candidate))\n        options.append(os.path.join(os.path.dirname(file_path), candidate))\n        options.append(os.path.join(os.getcwd(), candidate))\n    for option in options:\n        if os.path.isfile(option):\n            return option\n    return None\n\ndef _run(tmp_path, content=b\"Hello hybrid world!\", name=\"plain.txt\"):\n    file_path, plain = _make_plain_file(tmp_path, name=name, content=content)\n    result = task_func(file_path)\n    return file_path, plain, result\n\ndef test_r2_files_are_distinct_from_input(tmp_path):\n    file_path, _, result = _run(tmp_path)\n    enc_file = _resolve(result[1], tmp_path, file_path)\n    enc_key = _resolve(result[2], tmp_path, file_path)\n    assert enc_file is not None and enc_key is not None\n    assert os.path.realpath(enc_file) != os.path.realpath(enc_key)\n    assert os.path.realpath(enc_file) != os.path.realpath(file_path)\n    assert os.path.realpath(enc_key) != os.path.realpath(file_path)"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r1__1795238090",
+  "case": "xc_tests.test_xc_hybrid::test_r2_input_file_untouched",
+  "held": true,
+  "message": "",
+  "source": "def _run(tmp_path, content=b\"Hello hybrid world!\", name=\"plain.txt\"):\n    file_path, plain = _make_plain_file(tmp_path, name=name, content=content)\n    result = task_func(file_path)\n    return file_path, plain, result\n\ndef test_r2_input_file_untouched(tmp_path):\n    file_path, plain, _ = _run(tmp_path)\n    with open(file_path, \"rb\") as handle:\n        assert handle.read() == plain"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r1__1795238090",
+  "case": "xc_tests.test_xc_hybrid::test_r2_encrypted_file_differs_from_plaintext",
+  "held": true,
+  "message": "",
+  "source": "def _resolve(candidate, tmp_path, file_path):\n    \"\"\"Return an existing path for a returned filename, or None.\"\"\"\n    if not isinstance(candidate, str) or not candidate:\n        return None\n    options = [candidate]\n    if not os.path.isabs(candidate):\n        options.append(os.path.join(str(tmp_path), candidate))\n        options.append(os.path.join(os.path.dirname(file_path), candidate))\n        options.append(os.path.join(os.getcwd(), candidate))\n    for option in options:\n        if os.path.isfile(option):\n            return option\n    return None\n\ndef _run(tmp_path, content=b\"Hello hybrid world!\", name=\"plain.txt\"):\n    file_path, plain = _make_plain_file(tmp_path, name=name, content=content)\n    result = task_func(file_path)\n    return file_path, plain, result\n\ndef test_r2_encrypted_file_differs_from_plaintext(tmp_path):\n    file_path, plain, result = _run(tmp_path)\n    enc_file = _resolve(result[1], tmp_path, file_path)\n    assert enc_file is not None\n    with open(enc_file, \"rb\") as handle:\n        data = handle.read()\n    assert data\n    assert data != plain\n    assert plain not in data"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r1__1795238090",
+  "case": "xc_tests.test_xc_hybrid::test_r3_encrypted_key_is_rsa_ciphertext",
+  "held": false,
+  "message": "AssertionError: assert 88 == ((512 + 7) // 8)\n +  where 88 = len(b'g3R92uwfu10xfm+fnHlbDqm99TF1yCrDHiOjWxuptkAJPvmkTHTsxIyzpkTPGy64SeMJZODCqME0kN5BCVvOWg==')\n +  and   512 = <built-in method bit_length of int object at 0x726974f05710>()\n +    where <built-in method bit_length of int object at 0x726974f05710> = 832974284336421508...2624088230309939537.bit_length\n[+1 more line; full report in elemen",
+  "source": "def _resolve(candidate, tmp_path, file_path):\n    \"\"\"Return an existing path for a returned filename, or None.\"\"\"\n    if not isinstance(candidate, str) or not candidate:\n        return None\n    options = [candidate]\n    if not os.path.isabs(candidate):\n        options.append(os.path.join(str(tmp_path), candidate))\n        options.append(os.path.join(os.path.dirname(file_path), candidate))\n        options.append(os.path.join(os.getcwd(), candidate))\n    for option in options:\n        if os.path.isfile(option):\n            return option\n    return None\n\ndef _run(tmp_path, content=b\"Hello hybrid world!\", name=\"plain.txt\"):\n    file_path, plain = _make_plain_file(tmp_path, name=name, content=content)\n    result = task_func(file_path)\n    return file_path, plain, result\n\ndef test_r3_encrypted_key_is_rsa_ciphertext(tmp_path):\n    file_path, _, result = _run(tmp_path)\n    public_key = result[0]\n    enc_key = _resolve(result[2], tmp_path, file_path)\n    assert enc_key is not None\n    with open(enc_key, \"rb\") as handle:\n        blob = handle.read()\n    assert blob\n    # An RSA ciphertext for an n-bit modulus is exactly n/8 bytes long.\n    assert len(blob) == (public_key.n.bit_length() + 7) // 8"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r1__1795238090",
+  "case": "xc_tests.test_xc_hybrid::test_r3_encrypted_key_is_below_modulus",
+  "held": false,
+  "message": "AssertionError: assert 218551219144342256...3641987090943524157 < 686456161122829851...3039604065276517801\n +  where 218551219144342256...3641987090943524157 = <built-in method from_bytes of type object at 0x5f62d9891a08>(b'BzM7MOsS91trOLtAy+ane2xJU6+JMB4i67vJ97+uBQQgeGZXzp6/QYuuMocDiuOMN1neanRsTfh2/jBUgVZQ9g==', 'big')\n +    where <built-in method from_bytes of type object at 0x5f62d9891a08> = in",
+  "source": "def _resolve(candidate, tmp_path, file_path):\n    \"\"\"Return an existing path for a returned filename, or None.\"\"\"\n    if not isinstance(candidate, str) or not candidate:\n        return None\n    options = [candidate]\n    if not os.path.isabs(candidate):\n        options.append(os.path.join(str(tmp_path), candidate))\n        options.append(os.path.join(os.path.dirname(file_path), candidate))\n        options.append(os.path.join(os.getcwd(), candidate))\n    for option in options:\n        if os.path.isfile(option):\n            return option\n    return None\n\ndef _run(tmp_path, content=b\"Hello hybrid world!\", name=\"plain.txt\"):\n    file_path, plain = _make_plain_file(tmp_path, name=name, content=content)\n    result = task_func(file_path)\n    return file_path, plain, result\n\ndef test_r3_encrypted_key_is_below_modulus(tmp_path):\n    file_path, _, result = _run(tmp_path)\n    public_key = result[0]\n    enc_key = _resolve(result[2], tmp_path, file_path)\n    assert enc_key is not None\n    with open(enc_key, \"rb\") as handle:\n        blob = handle.read()\n    assert int.from_bytes(blob, \"big\") < public_key.n"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r1__1795238090",
+  "case": "xc_tests.test_xc_hybrid::test_r4_encrypted_file_is_block_aligned",
+  "held": true,
+  "message": "",
+  "source": "def _resolve(candidate, tmp_path, file_path):\n    \"\"\"Return an existing path for a returned filename, or None.\"\"\"\n    if not isinstance(candidate, str) or not candidate:\n        return None\n    options = [candidate]\n    if not os.path.isabs(candidate):\n        options.append(os.path.join(str(tmp_path), candidate))\n        options.append(os.path.join(os.path.dirname(file_path), candidate))\n        options.append(os.path.join(os.getcwd(), candidate))\n    for option in options:\n        if os.path.isfile(option):\n            return option\n    return None\n\ndef _run(tmp_path, content=b\"Hello hybrid world!\", name=\"plain.txt\"):\n    file_path, plain = _make_plain_file(tmp_path, name=name, content=content)\n    result = task_func(file_path)\n    return file_path, plain, result\n\ndef test_r4_encrypted_file_is_block_aligned(tmp_path):\n    file_path, _, result = _run(tmp_path)\n    enc_file = _resolve(result[1], tmp_path, file_path)\n    assert enc_file is not None\n    size = os.path.getsize(enc_file)\n    assert size > 0\n    assert size % 16 == 0"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r1__1795238090",
+  "case": "xc_tests.test_xc_hybrid::test_r4_encrypted_file_grows_with_padding",
+  "held": true,
+  "message": "",
+  "source": "def _resolve(candidate, tmp_path, file_path):\n    \"\"\"Return an existing path for a returned filename, or None.\"\"\"\n    if not isinstance(candidate, str) or not candidate:\n        return None\n    options = [candidate]\n    if not os.path.isabs(candidate):\n        options.append(os.path.join(str(tmp_path), candidate))\n        options.append(os.path.join(os.path.dirname(file_path), candidate))\n        options.append(os.path.join(os.getcwd(), candidate))\n    for option in options:\n        if os.path.isfile(option):\n            return option\n    return None\n\ndef _run(tmp_path, content=b\"Hello hybrid world!\", name=\"plain.txt\"):\n    file_path, plain = _make_plain_file(tmp_path, name=name, content=content)\n    result = task_func(file_path)\n    return file_path, plain, result\n\ndef test_r4_encrypted_file_grows_with_padding(tmp_path):\n    file_path, _, result = _run(tmp_path, content=b\"x\" * 100)\n    enc_file = _resolve(result[1], tmp_path, file_path)\n    assert enc_file is not None\n    size = os.path.getsize(enc_file)\n    assert size % 16 == 0\n    assert size >= 100"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r1__1795238090",
+  "case": "xc_tests.test_xc_hybrid::test_r5_two_calls_use_different_keys",
+  "held": true,
+  "message": "",
+  "source": "def _make_plain_file(tmp_path, name=\"plain.txt\", content=b\"Hello hybrid world!\"):\n    path = tmp_path / name\n    path.write_bytes(content)\n    return str(path), content\n\ndef test_r5_two_calls_use_different_keys(tmp_path):\n    first = task_func(_make_plain_file(tmp_path, \"a.txt\", b\"same content\")[0])\n    second = task_func(_make_plain_file(tmp_path, \"b.txt\", b\"same content\")[0])\n    assert isinstance(first[0], rsa.PublicKey)\n    assert isinstance(second[0], rsa.PublicKey)\n    assert first[0].n != second[0].n"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r1__1795238090",
+  "case": "xc_tests.test_xc_hybrid::test_r5_two_calls_produce_different_ciphertext",
+  "held": true,
+  "message": "",
+  "source": "def _make_plain_file(tmp_path, name=\"plain.txt\", content=b\"Hello hybrid world!\"):\n    path = tmp_path / name\n    path.write_bytes(content)\n    return str(path), content\n\ndef _resolve(candidate, tmp_path, file_path):\n    \"\"\"Return an existing path for a returned filename, or None.\"\"\"\n    if not isinstance(candidate, str) or not candidate:\n        return None\n    options = [candidate]\n    if not os.path.isabs(candidate):\n        options.append(os.path.join(str(tmp_path), candidate))\n        options.append(os.path.join(os.path.dirname(file_path), candidate))\n        options.append(os.path.join(os.getcwd(), candidate))\n    for option in options:\n        if os.path.isfile(option):\n            return option\n    return None\n\ndef test_r5_two_calls_produce_different_ciphertext(tmp_path):\n    first = task_func(_make_plain_file(tmp_path, \"a.txt\", b\"same content\")[0])\n    second = task_func(_make_plain_file(tmp_path, \"b.txt\", b\"same content\")[0])\n    first_file = _resolve(first[1], tmp_path, str(tmp_path / \"a.txt\"))\n    second_file = _resolve(second[1], tmp_path, str(tmp_path / \"b.txt\"))\n    assert first_file is not None and second_file is not None\n    with open(first_file, \"rb\") as handle:\n        first_bytes = handle.read()\n    with open(second_file, \"rb\") as handle:\n        second_bytes = handle.read()\n    assert first_bytes != second_bytes"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r1__1795238090",
+  "case": "xc_tests.test_xc_hybrid::test_r6_missing_input_file_raises",
+  "held": true,
+  "message": "",
+  "source": "def test_r6_missing_input_file_raises(tmp_path):\n    missing = str(tmp_path / \"does_not_exist.txt\")\n    with pytest.raises(Exception):\n        task_func(missing)"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r2__1795239808",
+  "case": "xc_tests.test_xc_hybrid::test_r1_returns_public_key",
+  "held": true,
+  "message": "",
+  "source": "def _write_plaintext(tmp_path, data=PLAINTEXT, name=\"plain.txt\"):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef test_r1_returns_public_key(tmp_path):\n    \"\"\"The first returned value is an ``rsa.PublicKey``.\"\"\"\n    result = task_func(_write_plaintext(tmp_path))\n    assert isinstance(result, tuple)\n    assert len(result) == 3\n    assert isinstance(result[0], rsa.PublicKey)"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r2__1795239808",
+  "case": "xc_tests.test_xc_hybrid::test_r2_returns_two_filenames",
+  "held": true,
+  "message": "",
+  "source": "def _write_plaintext(tmp_path, data=PLAINTEXT, name=\"plain.txt\"):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef test_r2_returns_two_filenames(tmp_path):\n    \"\"\"The second and third returned values are file names (strings).\"\"\"\n    public_key, encrypted_file, encrypted_key_file = task_func(\n        _write_plaintext(tmp_path)\n    )\n    assert isinstance(encrypted_file, str)\n    assert isinstance(encrypted_key_file, str)\n    assert encrypted_file\n    assert encrypted_key_file"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r2__1795239808",
+  "case": "xc_tests.test_xc_hybrid::test_r3_output_files_exist",
+  "held": true,
+  "message": "",
+  "source": "def _write_plaintext(tmp_path, data=PLAINTEXT, name=\"plain.txt\"):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef test_r3_output_files_exist(tmp_path):\n    \"\"\"Both returned file names refer to files that exist on disk.\"\"\"\n    _, encrypted_file, encrypted_key_file = task_func(_write_plaintext(tmp_path))\n    assert os.path.isfile(encrypted_file)\n    assert os.path.isfile(encrypted_key_file)"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r2__1795239808",
+  "case": "xc_tests.test_xc_hybrid::test_r4_output_files_are_new_files",
+  "held": true,
+  "message": "",
+  "source": "def _write_plaintext(tmp_path, data=PLAINTEXT, name=\"plain.txt\"):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef _read(path):\n    with open(path, \"rb\") as handle:\n        return handle.read()\n\ndef test_r4_output_files_are_new_files(tmp_path):\n    \"\"\"The outputs are separate new files, not the input file.\"\"\"\n    plain_path = _write_plaintext(tmp_path)\n    _, encrypted_file, encrypted_key_file = task_func(plain_path)\n    assert os.path.abspath(encrypted_file) != os.path.abspath(plain_path)\n    assert os.path.abspath(encrypted_key_file) != os.path.abspath(plain_path)\n    assert os.path.abspath(encrypted_file) != os.path.abspath(encrypted_key_file)\n    # The original plaintext file is left untouched.\n    assert _read(plain_path) == PLAINTEXT"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r2__1795239808",
+  "case": "xc_tests.test_xc_hybrid::test_r5_encrypted_file_differs_from_plaintext",
+  "held": true,
+  "message": "",
+  "source": "def _write_plaintext(tmp_path, data=PLAINTEXT, name=\"plain.txt\"):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef _read(path):\n    with open(path, \"rb\") as handle:\n        return handle.read()\n\ndef test_r5_encrypted_file_differs_from_plaintext(tmp_path):\n    \"\"\"The encrypted file does not contain the plaintext.\"\"\"\n    _, encrypted_file, _ = task_func(_write_plaintext(tmp_path))\n    content = _read(encrypted_file)\n    assert content\n    assert content != PLAINTEXT\n    assert PLAINTEXT.strip() not in content"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r2__1795239808",
+  "case": "xc_tests.test_xc_hybrid::test_r6_encrypted_key_file_differs_from_plaintext",
+  "held": true,
+  "message": "",
+  "source": "def _write_plaintext(tmp_path, data=PLAINTEXT, name=\"plain.txt\"):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef _read(path):\n    with open(path, \"rb\") as handle:\n        return handle.read()\n\ndef test_r6_encrypted_key_file_differs_from_plaintext(tmp_path):\n    \"\"\"The encrypted AES key file does not contain the plaintext.\"\"\"\n    _, _, encrypted_key_file = task_func(_write_plaintext(tmp_path))\n    content = _read(encrypted_key_file)\n    assert content\n    assert PLAINTEXT.strip() not in content"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r2__1795239808",
+  "case": "xc_tests.test_xc_hybrid::test_r7_encrypted_key_file_holds_rsa_ciphertext",
+  "held": false,
+  "message": "AssertionError: assert 88 == 64\n +  where 88 = len(b'gXzPhHCG4yPBbtjyZ5PGMIecBZxt+XX0ZwUNBZe4+CzQbwgCMVMKfIZqjKJJJ0lfJ3wFDuWrVRy5B70DShHNCg==')\n +  and   64 = <function byte_size at 0x7e8d78f4ee80>(129582085384232895...0114833886544836007)\n +    where <function byte_size at 0x7e8d78f4ee80> = <module 'rsa.common' from '/env/venv/lib/python3.11/site-packages/rsa/common.py'>.byte_size\n +      where <",
+  "source": "def _write_plaintext(tmp_path, data=PLAINTEXT, name=\"plain.txt\"):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef _read(path):\n    with open(path, \"rb\") as handle:\n        return handle.read()\n\ndef test_r7_encrypted_key_file_holds_rsa_ciphertext(tmp_path):\n    \"\"\"The encrypted-key file holds an RSA ciphertext for the returned key.\n\n    An RSA PKCS#1 v1.5 ciphertext is exactly as long as the modulus of the\n    public key, so the file content must have that length.\n    \"\"\"\n    public_key, _, encrypted_key_file = task_func(_write_plaintext(tmp_path))\n    content = _read(encrypted_key_file).strip()\n    assert len(content) == rsa.common.byte_size(public_key.n)"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r2__1795239808",
+  "case": "xc_tests.test_xc_hybrid::test_r8_encrypted_file_is_whole_aes_blocks",
+  "held": true,
+  "message": "",
+  "source": "def _write_plaintext(tmp_path, data=PLAINTEXT, name=\"plain.txt\"):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef _read(path):\n    with open(path, \"rb\") as handle:\n        return handle.read()\n\ndef test_r8_encrypted_file_is_whole_aes_blocks(tmp_path):\n    \"\"\"The encrypted file is AES-CBC ciphertext: a whole number of blocks.\"\"\"\n    _, encrypted_file, _ = task_func(_write_plaintext(tmp_path))\n    content = _read(encrypted_file)\n    assert len(content) % (algorithms.AES.block_size // 8) == 0\n    assert len(content) >= len(PLAINTEXT)"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r2__1795239808",
+  "case": "xc_tests.test_xc_hybrid::test_r9_public_key_is_usable_for_rsa_encryption",
+  "held": true,
+  "message": "",
+  "source": "def _write_plaintext(tmp_path, data=PLAINTEXT, name=\"plain.txt\"):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef test_r9_public_key_is_usable_for_rsa_encryption(tmp_path):\n    \"\"\"The returned public key is a working RSA encryption key.\"\"\"\n    public_key, _, _ = task_func(_write_plaintext(tmp_path))\n    assert public_key.n > 0\n    assert public_key.e > 1\n    ciphertext = rsa.encrypt(b\"probe\", public_key)\n    assert len(ciphertext) == rsa.common.byte_size(public_key.n)"
+ },
+ {
+  "run": "b_587__crosscheck-v7@s2__r2__1795239808",
+  "case": "xc_tests.test_xc_hybrid::test_r10_encrypted_file_is_not_plaintext_for_other_content",
+  "held": true,
+  "message": "",
+  "source": "def _write_plaintext(tmp_path, data=PLAINTEXT, name=\"plain.txt\"):\n    path = tmp_path / name\n    path.write_bytes(data)\n    return str(path)\n\ndef _read(path):\n    with open(path, \"rb\") as handle:\n        return handle.read()\n\ndef test_r10_encrypted_file_is_not_plaintext_for_other_content(tmp_path):\n    \"\"\"A different input file yields a different encrypted file.\"\"\"\n    first = _write_plaintext(tmp_path, b\"first payload\\n\", \"a.txt\")\n    second = _write_plaintext(tmp_path, b\"second payload\\n\", \"b.txt\")\n    _, enc_first, _ = task_func(first)\n    _, enc_second, _ = task_func(second)\n    assert _read(enc_first) != _read(enc_second)"
+ }
+]

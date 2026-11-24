@@ -1,0 +1,254 @@
+[
+ {
+  "run": "b_509__crosscheck-v7@s2__r0__1795233228",
+  "case": "xc_tests.test_xc_diff::test_r1_columns",
+  "held": true,
+  "message": "",
+  "source": "def _write(tmp_path, name, text):\n    path = tmp_path / name\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef test_r1_columns(tmp_path):\n    a = _write(tmp_path, \"a.csv\", \"x,y\\n1,2\\n\")\n    b = _write(tmp_path, \"b.csv\", \"x,y\\n1,2\\n\")\n    df = task_func(a, b)\n    assert isinstance(df, pd.DataFrame)\n    assert list(df.columns) == [\"Line Number\", \"Status\", \"Content\"]"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r0__1795233228",
+  "case": "xc_tests.test_xc_diff::test_r2_identical_files_no_changes",
+  "held": true,
+  "message": "",
+  "source": "def _write(tmp_path, name, text):\n    path = tmp_path / name\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef test_r2_identical_files_no_changes(tmp_path):\n    a = _write(tmp_path, \"a.csv\", \"x,y\\n1,2\\n3,4\\n\")\n    b = _write(tmp_path, \"b.csv\", \"x,y\\n1,2\\n3,4\\n\")\n    df = task_func(a, b)\n    assert set(df[\"Status\"]) == {\" \"}\n    assert len(df) == 3"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r0__1795233228",
+  "case": "xc_tests.test_xc_diff::test_r3_changed_line_reports_minus_and_plus",
+  "held": false,
+  "message": "assert ('-', '1,2') in [(' ', \"('x', 'y')\"), ('-', \"('1', '2')\"), ('+', \"('1', '3')\")]",
+  "source": "def _write(tmp_path, name, text):\n    path = tmp_path / name\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef _rows(df):\n    return [tuple(row) for row in df[[\"Line Number\", \"Status\", \"Content\"]].itertuples(index=False)]\n\ndef test_r3_changed_line_reports_minus_and_plus(tmp_path):\n    a = _write(tmp_path, \"a.csv\", \"x,y\\n1,2\\n\")\n    b = _write(tmp_path, \"b.csv\", \"x,y\\n1,3\\n\")\n    df = task_func(a, b)\n    rows = _rows(df)\n    assert (\"-\", \"1,2\") in [(s, c) for _, s, c in rows]\n    assert (\"+\", \"1,3\") in [(s, c) for _, s, c in rows]\n    assert (\" \", \"x,y\") in [(s, c) for _, s, c in rows]"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r0__1795233228",
+  "case": "xc_tests.test_xc_diff::test_r4_line_added_in_second_file",
+  "held": false,
+  "message": "assert [\"('1', '2')\"] == ['1,2']\n  \n  At index 0 diff: \"('1', '2')\" != '1,2'\n  Use -v to get more diff",
+  "source": "def _write(tmp_path, name, text):\n    path = tmp_path / name\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef _rows(df):\n    return [tuple(row) for row in df[[\"Line Number\", \"Status\", \"Content\"]].itertuples(index=False)]\n\ndef test_r4_line_added_in_second_file(tmp_path):\n    a = _write(tmp_path, \"a.csv\", \"x,y\\n\")\n    b = _write(tmp_path, \"b.csv\", \"x,y\\n1,2\\n\")\n    df = task_func(a, b)\n    plus = [c for _, s, c in _rows(df) if s == \"+\"]\n    assert plus == [\"1,2\"]\n    assert \"-\" not in set(df[\"Status\"])"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r0__1795233228",
+  "case": "xc_tests.test_xc_diff::test_r5_line_removed_from_second_file",
+  "held": false,
+  "message": "assert [\"('1', '2')\"] == ['1,2']\n  \n  At index 0 diff: \"('1', '2')\" != '1,2'\n  Use -v to get more diff",
+  "source": "def _write(tmp_path, name, text):\n    path = tmp_path / name\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef _rows(df):\n    return [tuple(row) for row in df[[\"Line Number\", \"Status\", \"Content\"]].itertuples(index=False)]\n\ndef test_r5_line_removed_from_second_file(tmp_path):\n    a = _write(tmp_path, \"a.csv\", \"x,y\\n1,2\\n\")\n    b = _write(tmp_path, \"b.csv\", \"x,y\\n\")\n    df = task_func(a, b)\n    minus = [c for _, s, c in _rows(df) if s == \"-\"]\n    assert minus == [\"1,2\"]\n    assert \"+\" not in set(df[\"Status\"])"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r0__1795233228",
+  "case": "xc_tests.test_xc_diff::test_r6_line_numbers_are_integers",
+  "held": true,
+  "message": "",
+  "source": "def _write(tmp_path, name, text):\n    path = tmp_path / name\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef test_r6_line_numbers_are_integers(tmp_path):\n    a = _write(tmp_path, \"a.csv\", \"x,y\\n1,2\\n\")\n    b = _write(tmp_path, \"b.csv\", \"x,y\\n1,3\\n\")\n    df = task_func(a, b)\n    assert all(isinstance(n, int) for n in df[\"Line Number\"])\n    assert min(df[\"Line Number\"]) >= 1"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r0__1795233228",
+  "case": "xc_tests.test_xc_diff::test_r7_missing_first_file",
+  "held": true,
+  "message": "",
+  "source": "def _write(tmp_path, name, text):\n    path = tmp_path / name\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef test_r7_missing_first_file(tmp_path):\n    b = _write(tmp_path, \"b.csv\", \"x,y\\n\")\n    with pytest.raises(FileNotFoundError):\n        task_func(str(tmp_path / \"nope.csv\"), b)"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r0__1795233228",
+  "case": "xc_tests.test_xc_diff::test_r8_missing_second_file",
+  "held": true,
+  "message": "",
+  "source": "def _write(tmp_path, name, text):\n    path = tmp_path / name\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef test_r8_missing_second_file(tmp_path):\n    a = _write(tmp_path, \"a.csv\", \"x,y\\n\")\n    with pytest.raises(FileNotFoundError):\n        task_func(a, str(tmp_path / \"nope.csv\"))"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r0__1795233228",
+  "case": "xc_tests.test_xc_diff::test_r9_empty_first_file",
+  "held": true,
+  "message": "",
+  "source": "def _write(tmp_path, name, text):\n    path = tmp_path / name\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef test_r9_empty_first_file(tmp_path):\n    a = _write(tmp_path, \"a.csv\", \"\")\n    b = _write(tmp_path, \"b.csv\", \"x,y\\n\")\n    with pytest.raises(ValueError):\n        task_func(a, b)"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r0__1795233228",
+  "case": "xc_tests.test_xc_diff::test_r10_empty_second_file",
+  "held": true,
+  "message": "",
+  "source": "def _write(tmp_path, name, text):\n    path = tmp_path / name\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef test_r10_empty_second_file(tmp_path):\n    a = _write(tmp_path, \"a.csv\", \"x,y\\n\")\n    b = _write(tmp_path, \"b.csv\", \"\")\n    with pytest.raises(ValueError):\n        task_func(a, b)"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r0__1795233228",
+  "case": "xc_tests.test_xc_diff::test_r11_custom_delimiter",
+  "held": false,
+  "message": "assert '1;2' in [\"('x', 'y')\", \"('1', '2')\", \"('1', '3')\"]",
+  "source": "def _write(tmp_path, name, text):\n    path = tmp_path / name\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef test_r11_custom_delimiter(tmp_path):\n    a = _write(tmp_path, \"a.csv\", \"x;y\\n1;2\\n\")\n    b = _write(tmp_path, \"b.csv\", \"x;y\\n1;3\\n\")\n    df = task_func(a, b, delimiter=\";\")\n    contents = list(df[\"Content\"])\n    assert \"1;2\" in contents\n    assert \"1;3\" in contents"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r0__1795233228",
+  "case": "xc_tests.test_xc_diff::test_r12_custom_quotechar",
+  "held": true,
+  "message": "",
+  "source": "def _write(tmp_path, name, text):\n    path = tmp_path / name\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef test_r12_custom_quotechar(tmp_path):\n    a = _write(tmp_path, \"a.csv\", \"x,y\\n'1,2',3\\n\")\n    b = _write(tmp_path, \"b.csv\", \"x,y\\n'1,2',4\\n\")\n    df = task_func(a, b, quotechar=\"'\")\n    contents = list(df[\"Content\"])\n    assert any(\"1,2\" in c and \"3\" in c for c in contents)\n    assert any(\"1,2\" in c and \"4\" in c for c in contents)"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r1__1795233563",
+  "case": "xc_tests.test_xc_differences::test_r4_changed_line_reports_minus_and_plus",
+  "held": false,
+  "message": "assert 3 == 2\n +  where 3 = len([(1, ' ', \"('a', 'b')\"), (2, '-', \"('c', 'd')\"), (3, '+', \"('c', 'e')\")])",
+  "source": "def _write(path, text):\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef _rows(result):\n    return [tuple(row) for row in result[[\"Line Number\", \"Status\", \"Content\"]].itertuples(index=False)]\n\ndef test_r4_changed_line_reports_minus_and_plus(tmp_path):\n    f1 = _write(tmp_path / \"a.csv\", \"a,b\\nc,d\\n\")\n    f2 = _write(tmp_path / \"b.csv\", \"a,b\\nc,e\\n\")\n    result = task_func(f1, f2)\n    rows = _rows(result)\n    assert len(rows) == 2\n    statuses = [r[1] for r in rows]\n    assert statuses == [\"-\", \"+\"]\n    assert rows[0][2] == \"c,d\"\n    assert rows[1][2] == \"c,e\""
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r1__1795233563",
+  "case": "xc_tests.test_xc_differences::test_r5_line_only_in_first_file_is_minus",
+  "held": false,
+  "message": "assert 3 == 1\n +  where 3 = len([(1, ' ', \"('a', 'b')\"), (2, ' ', \"('c', 'd')\"), (3, '-', \"('extra', 'line')\")])",
+  "source": "def _write(path, text):\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef _rows(result):\n    return [tuple(row) for row in result[[\"Line Number\", \"Status\", \"Content\"]].itertuples(index=False)]\n\ndef test_r5_line_only_in_first_file_is_minus(tmp_path):\n    f1 = _write(tmp_path / \"a.csv\", \"a,b\\nc,d\\nextra,line\\n\")\n    f2 = _write(tmp_path / \"b.csv\", \"a,b\\nc,d\\n\")\n    result = task_func(f1, f2)\n    rows = _rows(result)\n    assert len(rows) == 1\n    assert rows[0][1] == \"-\"\n    assert rows[0][2] == \"extra,line\""
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r1__1795233563",
+  "case": "xc_tests.test_xc_differences::test_r6_line_only_in_second_file_is_plus",
+  "held": false,
+  "message": "assert 3 == 1\n +  where 3 = len([(1, ' ', \"('a', 'b')\"), (2, ' ', \"('c', 'd')\"), (3, '+', \"('new', 'line')\")])",
+  "source": "def _write(path, text):\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef _rows(result):\n    return [tuple(row) for row in result[[\"Line Number\", \"Status\", \"Content\"]].itertuples(index=False)]\n\ndef test_r6_line_only_in_second_file_is_plus(tmp_path):\n    f1 = _write(tmp_path / \"a.csv\", \"a,b\\nc,d\\n\")\n    f2 = _write(tmp_path / \"b.csv\", \"a,b\\nc,d\\nnew,line\\n\")\n    result = task_func(f1, f2)\n    rows = _rows(result)\n    assert len(rows) == 1\n    assert rows[0][1] == \"+\"\n    assert rows[0][2] == \"new,line\""
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r1__1795233563",
+  "case": "xc_tests.test_xc_differences::test_r7_line_numbers_are_reported",
+  "held": false,
+  "message": "assert 4 == 2\n +  where 4 = len([(1, ' ', \"('h1', 'h2')\"), (2, ' ', \"('r1', 'r2')\"), (3, '-', \"('r3', 'r4')\"), (4, '+', \"('r3', 'r5')\")])",
+  "source": "def _write(path, text):\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef _rows(result):\n    return [tuple(row) for row in result[[\"Line Number\", \"Status\", \"Content\"]].itertuples(index=False)]\n\ndef test_r7_line_numbers_are_reported(tmp_path):\n    f1 = _write(tmp_path / \"a.csv\", \"h1,h2\\nr1,r2\\nr3,r4\\n\")\n    f2 = _write(tmp_path / \"b.csv\", \"h1,h2\\nr1,r2\\nr3,r5\\n\")\n    result = task_func(f1, f2)\n    rows = _rows(result)\n    assert len(rows) == 2\n    numbers = [r[0] for r in rows]\n    assert all(isinstance(n, int) for n in numbers)\n    assert numbers[0] == numbers[1]\n    assert numbers[0] >= 1"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r1__1795233563",
+  "case": "xc_tests.test_xc_differences::test_r8_status_values_are_from_allowed_set",
+  "held": true,
+  "message": "",
+  "source": "def _write(path, text):\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef test_r8_status_values_are_from_allowed_set(tmp_path):\n    f1 = _write(tmp_path / \"a.csv\", \"a,b\\nc,d\\n\")\n    f2 = _write(tmp_path / \"b.csv\", \"a,b\\nc,e\\n\")\n    result = task_func(f1, f2)\n    assert set(result[\"Status\"]).issubset({\" \", \"-\", \"+\"})"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r1__1795233563",
+  "case": "xc_tests.test_xc_errors::test_r9_missing_first_file_raises_file_not_found",
+  "held": true,
+  "message": "",
+  "source": "def _write(path, text):\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef test_r9_missing_first_file_raises_file_not_found(tmp_path):\n    f2 = _write(tmp_path / \"b.csv\", \"a,b\\n\")\n    with pytest.raises(FileNotFoundError):\n        task_func(str(tmp_path / \"does_not_exist.csv\"), f2)"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r1__1795233563",
+  "case": "xc_tests.test_xc_errors::test_r10_missing_second_file_raises_file_not_found",
+  "held": true,
+  "message": "",
+  "source": "def _write(path, text):\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef test_r10_missing_second_file_raises_file_not_found(tmp_path):\n    f1 = _write(tmp_path / \"a.csv\", \"a,b\\n\")\n    with pytest.raises(FileNotFoundError):\n        task_func(f1, str(tmp_path / \"does_not_exist.csv\"))"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r1__1795233563",
+  "case": "xc_tests.test_xc_errors::test_r11_empty_first_file_raises_value_error",
+  "held": true,
+  "message": "",
+  "source": "def _write(path, text):\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef test_r11_empty_first_file_raises_value_error(tmp_path):\n    f1 = _write(tmp_path / \"a.csv\", \"\")\n    f2 = _write(tmp_path / \"b.csv\", \"a,b\\n\")\n    with pytest.raises(ValueError):\n        task_func(f1, f2)"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r1__1795233563",
+  "case": "xc_tests.test_xc_errors::test_r12_empty_second_file_raises_value_error",
+  "held": true,
+  "message": "",
+  "source": "def _write(path, text):\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef test_r12_empty_second_file_raises_value_error(tmp_path):\n    f1 = _write(tmp_path / \"a.csv\", \"a,b\\n\")\n    f2 = _write(tmp_path / \"b.csv\", \"\")\n    with pytest.raises(ValueError):\n        task_func(f1, f2)"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r1__1795233563",
+  "case": "xc_tests.test_xc_errors::test_r13_both_files_empty_raises_value_error",
+  "held": true,
+  "message": "",
+  "source": "def _write(path, text):\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef test_r13_both_files_empty_raises_value_error(tmp_path):\n    f1 = _write(tmp_path / \"a.csv\", \"\")\n    f2 = _write(tmp_path / \"b.csv\", \"\")\n    with pytest.raises(ValueError):\n        task_func(f1, f2)"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r1__1795233563",
+  "case": "xc_tests.test_xc_errors::test_r14_directory_path_raises_exception",
+  "held": true,
+  "message": "",
+  "source": "def _write(path, text):\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef test_r14_directory_path_raises_exception(tmp_path):\n    f2 = _write(tmp_path / \"b.csv\", \"a,b\\n\")\n    with pytest.raises(Exception):\n        task_func(str(tmp_path), f2)"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r1__1795233563",
+  "case": "xc_tests.test_xc_params::test_r15_custom_delimiter_is_accepted",
+  "held": false,
+  "message": "assert 3 == 2\n +  where 3 = len([(1, ' ', \"('a', 'b')\"), (2, '-', \"('c', 'd')\"), (3, '+', \"('c', 'e')\")])",
+  "source": "def _write(path, text):\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef _rows(result):\n    return [tuple(row) for row in result[[\"Line Number\", \"Status\", \"Content\"]].itertuples(index=False)]\n\ndef test_r15_custom_delimiter_is_accepted(tmp_path):\n    f1 = _write(tmp_path / \"a.csv\", \"a;b\\nc;d\\n\")\n    f2 = _write(tmp_path / \"b.csv\", \"a;b\\nc;e\\n\")\n    result = task_func(f1, f2, delimiter=\";\")\n    assert isinstance(result, pd.DataFrame)\n    assert list(result.columns) == [\"Line Number\", \"Status\", \"Content\"]\n    rows = _rows(result)\n    assert len(rows) == 2\n    assert [r[1] for r in rows] == [\"-\", \"+\"]"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r1__1795233563",
+  "case": "xc_tests.test_xc_params::test_r16_custom_quotechar_is_accepted",
+  "held": true,
+  "message": "",
+  "source": "def _write(path, text):\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef _rows(result):\n    return [tuple(row) for row in result[[\"Line Number\", \"Status\", \"Content\"]].itertuples(index=False)]\n\ndef test_r16_custom_quotechar_is_accepted(tmp_path):\n    f1 = _write(tmp_path / \"a.csv\", \"a,'b,c'\\n\")\n    f2 = _write(tmp_path / \"b.csv\", \"a,'b,d'\\n\")\n    result = task_func(f1, f2, quotechar=\"'\")\n    assert isinstance(result, pd.DataFrame)\n    assert list(result.columns) == [\"Line Number\", \"Status\", \"Content\"]\n    rows = _rows(result)\n    assert len(rows) == 2\n    assert [r[1] for r in rows] == [\"-\", \"+\"]"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r1__1795233563",
+  "case": "xc_tests.test_xc_params::test_r17_identical_files_with_custom_delimiter_have_no_differences",
+  "held": false,
+  "message": "AssertionError: assert 2 == 0\n +  where 2 = len(   Line Number Status     Content\\n0            1         ('a', 'b')\\n1            2         ('c', 'd'))",
+  "source": "def _write(path, text):\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef test_r17_identical_files_with_custom_delimiter_have_no_differences(tmp_path):\n    text = \"a;b\\nc;d\\n\"\n    f1 = _write(tmp_path / \"a.csv\", text)\n    f2 = _write(tmp_path / \"b.csv\", text)\n    result = task_func(f1, f2, delimiter=\";\")\n    assert len(result) == 0"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r1__1795233563",
+  "case": "xc_tests.test_xc_structure::test_r1_returns_dataframe_with_expected_columns",
+  "held": true,
+  "message": "",
+  "source": "def _write(path, text):\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef test_r1_returns_dataframe_with_expected_columns(tmp_path):\n    f1 = _write(tmp_path / \"a.csv\", \"x,y\\n1,2\\n\")\n    f2 = _write(tmp_path / \"b.csv\", \"x,y\\n1,3\\n\")\n    result = task_func(f1, f2)\n    assert isinstance(result, pd.DataFrame)\n    assert list(result.columns) == [\"Line Number\", \"Status\", \"Content\"]"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r1__1795233563",
+  "case": "xc_tests.test_xc_structure::test_r2_identical_files_have_no_differences",
+  "held": false,
+  "message": "AssertionError: assert 3 == 0\n +  where 3 = len(   Line Number Status          Content\\n0            1         ('name', 'age')\\n1            2         ('alice', '30')\\n2            3           ('bob', '25'))",
+  "source": "def _write(path, text):\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef test_r2_identical_files_have_no_differences(tmp_path):\n    text = \"name,age\\nalice,30\\nbob,25\\n\"\n    f1 = _write(tmp_path / \"a.csv\", text)\n    f2 = _write(tmp_path / \"b.csv\", text)\n    result = task_func(f1, f2)\n    assert isinstance(result, pd.DataFrame)\n    assert list(result.columns) == [\"Line Number\", \"Status\", \"Content\"]\n    assert len(result) == 0"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r1__1795233563",
+  "case": "xc_tests.test_xc_structure::test_r3_single_line_identical_files",
+  "held": false,
+  "message": "AssertionError: assert 1 == 0\n +  where 1 = len(   Line Number Status           Content\\n0            1         ('only', 'line'))",
+  "source": "def _write(path, text):\n    path.write_text(text, encoding=\"utf-8\")\n    return str(path)\n\ndef test_r3_single_line_identical_files(tmp_path):\n    f1 = _write(tmp_path / \"a.csv\", \"only,line\\n\")\n    f2 = _write(tmp_path / \"b.csv\", \"only,line\\n\")\n    result = task_func(f1, f2)\n    assert len(result) == 0"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r2__1795233837",
+  "case": "xc_tests.test_xc_core::test_r1_returns_dataframe_with_required_columns",
+  "held": true,
+  "message": "",
+  "source": "def files(tmp_path):\n    def make(name, text):\n        return _write(tmp_path / name, text)\n\n    return make\n\ndef test_r1_returns_dataframe_with_required_columns(files):\n    f1 = files(\"a.csv\", \"a,b\\n1,2\\n\")\n    f2 = files(\"b.csv\", \"a,b\\n1,2\\n\")\n    result = task_func(f1, f2)\n    assert isinstance(result, pd.DataFrame)\n    assert list(result.columns) == COLUMNS"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r2__1795233837",
+  "case": "xc_tests.test_xc_core::test_r2_identical_files_report_no_change",
+  "held": true,
+  "message": "",
+  "source": "def files(tmp_path):\n    def make(name, text):\n        return _write(tmp_path / name, text)\n\n    return make\n\ndef test_r2_identical_files_report_no_change(files):\n    f1 = files(\"a.csv\", \"a,b\\n1,2\\n\")\n    f2 = files(\"b.csv\", \"a,b\\n1,2\\n\")\n    result = task_func(f1, f2)\n    assert len(result) == 2\n    assert set(result[\"Status\"]) == {\" \"}\n    assert list(result[\"Line Number\"]) == [1, 2]"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r2__1795233837",
+  "case": "xc_tests.test_xc_core::test_r3_changed_line_reports_minus_and_plus",
+  "held": false,
+  "message": "assert \"('a', 'b')\" == 'a,b'\n  \n  - a,b\n  + ('a', 'b')",
+  "source": "def _rows(df):\n    return [tuple(row) for row in df[COLUMNS].itertuples(index=False)]\n\ndef files(tmp_path):\n    def make(name, text):\n        return _write(tmp_path / name, text)\n\n    return make\n\ndef test_r3_changed_line_reports_minus_and_plus(files):\n    f1 = files(\"a.csv\", \"a,b\\n1,2\\n\")\n    f2 = files(\"b.csv\", \"a,b\\n1,3\\n\")\n    result = task_func(f1, f2)\n    rows = _rows(result)\n    assert len(rows) == 3\n    assert rows[0][1] == \" \"\n    assert rows[0][2] == \"a,b\"\n    assert rows[1][1] == \"-\"\n    assert rows[1][2] == \"1,2\"\n    assert rows[2][1] == \"+\"\n    assert rows[2][2] == \"1,3\""
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r2__1795233837",
+  "case": "xc_tests.test_xc_core::test_r4_line_numbers_are_sequential_from_one",
+  "held": true,
+  "message": "",
+  "source": "def files(tmp_path):\n    def make(name, text):\n        return _write(tmp_path / name, text)\n\n    return make\n\ndef test_r4_line_numbers_are_sequential_from_one(files):\n    f1 = files(\"a.csv\", \"a,b\\n1,2\\n\")\n    f2 = files(\"b.csv\", \"a,b\\n1,3\\n\")\n    result = task_func(f1, f2)\n    assert list(result[\"Line Number\"]) == [1, 2, 3]"
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r2__1795233837",
+  "case": "xc_tests.test_xc_core::test_r5_extra_line_in_second_file_is_plus",
+  "held": false,
+  "message": "assert \"('3', '4')\" == '3,4'\n  \n  - 3,4\n  + ('3', '4')",
+  "source": "def _rows(df):\n    return [tuple(row) for row in df[COLUMNS].itertuples(index=False)]\n\ndef files(tmp_path):\n    def make(name, text):\n        return _write(tmp_path / name, text)\n\n    return make\n\ndef test_r5_extra_line_in_second_file_is_plus(files):\n    f1 = files(\"a.csv\", \"a,b\\n1,2\\n\")\n    f2 = files(\"b.csv\", \"a,b\\n1,2\\n3,4\\n\")\n    result = task_func(f1, f2)\n    rows = _rows(result)\n    assert len(rows) == 3\n    assert [r[1] for r in rows] == [\" \", \" \", \"+\"]\n    assert rows[2][2] == \"3,4\""
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r2__1795233837",
+  "case": "xc_tests.test_xc_core::test_r6_missing_line_in_second_file_is_minus",
+  "held": false,
+  "message": "assert \"('3', '4')\" == '3,4'\n  \n  - 3,4\n  + ('3', '4')",
+  "source": "def _rows(df):\n    return [tuple(row) for row in df[COLUMNS].itertuples(index=False)]\n\ndef files(tmp_path):\n    def make(name, text):\n        return _write(tmp_path / name, text)\n\n    return make\n\ndef test_r6_missing_line_in_second_file_is_minus(files):\n    f1 = files(\"a.csv\", \"a,b\\n1,2\\n3,4\\n\")\n    f2 = files(\"b.csv\", \"a,b\\n1,2\\n\")\n    result = task_func(f1, f2)\n    rows = _rows(result)\n    assert len(rows) == 3\n    assert [r[1] for r in rows] == [\" \", \" \", \"-\"]\n    assert rows[2][2] == \"3,4\""
+ },
+ {
+  "run": "b_509__crosscheck-v7@s2__r2__1795233837",
+  "case": "xc_tests.test_xc_core::test_r7_content_is_text_of_line",
+  "held": false,
+  "message": "assert 'name,value' in [\"('name', 'value')\", \"('foo', '10')\", \"('foo', '20')\"]",
+  "source": "def files(tmp_path):\n    def make(name, text):\n        return _write(tmp_path / name, text)\n\n    return make\n\ndef test_r7_content_is_text_of_line(files):\n    f1 = files(\"a.csv\", \"name,value\\nfoo,10\\n\")\n    f2 = files(\"b.csv\", \"name,value\\nfoo,20\\n\")\n    result = task_func(f1, f2)\n    contents = list(result[\"Content\"])\n    assert \"name,value\" in contents\n    assert \"foo,10\" in contents\n    assert \"foo,20\" in contents\n    assert all(isinstance(c, str) for c in contents)"
+ }
+]

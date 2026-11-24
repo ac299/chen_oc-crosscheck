@@ -1,0 +1,30 @@
+{
+ "skills": {
+  "coding-lessons": {
+   "status": "trial",
+   "version": 1,
+   "evidence": [],
+   "history": [
+    {
+     "op": "add",
+     "reason": "v3",
+     "version": 1,
+     "time": 1795361135.43883
+    }
+   ]
+  },
+  "task-checklist": {
+   "status": "trial",
+   "version": 1,
+   "evidence": [],
+   "history": [
+    {
+     "op": "add",
+     "reason": "v3",
+     "version": 1,
+     "time": 1795361135.358727
+    }
+   ]
+  }
+ }
+}

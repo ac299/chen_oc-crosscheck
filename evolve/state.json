@@ -1,0 +1,122 @@
+{
+ "rounds": [
+  {
+   "round": 1,
+   "start": "none",
+   "edits": [
+    {
+     "index": 0,
+     "op": "add",
+     "skill": "infer-unspecified-contracts",
+     "screen": {
+      "passed": true,
+      "hits": [],
+      "verdict": "general",
+      "reason": "The skill describes a reusable class of situations (unspecified data contracts) with actionable, tool-performable steps and no task-specific names, constants, or outputs; its rules are generic conventions rather than one task's fix."
+     },
+     "gate": {
+      "accept": false,
+      "wins": 3,
+      "losses": 6,
+      "pairs": 60,
+      "p": 0.5078,
+      "reason": "rejected: 3 wins, 6 losses over 60 pairs",
+      "base": {
+       "method": "single",
+       "n": 60,
+       "rate": 0.5833
+      },
+      "cand": {
+       "method": "single+skills-r1e0",
+       "n": 60,
+       "rate": 0.5333,
+       "skills_loaded_runs": 52
+      }
+     },
+     "result": "rejected"
+    },
+    {
+     "index": 1,
+     "op": "add",
+     "skill": "unspecified-edge-cases",
+     "screen": {
+      "passed": false,
+      "hits": [],
+      "verdict": "task_specific",
+      "reason": "The body encodes details from specific tasks (FileNotFoundError, CalledProcessError, exit-code/subprocess contracts, pandas/matplotlib empty-frame behavior, archive/path return values) rather than a general procedure, and several rules (e.g. 'return the code', 'empty archive/path') are one-fix generalizations not supported by two distinct tasks."
+     },
+     "result": "screened out"
+    }
+   ],
+   "end": "none",
+   "label": "r1"
+  },
+  {
+   "round": 2,
+   "label": "r2b",
+   "start": "none",
+   "edits": [
+    {
+     "index": 0,
+     "op": "add",
+     "skill": "mirror-example-representation",
+     "screen": {
+      "passed": true,
+      "hits": [],
+      "verdict": "general",
+      "reason": "The skill describes a reusable procedure for a class of tasks: treat concrete examples in task text as the output/format specification, with steps for parsing layouts, matching container shapes, and reproducing representations. It names no specific task's functions, columns, files, or constants, and its rules (example-driven format matching, container shape, non-ISO date parsing) are generic guidance rather than one task's fix."
+     },
+     "gate": {
+      "accept": false,
+      "wins": 3,
+      "losses": 3,
+      "pairs": 60,
+      "p": 1.0,
+      "reason": "rejected: 3 wins, 3 losses over 60 pairs",
+      "base": {
+       "method": "single",
+       "n": 60,
+       "rate": 0.5833
+      },
+      "cand": {
+       "method": "single+skills-r2be0",
+       "n": 60,
+       "rate": 0.5833,
+       "skills_loaded_runs": 54
+      }
+     },
+     "result": "rejected"
+    },
+    {
+     "index": 1,
+     "op": "add",
+     "skill": "silent-edge-cases-return-not-raise",
+     "screen": {
+      "passed": false,
+      "hits": [],
+      "verdict": "task_specific",
+      "reason": "It encodes a blanket rule (return instead of raising for all unstated edge cases, including nonzero exits) derived from one fix, and its examples (Axes/DataFrame, CalledProcessError, FileNotFoundError) reflect specific tasks rather than a supported general procedure."
+     },
+     "result": "screened out"
+    }
+   ],
+   "end": "none"
+  }
+ ],
+ "current": "none",
+ "events": [
+  {
+   "reset_round": 1,
+   "why": "screen v1 rejected plain English words; proposals kept, rescreened with v2"
+  },
+  {
+   "aborted_round": 2,
+   "attempt": "a",
+   "why": "reflector got no feedback on rejected edits and re-proposed the round-1 skill; r2.json and its partial r2e0 gate runs are kept but unused",
+   "restart_label": "r2b"
+  }
+ ],
+ "attempts": {
+  "2": "b"
+ }
+}

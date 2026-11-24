@@ -1,0 +1,26 @@
+{
+ "task_id": "b_845",
+ "source": "BigCodeBench/845",
+ "libs": [
+  "re",
+  "collections",
+  "numpy",
+  "Levenshtein"
+ ],
+ "completion_file": "solution.py",
+ "tests": [
+  "tests/test_solution.py"
+ ],
+ "test_files": [
+  "tests/test_solution.py"
+ ],
+ "env_volume": "xc-env-bcb",
+ "gold_body": "    # Clean and lowercase the texts\n    text1 = ALPHANUMERIC.sub(' ', text1).lower()\n    text2 = ALPHANUMERIC.sub(' ', text2).lower()\n\n    # Calculate term frequency vectors\n    vec1 = Counter(text1.split())\n    vec2 = Counter(text2.split())\n\n    # Compute cosine similarity\n    intersection = set(vec1.keys()) & set(vec2.keys())\n    numerator = sum([vec1[x] * vec2[x] for x in intersection])\n\n    sum1 = sum([vec1[x]**2 for x in vec1.keys()])\n    sum2 = sum([vec2[x]**2 for x in vec2.keys()])\n    denominator = np.sqrt(sum1) * np.sqrt(sum2)\n\n    if not denominator:\n        cosine_similarity = 0.0\n    else:\n        cosine_similarity = float(numerator) / denominator\n\n    # Calculate Levenshtein ratio\n    levenshtein_ratio = ratio(text1, text2)\n\n    return cosine_similarity, levenshtein_ratio",
+ "sample": {
+  "body_position": [
+   8,
+   8
+  ],
+  "indent": 4
+ }
+}

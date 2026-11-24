@@ -1,0 +1,163 @@
+[
+ {
+  "run": "b_917__crosscheck-v7@s2__r0__1795233453",
+  "case": "xc_tests.test_xc_forecast::test_r1_returns_tuple_of_list_and_axes",
+  "held": false,
+  "message": "KeyError: 'closing_price'",
+  "source": "def _make_df(n=40, start=100.0, step=1.0, start_date=\"2020-01-01\"):\n    idx = pd.date_range(start_date, periods=n, freq=\"D\")\n    close = np.linspace(start, start + step * (n - 1), n)\n    return pd.DataFrame({\"Close\": close}, index=idx)\n\ndef test_r1_returns_tuple_of_list_and_axes():\n    result = task_func(_make_df())\n    assert isinstance(result, tuple)\n    assert len(result) == 2\n    forecast, ax = result\n    assert isinstance(forecast, list)\n    assert isinstance(ax, Axes)"
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r0__1795233453",
+  "case": "xc_tests.test_xc_forecast::test_r2_forecast_has_seven_entries",
+  "held": false,
+  "message": "KeyError: 'closing_price'",
+  "source": "def _make_df(n=40, start=100.0, step=1.0, start_date=\"2020-01-01\"):\n    idx = pd.date_range(start_date, periods=n, freq=\"D\")\n    close = np.linspace(start, start + step * (n - 1), n)\n    return pd.DataFrame({\"Close\": close}, index=idx)\n\ndef test_r2_forecast_has_seven_entries():\n    forecast, _ = task_func(_make_df())\n    assert len(forecast) == 7"
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r0__1795233453",
+  "case": "xc_tests.test_xc_forecast::test_r3_forecast_entries_are_finite_floats",
+  "held": false,
+  "message": "KeyError: 'closing_price'",
+  "source": "def _make_df(n=40, start=100.0, step=1.0, start_date=\"2020-01-01\"):\n    idx = pd.date_range(start_date, periods=n, freq=\"D\")\n    close = np.linspace(start, start + step * (n - 1), n)\n    return pd.DataFrame({\"Close\": close}, index=idx)\n\ndef test_r3_forecast_entries_are_finite_floats():\n    forecast, _ = task_func(_make_df())\n    for value in forecast:\n        assert isinstance(value, float)\n        assert np.isfinite(value)\n        # closing prices must stay positive for a rising price series\n        assert value > 0"
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r0__1795233453",
+  "case": "xc_tests.test_xc_forecast::test_r4_forecast_matches_arima_on_close_column",
+  "held": false,
+  "message": "KeyError: 'closing_price'",
+  "source": "def _make_df(n=40, start=100.0, step=1.0, start_date=\"2020-01-01\"):\n    idx = pd.date_range(start_date, periods=n, freq=\"D\")\n    close = np.linspace(start, start + step * (n - 1), n)\n    return pd.DataFrame({\"Close\": close}, index=idx)\n\ndef test_r4_forecast_matches_arima_on_close_column():\n    from statsmodels.tsa.arima.model import ARIMA\n\n    df = _make_df(n=40, start=100.0, step=1.0)\n    forecast, _ = task_func(df)\n\n    expected = ARIMA(df[\"Close\"], order=(5, 1, 0)).fit().forecast(steps=7)\n    expected_values = [float(v) for v in np.asarray(expected)]\n\n    assert np.allclose(forecast, expected_values, rtol=1e-4, atol=1e-4)"
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r0__1795233453",
+  "case": "xc_tests.test_xc_forecast::test_r5_axes_belongs_to_a_figure",
+  "held": false,
+  "message": "KeyError: 'closing_price'",
+  "source": "def _make_df(n=40, start=100.0, step=1.0, start_date=\"2020-01-01\"):\n    idx = pd.date_range(start_date, periods=n, freq=\"D\")\n    close = np.linspace(start, start + step * (n - 1), n)\n    return pd.DataFrame({\"Close\": close}, index=idx)\n\ndef test_r5_axes_belongs_to_a_figure():\n    _, ax = task_func(_make_df())\n    assert ax.figure is not None\n    assert ax in ax.figure.axes"
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r0__1795233453",
+  "case": "xc_tests.test_xc_forecast::test_r6_axes_contains_plotted_line",
+  "held": false,
+  "message": "KeyError: 'closing_price'",
+  "source": "def _make_df(n=40, start=100.0, step=1.0, start_date=\"2020-01-01\"):\n    idx = pd.date_range(start_date, periods=n, freq=\"D\")\n    close = np.linspace(start, start + step * (n - 1), n)\n    return pd.DataFrame({\"Close\": close}, index=idx)\n\ndef test_r6_axes_contains_plotted_line():\n    _, ax = task_func(_make_df())\n    assert len(ax.lines) >= 1\n    # at least one line must carry the 7 forecast points\n    assert any(len(line.get_ydata()) == 7 for line in ax.lines)"
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r0__1795233453",
+  "case": "xc_tests.test_xc_forecast::test_r7_forecast_is_deterministic",
+  "held": false,
+  "message": "KeyError: 'closing_price'",
+  "source": "def _make_df(n=40, start=100.0, step=1.0, start_date=\"2020-01-01\"):\n    idx = pd.date_range(start_date, periods=n, freq=\"D\")\n    close = np.linspace(start, start + step * (n - 1), n)\n    return pd.DataFrame({\"Close\": close}, index=idx)\n\ndef test_r7_forecast_is_deterministic():\n    df = _make_df()\n    first, _ = task_func(df)\n    second, _ = task_func(df)\n    assert np.allclose(first, second, rtol=1e-6, atol=1e-6)"
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r1__1795233772",
+  "case": "xc_tests.test_xc_forecast::test_r1_returns_tuple_of_list_and_axes",
+  "held": false,
+  "message": "KeyError: 'closing_price'",
+  "source": "def _make_df(n=60, seed=0):\n    rng = np.random.RandomState(seed)\n    close = 100.0 + np.cumsum(rng.randn(n))\n    return pd.DataFrame({\"Close\": close})\n\ndef test_r1_returns_tuple_of_list_and_axes():\n    df = _make_df()\n    result = task_func(df)\n    assert isinstance(result, tuple)\n    assert len(result) == 2\n    forecasts, ax = result\n    assert isinstance(forecasts, list)\n    assert isinstance(ax, Axes)"
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r1__1795233772",
+  "case": "xc_tests.test_xc_forecast::test_r2_seven_forecast_values",
+  "held": false,
+  "message": "KeyError: 'closing_price'",
+  "source": "def _make_df(n=60, seed=0):\n    rng = np.random.RandomState(seed)\n    close = 100.0 + np.cumsum(rng.randn(n))\n    return pd.DataFrame({\"Close\": close})\n\ndef test_r2_seven_forecast_values():\n    df = _make_df()\n    forecasts, _ = task_func(df)\n    assert len(forecasts) == 7"
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r1__1795233772",
+  "case": "xc_tests.test_xc_forecast::test_r3_forecast_values_are_floats",
+  "held": false,
+  "message": "KeyError: 'closing_price'",
+  "source": "def _make_df(n=60, seed=0):\n    rng = np.random.RandomState(seed)\n    close = 100.0 + np.cumsum(rng.randn(n))\n    return pd.DataFrame({\"Close\": close})\n\ndef test_r3_forecast_values_are_floats():\n    df = _make_df()\n    forecasts, _ = task_func(df)\n    for value in forecasts:\n        assert isinstance(value, (float, np.floating))\n        assert np.isfinite(value)"
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r1__1795233772",
+  "case": "xc_tests.test_xc_forecast::test_r4_forecast_is_arima_based",
+  "held": false,
+  "message": "KeyError: 'closing_price'",
+  "source": "def test_r4_forecast_is_arima_based():\n    # A random-walk (d=1) ARIMA forecast of a constant series must stay\n    # at the constant level, and a shifted constant must shift the forecast.\n    df_a = pd.DataFrame({\"Close\": [50.0] * 40})\n    df_b = pd.DataFrame({\"Close\": [80.0] * 40})\n    fa, _ = task_func(df_a)\n    fb, _ = task_func(df_b)\n    assert np.allclose(fa, 50.0, atol=1e-6)\n    assert np.allclose(fb, 80.0, atol=1e-6)"
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r1__1795233772",
+  "case": "xc_tests.test_xc_forecast::test_r5_forecast_continues_recent_level",
+  "held": false,
+  "message": "KeyError: 'closing_price'",
+  "source": "def _make_df(n=60, seed=0):\n    rng = np.random.RandomState(seed)\n    close = 100.0 + np.cumsum(rng.randn(n))\n    return pd.DataFrame({\"Close\": close})\n\ndef test_r5_forecast_continues_recent_level():\n    # Forecasts must be in the neighbourhood of the last observed price,\n    # not an arbitrary or unrelated value.\n    df = _make_df()\n    last = float(df[\"Close\"].iloc[-1])\n    forecasts, _ = task_func(df)\n    assert all(abs(v - last) < 20.0 for v in forecasts)"
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r1__1795233772",
+  "case": "xc_tests.test_xc_forecast::test_r6_axes_contains_plotted_data",
+  "held": false,
+  "message": "KeyError: 'closing_price'",
+  "source": "def _make_df(n=60, seed=0):\n    rng = np.random.RandomState(seed)\n    close = 100.0 + np.cumsum(rng.randn(n))\n    return pd.DataFrame({\"Close\": close})\n\ndef test_r6_axes_contains_plotted_data():\n    df = _make_df()\n    _, ax = task_func(df)\n    assert ax.has_data()\n    assert len(ax.lines) >= 1"
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r1__1795233772",
+  "case": "xc_tests.test_xc_forecast::test_r7_axes_has_forecast_line",
+  "held": false,
+  "message": "KeyError: 'closing_price'",
+  "source": "def _make_df(n=60, seed=0):\n    rng = np.random.RandomState(seed)\n    close = 100.0 + np.cumsum(rng.randn(n))\n    return pd.DataFrame({\"Close\": close})\n\ndef test_r7_axes_has_forecast_line():\n    # The plotted data must include the 7 forecast points.\n    df = _make_df()\n    forecasts, ax = task_func(df)\n    plotted = np.concatenate(\n        [np.asarray(line.get_ydata(), dtype=float) for line in ax.lines]\n    )\n    for value in forecasts:\n        assert np.any(np.isclose(plotted, value, atol=1e-6))"
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r1__1795233772",
+  "case": "xc_tests.test_xc_forecast::test_r8_axes_has_labels",
+  "held": false,
+  "message": "KeyError: 'closing_price'",
+  "source": "def _make_df(n=60, seed=0):\n    rng = np.random.RandomState(seed)\n    close = 100.0 + np.cumsum(rng.randn(n))\n    return pd.DataFrame({\"Close\": close})\n\ndef test_r8_axes_has_labels():\n    df = _make_df()\n    _, ax = task_func(df)\n    assert ax.get_title() != \"\" or ax.get_xlabel() != \"\" or ax.get_ylabel() != \"\""
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r2__1795233997",
+  "case": "xc_tests.test_xc_forecast::test_r1_returns_tuple_of_list_and_axes",
+  "held": false,
+  "message": "failed on setup with \"KeyError: 'closing_price'\"",
+  "source": "def result():\n    return task_func(_make_df())\n\ndef test_r1_returns_tuple_of_list_and_axes(result):\n    assert isinstance(result, tuple)\n    assert len(result) == 2\n    forecasts, ax = result\n    assert isinstance(forecasts, list)\n    assert isinstance(ax, Axes)"
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r2__1795233997",
+  "case": "xc_tests.test_xc_forecast::test_r2_seven_forecast_values",
+  "held": false,
+  "message": "failed on setup with \"KeyError: 'closing_price'\"",
+  "source": "def result():\n    return task_func(_make_df())\n\ndef test_r2_seven_forecast_values(result):\n    forecasts, _ = result\n    assert len(forecasts) == 7"
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r2__1795233997",
+  "case": "xc_tests.test_xc_forecast::test_r3_forecasts_are_floats",
+  "held": false,
+  "message": "failed on setup with \"KeyError: 'closing_price'\"",
+  "source": "def result():\n    return task_func(_make_df())\n\ndef test_r3_forecasts_are_floats(result):\n    forecasts, _ = result\n    for value in forecasts:\n        assert isinstance(value, (float, np.floating))\n        assert np.isfinite(value)"
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r2__1795233997",
+  "case": "xc_tests.test_xc_forecast::test_r4_axes_contains_plotted_data",
+  "held": false,
+  "message": "failed on setup with \"KeyError: 'closing_price'\"",
+  "source": "def result():\n    return task_func(_make_df())\n\ndef test_r4_axes_contains_plotted_data(result):\n    _, ax = result\n    # The forecast must be plotted on the returned Axes.\n    assert len(ax.lines) >= 1\n    plotted = np.concatenate([np.asarray(line.get_ydata(), dtype=float)\n                              for line in ax.lines])\n    assert plotted.size >= 7\n    assert np.all(np.isfinite(plotted))"
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r2__1795233997",
+  "case": "xc_tests.test_xc_forecast::test_r5_axes_has_labels",
+  "held": false,
+  "message": "failed on setup with \"KeyError: 'closing_price'\"",
+  "source": "def result():\n    return task_func(_make_df())\n\ndef test_r5_axes_has_labels(result):\n    _, ax = result\n    assert ax.get_title() != \"\"\n    assert ax.get_xlabel() != \"\"\n    assert ax.get_ylabel() != \"\""
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r2__1795233997",
+  "case": "xc_tests.test_xc_forecast::test_r6_forecast_continues_price_trend",
+  "held": false,
+  "message": "KeyError: 'closing_price'",
+  "source": "def _make_df(n=40, start=100.0, step=1.0, start_date=\"2023-01-01\"):\n    \"\"\"Build a simple, well-behaved price history with a DatetimeIndex.\"\"\"\n    index = pd.date_range(start_date, periods=n, freq=\"D\")\n    close = [start + step * i for i in range(n)]\n    return pd.DataFrame({\"Close\": close}, index=index)\n\ndef test_r6_forecast_continues_price_trend():\n    # A strictly increasing history must yield a forecast that stays in the\n    # neighbourhood of the observed price level (not zeros / NaNs / garbage).\n    df = _make_df(n=40, start=100.0, step=1.0)\n    forecasts, _ = task_func(df)\n    last_price = float(df[\"Close\"].iloc[-1])\n    assert all(50.0 < value < 250.0 for value in forecasts)\n    assert abs(forecasts[0] - last_price) < 50.0"
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r2__1795233997",
+  "case": "xc_tests.test_xc_forecast::test_r7_forecast_reacts_to_input_data",
+  "held": false,
+  "message": "KeyError: 'closing_price'",
+  "source": "def _make_df(n=40, start=100.0, step=1.0, start_date=\"2023-01-01\"):\n    \"\"\"Build a simple, well-behaved price history with a DatetimeIndex.\"\"\"\n    index = pd.date_range(start_date, periods=n, freq=\"D\")\n    close = [start + step * i for i in range(n)]\n    return pd.DataFrame({\"Close\": close}, index=index)\n\ndef test_r7_forecast_reacts_to_input_data():\n    # Different price levels must produce different forecasts.\n    low = task_func(_make_df(n=40, start=10.0, step=0.5))[0]\n    high = task_func(_make_df(n=40, start=1000.0, step=5.0))[0]\n    assert len(low) == len(high) == 7\n    assert max(low) < min(high)"
+ },
+ {
+  "run": "b_917__crosscheck-v7@s2__r2__1795233997",
+  "case": "xc_tests.test_xc_forecast::test_r8_axes_is_new_subplot",
+  "held": false,
+  "message": "failed on setup with \"KeyError: 'closing_price'\"",
+  "source": "def result():\n    return task_func(_make_df())\n\ndef test_r8_axes_is_new_subplot(result):\n    _, ax = result\n    # The returned Axes must be a real, usable matplotlib Axes object.\n    assert ax.figure is not None\n    assert ax in ax.figure.axes"
+ }
+]

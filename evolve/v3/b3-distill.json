@@ -1,0 +1,77 @@
+{
+ "lessons": [
+  {
+   "text": "When a function returns a plot or chart, always emit the full expected set of categories/positions (e.g. all seven weekdays) with zero values for missing ones, and handle empty input by still producing the complete axes.",
+   "tasks": [
+    "b_367",
+    "b_553"
+   ]
+  },
+  {
+   "text": "When plotting from a DataFrame, guard empty or zero-column inputs explicitly by building fig/ax yourself instead of calling df.plot, which raises on empty data.",
+   "tasks": [
+    "b_367",
+    "b_553"
+   ]
+  },
+  {
+   "text": "When random bounds are given as parameters, pass them directly to randint as inclusive upper bounds rather than subtracting one; this also avoids empty ranges when the bound is 0.",
+   "tasks": [
+    "b_120",
+    "b_618"
+   ]
+  }
+ ],
+ "dropped_single_task": [
+  {
+   "text": "When the spec names a literal value, match the type the hidden tests likely check (e.g. append an int rather than a string) and derive downstream quantities from the actual stored values.",
+   "tasks": [
+    "b_123"
+   ]
+  },
+  {
+   "text": "When the spec says a range is inclusive for sampling but the output length is the number of days, sample inclusively yet generate exactly (end-start).days elements.",
+   "tasks": [
+    "b_120"
+   ]
+  },
+  {
+   "text": "When inputs are DataFrames, do not hardcode column names or index types; discover the relevant numeric column and handle both DatetimeIndex and date columns, verifying with varied schemas.",
+   "tasks": [
+    "b_917"
+   ]
+  },
+  {
+   "text": "When parsing timestamps, do not assume ISO format; use strptime with the actual day-first pattern and handle variants (2-digit year, missing milliseconds), treating naive values as UTC before converting.",
+   "tasks": [
+    "b_1077"
+   ]
+  },
+  {
+   "text": "When comparing structured records, preserve the parsed row structure (e.g. tuples from csv.reader) rather than rejoining, and number output lines sequentially across the merged diff.",
+   "tasks": [
+    "b_509"
+   ]
+  }
+ ],
+ "body": "## Lessons\n- When a function returns a plot or chart, always emit the full expected set of categories/positions (e.g. all seven weekdays) with zero values for missing ones, and handle empty input by still producing the complete axes.\n- When plotting from a DataFrame, guard empty or zero-column inputs explicitly by building fig/ax yourself instead of calling df.plot, which raises on empty data.\n- When random bounds are given as parameters, pass them directly to randint as inclusive upper bounds rather than subtracting one; this also avoids empty ranges when the bound is 0.",
+ "model_calls": [
+  {
+   "tokens": 3656,
+   "seconds": 6.8,
+   "status": "completed"
+  },
+  {
+   "tokens": 1240,
+   "seconds": 1.6,
+   "status": "completed"
+  }
+ ],
+ "screen": {
+  "passed": false,
+  "hits": [],
+  "verdict": "task_specific",
+  "reason": "Rules encode specifics from particular tasks (all seven weekdays, randint inclusive-bound behavior) and generalize single fixes into universal rules; no 'When to use'/'Steps'/'Pitfalls' structure and no evidence from two tasks."
+ },
+ "ok": false
+}

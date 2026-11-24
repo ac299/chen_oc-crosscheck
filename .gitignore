@@ -1,0 +1,40 @@
+# Not submitted
+papers/
+docs/
+
+# Secrets: never commit provider configs or keys
+.env
+.env.*
+*.env
+!**/.env.example
+*.pem
+*.key
+
+# Large or regenerable data
+datasets/
+results/raw/
+
+# Local backups made while editing the docs and records
+results/evidence/*.before_*
+results/evidence/*.bak*
+results/evidence/test_labels.before_check/
+results/runs.jsonl.bak*
+memory/*_check/
+memory/*_rebuild/
+scripts/run_one.sh.tmp
+
+# Python and tool caches
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+
+# EvoCodeBench source repositories copied into each task (about 900 MB);
+# regenerated from the dataset by repobench/make_task.py
+tasks_repo/*/repo/
+results/evidence/runs.jsonl.bak*
+
+# Drafts and helper scripts used while editing the README; pause markers
+results/evidence/readme_*
+results/evidence/pause_*.txt
+results/evidence/pricing/

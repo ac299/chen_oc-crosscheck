@@ -1,0 +1,44 @@
+{
+ "ok": false,
+ "why": "no usable reply",
+ "reply": "{\"body\":\"## When to use\\nAny task: implement one function from a prose spec, no tests given. Read the spec once, extract every concrete claim, then verify each claim by running code.\\n\\n## Build the checklist\\nBefore coding, write a short numbered checklist in your reply (not in a file). Pull items only from what the spec states:\\n- Signature/imports: keep them exactly; body only.\\n- Return type/shape: scalar, tuple order, DataFrame columns/index names, list element type, Axes vs Figure.\\n- Exceptions: only those named, raised exactly when the stated condition holds; check order if several could apply.\\n- Edge cases explicitly mentioned (empty input, single element, missing file, defaults).\\n- Formats shown in examples: exact strings, labels, rounding, NaN vs 0.\\n- Side effects: files, warnings, plots, subprocess behavior.\\n- Degenerate inputs: if inputs can be empty or zero-length, add an item for what to return then, and return a valid object of the stated type instead of letting a library raise.\\n- Input tolerance: if the spec describes data by role rather than exact label, add an item that the function finds it in a reasonable frame (e.g. any numeric column) rather than assuming one exact name.\\n- Concurrency/threads: if the function runs a loop, server, or thread, add an item that no unhandled exception escapes (guard dict/list lookups and removals; catch per-socket/per-item errors).\\n\\n## Check it\\nWrite a throwaway script (outside the repo or delete after) that imports the function and asserts each checklist item: type checks, `list(df.columns)`, `df.index.tolist()`, tuple unpacking, try/except for each named exception, and the documented edge inputs. For plots assert `isinstance(result, Axes)`; for files assert existence then clean up. Run it, fix failures, rerun. Also run any provided tests.\\n\\n## Pitfalls\\n- Don't invent exceptions or messages the spec didn't name; don't swallow named ones.\\n- Match example output literally (labels, spacing, NaN).\\n- Respect stated ordering of tuple returns and list contents.\\n- Close files/plots; avoid leaving temp artifacts in the repo.\\n- Don't change signature, imports, or constants; don't edit tests.\\n- Don't assume a column name the spec never states; fall back to a numeric column.\\n- Don't let empty inputs crash inside a library; return the stated type.\\n- Don't let a background thread raise; wrap loop bodies in try/except and check membership before removing.\",\"reason\":\"Trimmed wording to fit the 1700-char budget while keeping the added degenerate-input, input-tolerance, and concurrency items supported by the evidence.\"}",
+ "contrasts": [
+  {
+   "task": "b_346",
+   "failed": "b_346__single-sh-skills-gso-g0__r0__1795359370",
+   "resolved": "b_346__crosscheck-v7@s2__r2__1795233897"
+  },
+  {
+   "task": "b_917",
+   "failed": "b_917__single-sh-skills-gso-g0__r0__1795359391",
+   "resolved": "b_917__crosscheck-v7@s2__r1__1795233772"
+  },
+  {
+   "task": "b_553",
+   "failed": "b_553__single-sh-skills-gso-g0__r0__1795359440",
+   "resolved": "b_553__single-sh-skills-gso-g0__r1__1795359441"
+  },
+  {
+   "task": "b_1040",
+   "failed": "b_1040__single-sh-skills-gso-g0__r0__1795359531",
+   "resolved": "b_1040__single-sh__r0__1795353098"
+  }
+ ],
+ "model_calls": [
+  {
+   "tokens": 8601,
+   "seconds": 5.8,
+   "status": "completed"
+  },
+  {
+   "tokens": 9183,
+   "seconds": 3.5,
+   "status": "completed"
+  },
+  {
+   "tokens": 9139,
+   "seconds": 3.5,
+   "status": "completed"
+  }
+ ]
+}

@@ -1,0 +1,25 @@
+{
+ "task_id": "b_870",
+ "source": "BigCodeBench/870",
+ "libs": [
+  "pandas",
+  "numpy",
+  "itertools"
+ ],
+ "completion_file": "solution.py",
+ "tests": [
+  "tests/test_solution.py"
+ ],
+ "test_files": [
+  "tests/test_solution.py"
+ ],
+ "env_volume": "xc-env-bcb",
+ "gold_body": "\n    # Unzip the data, filling missing values with NaN so they don't affect the mean calculation\n    unzipped_data = list(itertools.zip_longest(*data_list, fillvalue=np.nan))\n\n    # Calculate the mean of numerical values, skipping the first column assuming it's non-numerical\n    # Filter out non-numeric values from the column before calculating the mean\n    mean_values = []\n    for column in unzipped_data[:]:\n        numeric_values = [val for val in column if isinstance(val, (int, float))]\n        if numeric_values:\n            mean_values.append(np.nanmean(numeric_values))\n        else:\n            mean_values.append(np.nan)\n\n    # Create a DataFrame with the results\n    df = pd.DataFrame(mean_values, columns=['Mean Value'], \n                      index=['Position {}'.format(i) for i in range(len(mean_values))])\n\n    return df",
+ "sample": {
+  "body_position": [
+   5,
+   5
+  ],
+  "indent": 4
+ }
+}

@@ -1,0 +1,317 @@
+[
+ {
+  "run": "b_771__crosscheck-v7@s2__r0__1795235767",
+  "case": "xc_tests.test_xc_core::test_r1_returns_list_of_new_filenames",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef test_r1_returns_list_of_new_filenames(tmp_path):\n    _write_csv(tmp_path / \"data-1.csv\", [[\"a\", \"b\"], [\"1\", \"2\"]])\n    result = task_func(str(tmp_path))\n    assert isinstance(result, list)\n    assert len(result) == 1\n    assert isinstance(result[0], str)"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r0__1795235767",
+  "case": "xc_tests.test_xc_core::test_r2_new_file_created_in_directory",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef test_r2_new_file_created_in_directory(tmp_path):\n    _write_csv(tmp_path / \"data-1.csv\", [[\"a\", \"b\"], [\"1\", \"2\"]])\n    result = task_func(str(tmp_path))\n    new_name = result[0]\n    assert os.path.isfile(os.path.join(str(tmp_path), new_name))"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r0__1795235767",
+  "case": "xc_tests.test_xc_core::test_r3_new_name_differs_from_original",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef test_r3_new_name_differs_from_original(tmp_path):\n    _write_csv(tmp_path / \"data-1.csv\", [[\"a\", \"b\"], [\"1\", \"2\"]])\n    result = task_func(str(tmp_path))\n    assert result[0] != \"data-1.csv\""
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r0__1795235767",
+  "case": "xc_tests.test_xc_core::test_r4_content_preserved",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef _read_csv(path):\n    with open(path, newline=\"\") as fh:\n        return list(csv.reader(fh))\n\ndef test_r4_content_preserved(tmp_path):\n    rows = [[\"name\", \"value\"], [\"alpha\", \"1\"], [\"beta\", \"2\"]]\n    _write_csv(tmp_path / \"data-1.csv\", rows)\n    result = task_func(str(tmp_path))\n    new_path = os.path.join(str(tmp_path), result[0])\n    assert _read_csv(new_path) == rows"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r0__1795235767",
+  "case": "xc_tests.test_xc_core::test_r5_original_file_untouched",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef _read_csv(path):\n    with open(path, newline=\"\") as fh:\n        return list(csv.reader(fh))\n\ndef test_r5_original_file_untouched(tmp_path):\n    rows = [[\"x\", \"y\"], [\"3\", \"4\"]]\n    _write_csv(tmp_path / \"data-1.csv\", rows)\n    task_func(str(tmp_path))\n    assert _read_csv(tmp_path / \"data-1.csv\") == rows"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r0__1795235767",
+  "case": "xc_tests.test_xc_core::test_r6_non_matching_files_ignored",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef test_r6_non_matching_files_ignored(tmp_path):\n    _write_csv(tmp_path / \"data-1.csv\", [[\"a\"], [\"1\"]])\n    _write_csv(tmp_path / \"plain.csv\", [[\"b\"], [\"2\"]])\n    _write_csv(tmp_path / \"notes.txt\", [[\"c\"], [\"3\"]])\n    result = task_func(str(tmp_path))\n    assert len(result) == 1\n    assert \"plain.csv\" not in result\n    assert \"notes.txt\" not in result"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r0__1795235767",
+  "case": "xc_tests.test_xc_core::test_r7_multiple_matching_files",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef test_r7_multiple_matching_files(tmp_path):\n    _write_csv(tmp_path / \"one-1.csv\", [[\"a\"], [\"1\"]])\n    _write_csv(tmp_path / \"two-2.csv\", [[\"b\"], [\"2\"]])\n    _write_csv(tmp_path / \"three-33.csv\", [[\"c\"], [\"3\"]])\n    result = task_func(str(tmp_path))\n    assert len(result) == 3\n    assert len(set(result)) == 3\n    for name in result:\n        assert os.path.isfile(os.path.join(str(tmp_path), name))"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r0__1795235767",
+  "case": "xc_tests.test_xc_core::test_r8_no_matching_files_returns_empty_list",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef test_r8_no_matching_files_returns_empty_list(tmp_path):\n    _write_csv(tmp_path / \"plain.csv\", [[\"a\"], [\"1\"]])\n    _write_csv(tmp_path / \"other.txt\", [[\"b\"], [\"2\"]])\n    result = task_func(str(tmp_path))\n    assert result == []"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r0__1795235767",
+  "case": "xc_tests.test_xc_core::test_r9_empty_directory_returns_empty_list",
+  "held": true,
+  "message": "",
+  "source": "def test_r9_empty_directory_returns_empty_list(tmp_path):\n    result = task_func(str(tmp_path))\n    assert result == []"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r0__1795235767",
+  "case": "xc_tests.test_xc_core::test_r10_custom_pattern_used",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef test_r10_custom_pattern_used(tmp_path):\n    _write_csv(tmp_path / \"report_2020.csv\", [[\"a\"], [\"1\"]])\n    _write_csv(tmp_path / \"data-1.csv\", [[\"b\"], [\"2\"]])\n    result = task_func(str(tmp_path), pattern=r\"^(.*?)_\\d+\\.csv$\")\n    assert len(result) == 1\n    assert os.path.isfile(os.path.join(str(tmp_path), result[0]))\n    assert \"data-1.csv\" not in result"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r0__1795235767",
+  "case": "xc_tests.test_xc_core::test_r11_custom_pattern_no_match_returns_empty_list",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef test_r11_custom_pattern_no_match_returns_empty_list(tmp_path):\n    _write_csv(tmp_path / \"data-1.csv\", [[\"a\"], [\"1\"]])\n    result = task_func(str(tmp_path), pattern=r\"^(.*?)_\\d+\\.csv$\")\n    assert result == []"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r0__1795235767",
+  "case": "xc_tests.test_xc_core::test_r12_multiple_rows_and_columns_preserved",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef _read_csv(path):\n    with open(path, newline=\"\") as fh:\n        return list(csv.reader(fh))\n\ndef test_r12_multiple_rows_and_columns_preserved(tmp_path):\n    rows = [\n        [\"id\", \"first\", \"last\"],\n        [\"1\", \"Ada\", \"Lovelace\"],\n        [\"2\", \"Alan\", \"Turing\"],\n        [\"3\", \"Grace\", \"Hopper\"],\n    ]\n    _write_csv(tmp_path / \"people-7.csv\", rows)\n    result = task_func(str(tmp_path))\n    assert len(result) == 1\n    assert _read_csv(os.path.join(str(tmp_path), result[0])) == rows"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r0__1795235767",
+  "case": "xc_tests.test_xc_core::test_r13_single_row_content_preserved",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef _read_csv(path):\n    with open(path, newline=\"\") as fh:\n        return list(csv.reader(fh))\n\ndef test_r13_single_row_content_preserved(tmp_path):\n    rows = [[\"only\", \"row\"]]\n    _write_csv(tmp_path / \"single-5.csv\", rows)\n    result = task_func(str(tmp_path))\n    assert _read_csv(os.path.join(str(tmp_path), result[0])) == rows"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r0__1795235767",
+  "case": "xc_tests.test_xc_core::test_r14_original_files_still_present",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef test_r14_original_files_still_present(tmp_path):\n    _write_csv(tmp_path / \"data-1.csv\", [[\"a\"], [\"1\"]])\n    _write_csv(tmp_path / \"data-2.csv\", [[\"b\"], [\"2\"]])\n    task_func(str(tmp_path))\n    assert os.path.isfile(tmp_path / \"data-1.csv\")\n    assert os.path.isfile(tmp_path / \"data-2.csv\")"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r0__1795235767",
+  "case": "xc_tests.test_xc_core::test_r15_returned_names_are_basenames",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef test_r15_returned_names_are_basenames(tmp_path):\n    _write_csv(tmp_path / \"data-1.csv\", [[\"a\"], [\"1\"]])\n    result = task_func(str(tmp_path))\n    for name in result:\n        assert os.path.basename(name) == name\n        assert not os.path.isabs(name)"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r0__1795235767",
+  "case": "xc_tests.test_xc_core::test_r16_accepts_pathlib_directory",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef test_r16_accepts_pathlib_directory(tmp_path):\n    _write_csv(tmp_path / \"data-1.csv\", [[\"a\"], [\"1\"]])\n    result = task_func(tmp_path)\n    assert len(result) == 1\n    assert os.path.isfile(os.path.join(str(tmp_path), result[0]))"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r1__1795237044",
+  "case": "xc_tests.test_xc_core::test_r1_returns_list_of_new_filenames",
+  "held": true,
+  "message": "",
+  "source": "def _make_dir(tmp_path: Path, names):\n    d = tmp_path / \"data\"\n    d.mkdir()\n    for name in names:\n        _write_csv(d / name, [[\"x\", \"y\"], [\"3\", \"4\"]])\n    return d\n\ndef test_r1_returns_list_of_new_filenames(tmp_path):\n    d = _make_dir(tmp_path, [\"report-1.csv\"])\n    result = task_func(str(d))\n    assert isinstance(result, list)\n    assert len(result) == 1\n    assert isinstance(result[0], str)\n    assert result[0] == \"report.csv\""
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r1__1795237044",
+  "case": "xc_tests.test_xc_core::test_r2_new_file_created_in_directory",
+  "held": true,
+  "message": "",
+  "source": "def _make_dir(tmp_path: Path, names):\n    d = tmp_path / \"data\"\n    d.mkdir()\n    for name in names:\n        _write_csv(d / name, [[\"x\", \"y\"], [\"3\", \"4\"]])\n    return d\n\ndef test_r2_new_file_created_in_directory(tmp_path):\n    d = _make_dir(tmp_path, [\"report-1.csv\"])\n    result = task_func(str(d))\n    new_path = d / result[0]\n    assert new_path.is_file()\n    assert new_path.exists()"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r1__1795237044",
+  "case": "xc_tests.test_xc_core::test_r3_content_preserved",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path: Path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef _read_csv(path: Path):\n    with open(path, newline=\"\") as fh:\n        return list(csv.reader(fh))\n\ndef test_r3_content_preserved(tmp_path):\n    d = tmp_path / \"data\"\n    d.mkdir()\n    rows = [[\"name\", \"value\"], [\"alpha\", \"1\"], [\"beta\", \"2\"]]\n    _write_csv(d / \"report-7.csv\", rows)\n    result = task_func(str(d))\n    assert _read_csv(d / result[0]) == rows"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r1__1795237044",
+  "case": "xc_tests.test_xc_core::test_r4_multiple_files_all_processed",
+  "held": true,
+  "message": "",
+  "source": "def _make_dir(tmp_path: Path, names):\n    d = tmp_path / \"data\"\n    d.mkdir()\n    for name in names:\n        _write_csv(d / name, [[\"x\", \"y\"], [\"3\", \"4\"]])\n    return d\n\ndef test_r4_multiple_files_all_processed(tmp_path):\n    d = _make_dir(tmp_path, [\"a-1.csv\", \"b-2.csv\", \"c-3.csv\"])\n    result = task_func(str(d))\n    assert sorted(result) == [\"a.csv\", \"b.csv\", \"c.csv\"]\n    for name in result:\n        assert (d / name).is_file()"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r1__1795237044",
+  "case": "xc_tests.test_xc_core::test_r5_non_matching_files_ignored",
+  "held": true,
+  "message": "",
+  "source": "def _make_dir(tmp_path: Path, names):\n    d = tmp_path / \"data\"\n    d.mkdir()\n    for name in names:\n        _write_csv(d / name, [[\"x\", \"y\"], [\"3\", \"4\"]])\n    return d\n\ndef test_r5_non_matching_files_ignored(tmp_path):\n    d = _make_dir(tmp_path, [\"keep.csv\", \"notes.txt\", \"data-1.csv\"])\n    result = task_func(str(d))\n    assert result == [\"data.csv\"]\n    assert (d / \"keep.csv\").is_file()\n    assert (d / \"notes.txt\").is_file()\n    assert not (d / \"notes.csv\").exists()"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r1__1795237044",
+  "case": "xc_tests.test_xc_core::test_r6_original_files_remain",
+  "held": true,
+  "message": "",
+  "source": "def _make_dir(tmp_path: Path, names):\n    d = tmp_path / \"data\"\n    d.mkdir()\n    for name in names:\n        _write_csv(d / name, [[\"x\", \"y\"], [\"3\", \"4\"]])\n    return d\n\ndef test_r6_original_files_remain(tmp_path):\n    d = _make_dir(tmp_path, [\"report-1.csv\", \"other-2.csv\"])\n    task_func(str(d))\n    assert (d / \"report-1.csv\").is_file()\n    assert (d / \"other-2.csv\").is_file()"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r1__1795237044",
+  "case": "xc_tests.test_xc_core::test_r7_multi_digit_suffix_stripped",
+  "held": true,
+  "message": "",
+  "source": "def _make_dir(tmp_path: Path, names):\n    d = tmp_path / \"data\"\n    d.mkdir()\n    for name in names:\n        _write_csv(d / name, [[\"x\", \"y\"], [\"3\", \"4\"]])\n    return d\n\ndef test_r7_multi_digit_suffix_stripped(tmp_path):\n    d = _make_dir(tmp_path, [\"report-123.csv\"])\n    result = task_func(str(d))\n    assert result == [\"report.csv\"]"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r1__1795237044",
+  "case": "xc_tests.test_xc_core::test_r8_custom_pattern_used",
+  "held": true,
+  "message": "",
+  "source": "def _make_dir(tmp_path: Path, names):\n    d = tmp_path / \"data\"\n    d.mkdir()\n    for name in names:\n        _write_csv(d / name, [[\"x\", \"y\"], [\"3\", \"4\"]])\n    return d\n\ndef test_r8_custom_pattern_used(tmp_path):\n    d = _make_dir(tmp_path, [\"report-1.csv\", \"data_2.csv\"])\n    result = task_func(str(d), pattern=r\"^(.*?)_\\d+\\.csv$\")\n    assert result == [\"data.csv\"]\n    assert (d / \"data.csv\").is_file()\n    assert not (d / \"report.csv\").exists()"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r1__1795237044",
+  "case": "xc_tests.test_xc_core::test_r9_empty_directory_returns_empty_list",
+  "held": true,
+  "message": "",
+  "source": "def test_r9_empty_directory_returns_empty_list(tmp_path):\n    d = tmp_path / \"empty\"\n    d.mkdir()\n    assert task_func(str(d)) == []"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r1__1795237044",
+  "case": "xc_tests.test_xc_core::test_r10_no_matching_files_returns_empty_list",
+  "held": true,
+  "message": "",
+  "source": "def _make_dir(tmp_path: Path, names):\n    d = tmp_path / \"data\"\n    d.mkdir()\n    for name in names:\n        _write_csv(d / name, [[\"x\", \"y\"], [\"3\", \"4\"]])\n    return d\n\ndef test_r10_no_matching_files_returns_empty_list(tmp_path):\n    d = _make_dir(tmp_path, [\"plain.csv\", \"readme.txt\"])\n    assert task_func(str(d)) == []"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r1__1795237044",
+  "case": "xc_tests.test_xc_edges::test_r11_hyphenated_base_name_kept",
+  "held": true,
+  "message": "",
+  "source": "def _make_dir(tmp_path: Path, names):\n    d = tmp_path / \"data\"\n    d.mkdir()\n    for name in names:\n        _write_csv(d / name, [[\"x\", \"y\"], [\"3\", \"4\"]])\n    return d\n\ndef test_r11_hyphenated_base_name_kept(tmp_path):\n    d = _make_dir(tmp_path, [\"my-file-3.csv\"])\n    result = task_func(str(d))\n    assert result == [\"my-file.csv\"]\n    assert (d / \"my-file.csv\").is_file()"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r1__1795237044",
+  "case": "xc_tests.test_xc_edges::test_r12_leading_digit_suffix_only_stripped",
+  "held": true,
+  "message": "",
+  "source": "def _make_dir(tmp_path: Path, names):\n    d = tmp_path / \"data\"\n    d.mkdir()\n    for name in names:\n        _write_csv(d / name, [[\"x\", \"y\"], [\"3\", \"4\"]])\n    return d\n\ndef test_r12_leading_digit_suffix_only_stripped(tmp_path):\n    d = _make_dir(tmp_path, [\"data-1-2.csv\"])\n    result = task_func(str(d))\n    assert result == [\"data-1.csv\"]\n    assert (d / \"data-1.csv\").is_file()"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r1__1795237044",
+  "case": "xc_tests.test_xc_edges::test_r13_uppercase_extension_not_matched",
+  "held": true,
+  "message": "",
+  "source": "def _make_dir(tmp_path: Path, names):\n    d = tmp_path / \"data\"\n    d.mkdir()\n    for name in names:\n        _write_csv(d / name, [[\"x\", \"y\"], [\"3\", \"4\"]])\n    return d\n\ndef test_r13_uppercase_extension_not_matched(tmp_path):\n    d = _make_dir(tmp_path, [\"report-1.CSV\"])\n    assert task_func(str(d)) == []\n    assert not (d / \"report.CSV\").exists()"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r1__1795237044",
+  "case": "xc_tests.test_xc_edges::test_r14_other_extension_not_matched",
+  "held": true,
+  "message": "",
+  "source": "def _make_dir(tmp_path: Path, names):\n    d = tmp_path / \"data\"\n    d.mkdir()\n    for name in names:\n        _write_csv(d / name, [[\"x\", \"y\"], [\"3\", \"4\"]])\n    return d\n\ndef test_r14_other_extension_not_matched(tmp_path):\n    d = _make_dir(tmp_path, [\"report-1.txt\"])\n    assert task_func(str(d)) == []\n    assert not (d / \"report.txt\").exists()"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r1__1795237044",
+  "case": "xc_tests.test_xc_edges::test_r15_pathlib_path_accepted",
+  "held": true,
+  "message": "",
+  "source": "def _make_dir(tmp_path: Path, names):\n    d = tmp_path / \"data\"\n    d.mkdir()\n    for name in names:\n        _write_csv(d / name, [[\"x\", \"y\"], [\"3\", \"4\"]])\n    return d\n\ndef test_r15_pathlib_path_accepted(tmp_path):\n    d = _make_dir(tmp_path, [\"report-1.csv\"])\n    result = task_func(d)\n    assert result == [\"report.csv\"]\n    assert (d / \"report.csv\").is_file()"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r1__1795237044",
+  "case": "xc_tests.test_xc_edges::test_r16_content_preserved_for_each_file",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path: Path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef _read_csv(path: Path):\n    with open(path, newline=\"\") as fh:\n        return list(csv.reader(fh))\n\ndef test_r16_content_preserved_for_each_file(tmp_path):\n    d = tmp_path / \"data\"\n    d.mkdir()\n    first = [[\"h1\", \"h2\"], [\"v1\", \"v2\"]]\n    second = [[\"only\"], [\"row\"]]\n    _write_csv(d / \"first-1.csv\", first)\n    _write_csv(d / \"second-2.csv\", second)\n    result = task_func(str(d))\n    assert sorted(result) == [\"first.csv\", \"second.csv\"]\n    assert _read_csv(d / \"first.csv\") == first\n    assert _read_csv(d / \"second.csv\") == second"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r1__1795237044",
+  "case": "xc_tests.test_xc_edges::test_r17_quoted_fields_preserved",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path: Path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef _read_csv(path: Path):\n    with open(path, newline=\"\") as fh:\n        return list(csv.reader(fh))\n\ndef test_r17_quoted_fields_preserved(tmp_path):\n    d = tmp_path / \"data\"\n    d.mkdir()\n    rows = [[\"a,b\", 'say \"hi\"'], [\"line\\nbreak\", \"z\"]]\n    _write_csv(d / \"quoted-5.csv\", rows)\n    result = task_func(str(d))\n    assert result == [\"quoted.csv\"]\n    assert _read_csv(d / \"quoted.csv\") == rows"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r1__1795237044",
+  "case": "xc_tests.test_xc_edges::test_r18_original_content_unchanged",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path: Path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef _read_csv(path: Path):\n    with open(path, newline=\"\") as fh:\n        return list(csv.reader(fh))\n\ndef test_r18_original_content_unchanged(tmp_path):\n    d = tmp_path / \"data\"\n    d.mkdir()\n    rows = [[\"k\", \"v\"], [\"1\", \"2\"]]\n    _write_csv(d / \"orig-9.csv\", rows)\n    task_func(str(d))\n    assert _read_csv(d / \"orig-9.csv\") == rows"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r1__1795237044",
+  "case": "xc_tests.test_xc_edges::test_r19_custom_pattern_no_matches",
+  "held": true,
+  "message": "",
+  "source": "def _make_dir(tmp_path: Path, names):\n    d = tmp_path / \"data\"\n    d.mkdir()\n    for name in names:\n        _write_csv(d / name, [[\"x\", \"y\"], [\"3\", \"4\"]])\n    return d\n\ndef test_r19_custom_pattern_no_matches(tmp_path):\n    d = _make_dir(tmp_path, [\"report-1.csv\"])\n    assert task_func(str(d), pattern=r\"^(.*?)_\\d+\\.csv$\") == []\n    assert not (d / \"report.csv\").exists()"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r1__1795237044",
+  "case": "xc_tests.test_xc_edges::test_r20_custom_pattern_multiple_files",
+  "held": true,
+  "message": "",
+  "source": "def _make_dir(tmp_path: Path, names):\n    d = tmp_path / \"data\"\n    d.mkdir()\n    for name in names:\n        _write_csv(d / name, [[\"x\", \"y\"], [\"3\", \"4\"]])\n    return d\n\ndef test_r20_custom_pattern_multiple_files(tmp_path):\n    d = _make_dir(tmp_path, [\"one_1.csv\", \"two_22.csv\", \"three-3.csv\"])\n    result = task_func(str(d), pattern=r\"^(.*?)_\\d+\\.csv$\")\n    assert sorted(result) == [\"one.csv\", \"two.csv\"]\n    assert (d / \"one.csv\").is_file()\n    assert (d / \"two.csv\").is_file()\n    assert not (d / \"three.csv\").exists()"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r2__1795238536",
+  "case": "xc_tests.test_xc_core::test_r1_returns_list_of_strings",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef test_r1_returns_list_of_strings(tmp_path):\n    _write_csv(tmp_path / \"data-1.csv\", [[\"a\", \"b\"], [\"1\", \"2\"]])\n    result = task_func(str(tmp_path))\n    assert isinstance(result, list)\n    assert all(isinstance(name, str) for name in result)"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r2__1795238536",
+  "case": "xc_tests.test_xc_core::test_r2_new_file_created_for_matching_csv",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef test_r2_new_file_created_for_matching_csv(tmp_path):\n    _write_csv(tmp_path / \"data-1.csv\", [[\"a\", \"b\"], [\"1\", \"2\"]])\n    result = task_func(str(tmp_path))\n    assert len(result) == 1\n    new_path = tmp_path / result[0]\n    assert new_path.is_file()"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r2__1795238536",
+  "case": "xc_tests.test_xc_core::test_r3_content_preserved",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef _read_csv(path):\n    with open(path, newline=\"\") as fh:\n        return list(csv.reader(fh))\n\ndef test_r3_content_preserved(tmp_path):\n    rows = [[\"name\", \"value\"], [\"alpha\", \"1\"], [\"beta\", \"2\"]]\n    _write_csv(tmp_path / \"data-1.csv\", rows)\n    result = task_func(str(tmp_path))\n    assert len(result) == 1\n    assert _read_csv(tmp_path / result[0]) == rows"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r2__1795238536",
+  "case": "xc_tests.test_xc_core::test_r4_new_name_derived_from_pattern_group",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef test_r4_new_name_derived_from_pattern_group(tmp_path):\n    _write_csv(tmp_path / \"report-42.csv\", [[\"x\"], [\"y\"]])\n    result = task_func(str(tmp_path))\n    assert len(result) == 1\n    new_name = os.path.basename(result[0])\n    assert new_name != \"report-42.csv\"\n    assert new_name.endswith(\".csv\")\n    assert \"report\" in new_name"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r2__1795238536",
+  "case": "xc_tests.test_xc_core::test_r5_original_file_kept",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef _read_csv(path):\n    with open(path, newline=\"\") as fh:\n        return list(csv.reader(fh))\n\ndef test_r5_original_file_kept(tmp_path):\n    _write_csv(tmp_path / \"data-1.csv\", [[\"a\"], [\"1\"]])\n    task_func(str(tmp_path))\n    assert (tmp_path / \"data-1.csv\").is_file()\n    assert _read_csv(tmp_path / \"data-1.csv\") == [[\"a\"], [\"1\"]]"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r2__1795238536",
+  "case": "xc_tests.test_xc_core::test_r6_multiple_matching_files",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef test_r6_multiple_matching_files(tmp_path):\n    _write_csv(tmp_path / \"one-1.csv\", [[\"a\"], [\"1\"]])\n    _write_csv(tmp_path / \"two-2.csv\", [[\"b\"], [\"2\"]])\n    _write_csv(tmp_path / \"three-3.csv\", [[\"c\"], [\"3\"]])\n    result = task_func(str(tmp_path))\n    assert len(result) == 3\n    assert len(set(result)) == 3\n    for name in result:\n        assert (tmp_path / name).is_file()"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r2__1795238536",
+  "case": "xc_tests.test_xc_core::test_r7_non_matching_files_ignored",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef _read_csv(path):\n    with open(path, newline=\"\") as fh:\n        return list(csv.reader(fh))\n\ndef test_r7_non_matching_files_ignored(tmp_path):\n    _write_csv(tmp_path / \"data-1.csv\", [[\"a\"], [\"1\"]])\n    _write_csv(tmp_path / \"plain.csv\", [[\"b\"], [\"2\"]])\n    (tmp_path / \"notes.txt\").write_text(\"hello\")\n    result = task_func(str(tmp_path))\n    assert len(result) == 1\n    assert (tmp_path / \"plain.csv\").is_file()\n    assert (tmp_path / \"notes.txt\").is_file()\n    assert _read_csv(tmp_path / \"plain.csv\") == [[\"b\"], [\"2\"]]"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r2__1795238536",
+  "case": "xc_tests.test_xc_core::test_r8_custom_pattern",
+  "held": true,
+  "message": "",
+  "source": "def _write_csv(path, rows):\n    with open(path, \"w\", newline=\"\") as fh:\n        writer = csv.writer(fh)\n        for row in rows:\n            writer.writerow(row)\n\ndef _read_csv(path):\n    with open(path, newline=\"\") as fh:\n        return list(csv.reader(fh))\n\ndef test_r8_custom_pattern(tmp_path):\n    _write_csv(tmp_path / \"data-1.csv\", [[\"a\"], [\"1\"]])\n    _write_csv(tmp_path / \"sample_7.csv\", [[\"b\"], [\"2\"]])\n    result = task_func(str(tmp_path), pattern=r\"^(.*?)_\\d+\\.csv$\")\n    assert len(result) == 1\n    new_name = os.path.basename(result[0])\n    assert new_name.endswith(\".csv\")\n    assert \"sample\" in new_name\n    assert _read_csv(tmp_path / result[0]) == [[\"b\"], [\"2\"]]"
+ },
+ {
+  "run": "b_771__crosscheck-v7@s2__r2__1795238536",
+  "case": "xc_tests.test_xc_core::test_r9_empty_directory",
+  "held": true,
+  "message": "",
+  "source": "def test_r9_empty_directory(tmp_path):\n    result = task_func(str(tmp_path))\n    assert result == []"
+ }
+]

@@ -1,0 +1,23 @@
+{
+ "ok": true,
+ "advice": [
+  {
+   "task": "b_346",
+   "ok": true,
+   "advice": "Your arg handling is still wrong. The signature is task_func(script_path, wait=True, *args), so extra args arrive as a tuple. Do NOT str() them and do NOT flatten a single list/tuple—that mangles values like lists. Pass them through unchanged: cmd = [sys.executable, script_path] + list(args). The failing test likely passes args that must reach the script verbatim (e.g. numbers, flags, or a list) and the script validates sys.argv; your conversion caused a nonzero exit. Keep: ValueError if script missing, return None when wait is False, raise subprocess.CalledProcessError on nonzero return. Verify with a script that echoes/asserts its argv and one that exits nonzero.",
+   "from_run": "b_346__single-sh-skills-v3b1a2__r0__1795361447"
+  }
+ ],
+ "model_calls": [
+  {
+   "tokens": 1979,
+   "seconds": 3.3,
+   "status": "completed"
+  },
+  {
+   "tokens": 1826,
+   "seconds": 3.4,
+   "status": "completed"
+  }
+ ]
+}

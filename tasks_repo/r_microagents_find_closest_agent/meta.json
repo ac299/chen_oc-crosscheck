@@ -1,0 +1,47 @@
+{
+ "task_id": "r_microagents_find_closest_agent",
+ "project": "microagents",
+ "namespace": "agent_similarity.AgentSimilarity.find_closest_agent",
+ "completion_file": "agents/agent_similarity.py",
+ "tests": [
+  "tests/test_agent_similarity.py::TestAgentSimilarity::test_find_closest_agent"
+ ],
+ "test_files": [
+  "tests/test_agent_similarity.py"
+ ],
+ "env_volume": "xc-env-microagents",
+ "gold_body": "        closest_agent: Optional[Agent] = None\n        highest_similarity: float = -np.inf\n\n        try:\n            for agent in self.agents:\n                if agent.purpose_embedding is None:\n                   agent.purpose_embedding = self.get_embedding(agent.purpose)\n\n                similarity = cosine_similarity([agent.purpose_embedding], [purpose_embedding])[0][0]\n\n                if similarity > highest_similarity:\n                    highest_similarity = similarity\n                    closest_agent = agent\n\n            return closest_agent, highest_similarity\n        except Exception as e:\n            logger.exception(f\"Error finding closest agent: {e}\")\n            raise ValueError(f\"Error finding closest agent: {e}\")",
+ "sample": {
+  "namespace": "agent_similarity.AgentSimilarity.find_closest_agent",
+  "type": "method",
+  "completion_path": "microagents/agents/agent_similarity.py",
+  "signature_position": [
+   69,
+   69
+  ],
+  "body_position": [
+   76,
+   93
+  ],
+  "dependency": {
+   "intra_class": [
+    "agent_similarity.AgentSimilarity.agents",
+    "agent_similarity.AgentSimilarity.get_embedding"
+   ],
+   "intra_file": [
+    "agent_similarity.Agent",
+    "agent_similarity.logger"
+   ],
+   "cross_file": []
+  },
+  "tests": [
+   "tests/test_agent_similarity.py::TestAgentSimilarity::test_find_closest_agent"
+  ],
+  "requirement": {
+   "Functionality": "Finds the closest agent to a given purpose embedding by calculating the cosine similarity between the purpose embedding of each agent and the given purpose embedding. It returns the agent with the highest similarity score to the given purpose embedding.\n",
+   "Arguments": ":param purpose_embedding: np.ndarray, The embedding vector of the purpose for which the closest agent is being searched. It is used to compare against the purpose embeddings of the agents to find the closest match.\n:return: Tuple[Optional[Agent], float], A tuple containing the closest agent to the given purpose embedding and the highest similarity score. If no agents are found or an error occurs, it may return None for the agent and -inf for the similarity score."
+  },
+  "indent": 8,
+  "domain": "Scientific Engineering"
+ }
+}

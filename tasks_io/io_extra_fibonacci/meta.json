@@ -1,0 +1,9 @@
+{
+ "task": "Extra_Fibonacci",
+ "function": "process",
+ "input_type": "int",
+ "kind": "int",
+ "visible": 8,
+ "held_out": 15,
+ "seed": 20261121
+}

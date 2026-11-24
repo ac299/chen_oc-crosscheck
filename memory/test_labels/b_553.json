@@ -1,0 +1,233 @@
+[
+ {
+  "run": "b_553__crosscheck-v7@s2__r0__1795235493",
+  "case": "xc_tests.test_xc_task_func::test_r1_returns_axes",
+  "held": true,
+  "message": "",
+  "source": "def test_r1_returns_axes():\n    ax = task_func([1, 2, 3], [10, 20])\n    assert isinstance(ax, matplotlib.axes.Axes)"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r0__1795235493",
+  "case": "xc_tests.test_xc_task_func::test_r2_row_indices_from_a",
+  "held": true,
+  "message": "",
+  "source": "def test_r2_row_indices_from_a():\n    a = [\"row_x\", \"row_y\", \"row_z\"]\n    ax = task_func(a, [1, 2])\n    labels = [t.get_text() for t in ax.get_xticklabels()]\n    assert labels == [str(v) for v in a]"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r0__1795235493",
+  "case": "xc_tests.test_xc_task_func::test_r2_numeric_row_indices_from_a",
+  "held": true,
+  "message": "",
+  "source": "def test_r2_numeric_row_indices_from_a():\n    a = [7, 3, 11, 5]\n    ax = task_func(a, [1, 2, 3])\n    labels = [t.get_text() for t in ax.get_xticklabels()]\n    assert labels == [str(v) for v in a]"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r0__1795235493",
+  "case": "xc_tests.test_xc_task_func::test_r3_column_count_follows_len_b",
+  "held": true,
+  "message": "",
+  "source": "def test_r3_column_count_follows_len_b():\n    a = [1, 2, 3]\n    for n in (1, 2, 3, 4, 5):\n        ax = task_func(a, list(range(n)))\n        # one bar per (row, column) pair\n        assert len(ax.patches) == len(a) * n"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r0__1795235493",
+  "case": "xc_tests.test_xc_task_func::test_r3_column_names_from_columns_prefix",
+  "held": true,
+  "message": "",
+  "source": "def test_r3_column_names_from_columns_prefix():\n    a = [1, 2, 3]\n    for n in (1, 2, 3, 4, 5):\n        ax = task_func(a, list(range(n)))\n        legend = ax.get_legend()\n        assert legend is not None\n        names = [t.get_text() for t in legend.get_texts()]\n        assert names == COLUMNS[:n]"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r0__1795235493",
+  "case": "xc_tests.test_xc_task_func::test_r3_columns_constant_is_predefined",
+  "held": true,
+  "message": "",
+  "source": "def test_r3_columns_constant_is_predefined():\n    assert list(COLUMNS) == [\"A\", \"B\", \"C\", \"D\", \"E\"]"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r0__1795235493",
+  "case": "xc_tests.test_xc_task_func::test_r4_values_are_random",
+  "held": true,
+  "message": "",
+  "source": "def _bar_heights(ax):\n    \"\"\"Heights of the bar patches of the axes, in drawing order.\"\"\"\n    return [float(p.get_height()) for p in ax.patches]\n\ndef test_r4_values_are_random():\n    a = [1, 2, 3, 4, 5, 6]\n    ax = task_func(a, [1, 2, 3])\n    heights = _bar_heights(ax)\n    assert len(heights) == 18\n    assert len(set(heights)) > 1"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r0__1795235493",
+  "case": "xc_tests.test_xc_task_func::test_r4_values_differ_between_calls",
+  "held": false,
+  "message": "assert [1.764052345967664, 2.240893199201458, 0.9500884175255894, 0.41059850193837233, 0.7610377251469934, 0.33367432737426683, ...] != [1.764052345967664, 2.240893199201458, 0.9500884175255894, 0.41059850193837233, 0.7610377251469934, 0.33367432737426683, ...]",
+  "source": "def _bar_heights(ax):\n    \"\"\"Heights of the bar patches of the axes, in drawing order.\"\"\"\n    return [float(p.get_height()) for p in ax.patches]\n\ndef test_r4_values_differ_between_calls():\n    a = [1, 2, 3, 4, 5, 6]\n    first = _bar_heights(task_func(a, [1, 2, 3]))\n    second = _bar_heights(task_func(a, [1, 2, 3]))\n    assert first != second"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r0__1795235493",
+  "case": "xc_tests.test_xc_task_func::test_r5_bar_chart_patches",
+  "held": true,
+  "message": "",
+  "source": "def test_r5_bar_chart_patches():\n    a = [1, 2, 3]\n    ax = task_func(a, [1, 2])\n    assert len(ax.patches) == 6\n    for patch in ax.patches:\n        assert hasattr(patch, \"get_height\")\n        assert hasattr(patch, \"get_width\")\n        assert float(patch.get_width()) > 0\n    # a bar chart has no line data\n    assert len(ax.lines) == 0"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r1__1795236710",
+  "case": "xc_tests.test_xc_task_func::test_r1_returns_axes_object",
+  "held": true,
+  "message": "",
+  "source": "def test_r1_returns_axes_object():\n    ax = task_func([\"x\", \"y\", \"z\"], [1, 2])\n    assert isinstance(ax, matplotlib.axes.Axes)"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r1__1795236710",
+  "case": "xc_tests.test_xc_task_func::test_r2_axes_is_attached_to_current_figure",
+  "held": true,
+  "message": "",
+  "source": "def test_r2_axes_is_attached_to_current_figure():\n    ax = task_func([\"x\", \"y\", \"z\"], [1, 2])\n    assert ax in plt.gcf().axes"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r1__1795236710",
+  "case": "xc_tests.test_xc_task_func::test_r3_row_count_matches_len_a",
+  "held": true,
+  "message": "",
+  "source": "def test_r3_row_count_matches_len_a():\n    a = [\"r0\", \"r1\", \"r2\", \"r3\"]\n    ax = task_func(a, [1, 2])\n    # one bar per (row, column) pair\n    assert len(ax.patches) == len(a) * 2"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r1__1795236710",
+  "case": "xc_tests.test_xc_task_func::test_r4_row_labels_are_list_a",
+  "held": true,
+  "message": "",
+  "source": "def test_r4_row_labels_are_list_a():\n    a = [\"alpha\", \"beta\", \"gamma\"]\n    ax = task_func(a, [1, 2])\n    labels = [t.get_text() for t in ax.get_xticklabels()]\n    assert labels == a"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r1__1795236710",
+  "case": "xc_tests.test_xc_task_func::test_r5_column_count_matches_len_b",
+  "held": true,
+  "message": "",
+  "source": "def test_r5_column_count_matches_len_b():\n    ax = task_func([\"x\", \"y\"], [1, 2, 3])\n    # 2 rows x 3 columns -> 6 bars\n    assert len(ax.patches) == 6"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r1__1795236710",
+  "case": "xc_tests.test_xc_task_func::test_r6_columns_use_predefined_names",
+  "held": true,
+  "message": "",
+  "source": "def _legend_labels(ax):\n    legend = ax.get_legend()\n    if legend is None:\n        return []\n    return [t.get_text() for t in legend.get_texts()]\n\ndef test_r6_columns_use_predefined_names():\n    ax = task_func([\"x\", \"y\"], [1, 2, 3])\n    assert _legend_labels(ax) == COLUMNS[:3]"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r1__1795236710",
+  "case": "xc_tests.test_xc_task_func::test_r7_single_column_uses_first_predefined_name",
+  "held": true,
+  "message": "",
+  "source": "def _legend_labels(ax):\n    legend = ax.get_legend()\n    if legend is None:\n        return []\n    return [t.get_text() for t in legend.get_texts()]\n\ndef test_r7_single_column_uses_first_predefined_name():\n    ax = task_func([\"x\", \"y\", \"z\"], [1])\n    assert _legend_labels(ax) == COLUMNS[:1]\n    assert len(ax.patches) == 3"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r1__1795236710",
+  "case": "xc_tests.test_xc_task_func::test_r8_all_five_columns_supported",
+  "held": true,
+  "message": "",
+  "source": "def _legend_labels(ax):\n    legend = ax.get_legend()\n    if legend is None:\n        return []\n    return [t.get_text() for t in legend.get_texts()]\n\ndef test_r8_all_five_columns_supported():\n    ax = task_func([\"x\", \"y\"], [1, 2, 3, 4, 5])\n    assert _legend_labels(ax) == COLUMNS\n    assert len(ax.patches) == 10"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r1__1795236710",
+  "case": "xc_tests.test_xc_task_func::test_r9_values_are_random_floats_in_unit_interval",
+  "held": false,
+  "message": "assert False\n +  where False = all(<generator object test_r9_values_are_random_floats_in_unit_interval.<locals>.<genexpr> at 0x7dcd494d5fc0>)",
+  "source": "def _bar_heights(ax):\n    return [float(p.get_height()) for p in ax.patches]\n\ndef test_r9_values_are_random_floats_in_unit_interval():\n    ax = task_func([\"x\", \"y\", \"z\"], [1, 2])\n    heights = _bar_heights(ax)\n    assert len(heights) == 6\n    assert all(0.0 <= h <= 1.0 for h in heights)\n    # random data: not all bars identical\n    assert len(set(heights)) > 1"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r1__1795236710",
+  "case": "xc_tests.test_xc_task_func::test_r10_values_differ_between_calls",
+  "held": false,
+  "message": "assert [1.764052345967664, 0.9787379841057392, 1.8675579901499675, 0.4001572083672233, 2.240893199201458, -0.977277879876411] != [1.764052345967664, 0.9787379841057392, 1.8675579901499675, 0.4001572083672233, 2.240893199201458, -0.977277879876411]",
+  "source": "def _bar_heights(ax):\n    return [float(p.get_height()) for p in ax.patches]\n\ndef test_r10_values_differ_between_calls():\n    ax1 = task_func([\"x\", \"y\", \"z\"], [1, 2])\n    h1 = _bar_heights(ax1)\n    plt.close(\"all\")\n    ax2 = task_func([\"x\", \"y\", \"z\"], [1, 2])\n    h2 = _bar_heights(ax2)\n    assert h1 != h2"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r1__1795236710",
+  "case": "xc_tests.test_xc_task_func::test_r11_plot_is_a_bar_chart",
+  "held": false,
+  "message": "assert np.float64(-0.977277879876411) >= 0\n +  where np.float64(-0.977277879876411) = get_height()\n +    where get_height = <matplotlib.patches.Rectangle object at 0x7dcd4730bb90>.get_height",
+  "source": "def test_r11_plot_is_a_bar_chart():\n    ax = task_func([\"x\", \"y\", \"z\"], [1, 2])\n    assert len(ax.patches) > 0\n    for patch in ax.patches:\n        assert isinstance(patch, matplotlib.patches.Rectangle)\n        assert patch.get_width() > 0\n        assert patch.get_height() >= 0"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r1__1795236710",
+  "case": "xc_tests.test_xc_task_func::test_r12_does_not_require_show",
+  "held": true,
+  "message": "",
+  "source": "def test_r12_does_not_require_show():\n    # function must return the Axes without needing plt.show()\n    ax = task_func([\"x\", \"y\"], [1, 2])\n    assert ax is not None\n    assert isinstance(ax, matplotlib.axes.Axes)"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r2__1795238262",
+  "case": "xc_tests.test_xc_task_func::test_r1_returns_axes",
+  "held": true,
+  "message": "",
+  "source": "def test_r1_returns_axes():\n    ax = task_func([\"x\", \"y\", \"z\"], [1, 2])\n    assert isinstance(ax, plt.Axes)"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r2__1795238262",
+  "case": "xc_tests.test_xc_task_func::test_r2_row_index_is_list_a",
+  "held": true,
+  "message": "",
+  "source": "def test_r2_row_index_is_list_a():\n    a = [\"row_one\", \"row_two\", \"row_three\", \"row_four\"]\n    ax = task_func(a, [10, 20])\n    labels = [t.get_text() for t in ax.get_xticklabels()]\n    assert labels == a"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r2__1795238262",
+  "case": "xc_tests.test_xc_task_func::test_r2_row_index_numeric_list_a",
+  "held": true,
+  "message": "",
+  "source": "def test_r2_row_index_numeric_list_a():\n    a = [7, 8, 9]\n    ax = task_func(a, [1, 2, 3])\n    labels = [t.get_text() for t in ax.get_xticklabels()]\n    assert labels == [str(v) for v in a]"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r2__1795238262",
+  "case": "xc_tests.test_xc_task_func::test_r3_column_count_matches_len_b",
+  "held": true,
+  "message": "",
+  "source": "def test_r3_column_count_matches_len_b():\n    for n in (1, 2, 3, 4, 5):\n        plt.close(\"all\")\n        ax = task_func([\"r1\", \"r2\"], list(range(n)))\n        assert len(ax.containers) == n"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r2__1795238262",
+  "case": "xc_tests.test_xc_task_func::test_r3_column_names_from_columns_constant",
+  "held": true,
+  "message": "",
+  "source": "def test_r3_column_names_from_columns_constant():\n    ax = task_func([\"r1\", \"r2\"], [0, 0, 0])\n    _, labels = ax.get_legend_handles_labels()\n    assert labels == COLUMNS[:3]"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r2__1795238262",
+  "case": "xc_tests.test_xc_task_func::test_r3_column_names_full_five",
+  "held": true,
+  "message": "",
+  "source": "def test_r3_column_names_full_five():\n    ax = task_func([\"r1\", \"r2\"], [0, 0, 0, 0, 0])\n    _, labels = ax.get_legend_handles_labels()\n    assert labels == COLUMNS"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r2__1795238262",
+  "case": "xc_tests.test_xc_task_func::test_r4_bar_chart_one_bar_per_cell",
+  "held": true,
+  "message": "",
+  "source": "def test_r4_bar_chart_one_bar_per_cell():\n    a = [\"r1\", \"r2\", \"r3\"]\n    b = [1, 2]\n    ax = task_func(a, b)\n    assert len(ax.patches) == len(a) * len(b)\n    for container in ax.containers:\n        assert len(container) == len(a)"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r2__1795238262",
+  "case": "xc_tests.test_xc_task_func::test_r4_bars_are_grouped_per_row",
+  "held": true,
+  "message": "",
+  "source": "def test_r4_bars_are_grouped_per_row():\n    a = [\"r1\", \"r2\", \"r3\"]\n    ax = task_func(a, [1, 2])\n    # Bars belonging to the same row share the same x position.\n    xs = [round(float(p.get_x()), 6) for p in ax.patches]\n    n = len(a)\n    first_series = xs[:n]\n    second_series = xs[n:2 * n]\n    assert len(set(first_series)) == n\n    assert len(set(second_series)) == n\n    # The two series are offset from each other (grouped, not stacked).\n    assert set(first_series).isdisjoint(set(second_series))"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r2__1795238262",
+  "case": "xc_tests.test_xc_task_func::test_r5_values_are_random_not_constant",
+  "held": true,
+  "message": "",
+  "source": "def _bar_heights(ax):\n    return [p.get_height() for p in ax.patches]\n\ndef test_r5_values_are_random_not_constant():\n    ax = task_func([\"r1\", \"r2\", \"r3\", \"r4\"], [1, 2, 3])\n    heights = _bar_heights(ax)\n    assert len(set(heights)) > 1"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r2__1795238262",
+  "case": "xc_tests.test_xc_task_func::test_r6_values_within_unit_interval",
+  "held": false,
+  "message": "assert False\n +  where False = all(<generator object test_r6_values_within_unit_interval.<locals>.<genexpr> at 0x77405cb382e0>)",
+  "source": "def _bar_heights(ax):\n    return [p.get_height() for p in ax.patches]\n\ndef test_r6_values_within_unit_interval():\n    ax = task_func([\"r1\", \"r2\", \"r3\", \"r4\", \"r5\"], [1, 2, 3, 4, 5])\n    heights = _bar_heights(ax)\n    assert all(0.0 <= h < 1.0 for h in heights)"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r2__1795238262",
+  "case": "xc_tests.test_xc_task_func::test_r7_repeated_calls_produce_new_values",
+  "held": false,
+  "message": "assert [np.float64(1.764052345967664), np.float64(2.240893199201458), np.float64(0.9500884175255894), np.float64(0.41059850193837233), np.float64(0.4001572083672233), np.float64(1.8675579901499675), ...] != [np.float64(1.764052345967664), np.float64(2.240893199201458), np.float64(0.9500884175255894), np.float64(0.41059850193837233), np.float64(0.4001572083672233), np.float64(1.8675579901499675), .",
+  "source": "def _bar_heights(ax):\n    return [p.get_height() for p in ax.patches]\n\ndef test_r7_repeated_calls_produce_new_values():\n    a = [\"r1\", \"r2\", \"r3\", \"r4\"]\n    b = [1, 2, 3]\n    first = _bar_heights(task_func(a, b))\n    plt.close(\"all\")\n    second = _bar_heights(task_func(a, b))\n    assert first != second"
+ },
+ {
+  "run": "b_553__crosscheck-v7@s2__r2__1795238262",
+  "case": "xc_tests.test_xc_task_func::test_r8_columns_constant_preserved",
+  "held": true,
+  "message": "",
+  "source": "def test_r8_columns_constant_preserved():\n    assert COLUMNS == [\"A\", \"B\", \"C\", \"D\", \"E\"]"
+ }
+]

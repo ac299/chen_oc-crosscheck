@@ -1,0 +1,25 @@
+# CrossCheck v3 on the development set: 8 tasks x 3
+t1_semver crosscheck:v3 0
+t3_lruttl crosscheck:v3 0
+t4_allocate crosscheck:v3 0
+t5_toposort crosscheck:v3 0
+t7_bizdays crosscheck:v3 0
+h1_cron crosscheck:v3 0
+h2_calc crosscheck:v3 0
+h3_glob crosscheck:v3 0
+t1_semver crosscheck:v3 1
+t3_lruttl crosscheck:v3 1
+t4_allocate crosscheck:v3 1
+t5_toposort crosscheck:v3 1
+t7_bizdays crosscheck:v3 1
+h1_cron crosscheck:v3 1
+h2_calc crosscheck:v3 1
+h3_glob crosscheck:v3 1
+t1_semver crosscheck:v3 2
+t3_lruttl crosscheck:v3 2
+t4_allocate crosscheck:v3 2
+t5_toposort crosscheck:v3 2
+t7_bizdays crosscheck:v3 2
+h1_cron crosscheck:v3 2
+h2_calc crosscheck:v3 2
+h3_glob crosscheck:v3 2
