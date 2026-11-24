@@ -1,6 +1,6 @@
 # CrossCheck：在 OpenCollab 上设计的多智能体编码工作流
 
-本项目在 [OpenCollab](https://github.com/RISE-X-Lab/OpenCollab)上设计并实现了一个多智能体编码工作流 CrossCheck。它在 2 个开发集和 3 个测试集（共 5 个公开数据集）上与框架自带的 Single2（单智能体）、Duo（工作流）和 Team（团队）做了对比，并找出、复现、改进了框架的两个问题，还给框架加了两个扩展：双层经验记忆和 Team 预算共享。
+本项目在 [OpenCollab](https://github.com/RISE-X-Lab/OpenCollab)上设计并实现了一个多智能体编码工作流 CrossCheck。它在 2 个开发集和 3 个测试集（来自 4 个公开数据集）上与框架自带的 Single2（单智能体）、Duo（工作流）和 Team（团队）做了对比，并找出、复现、改进了框架的两个问题，还给框架加了两个扩展：双层经验记忆和 Team 预算共享。
 
 - 最终方案：`crosscheck:v7@s2`，代码在 [workflows/crosscheck.py](workflows/crosscheck.py)，角色提示词在 [xc/prompts_v4.py](xc/prompts_v4.py)
 - 框架问题（复现、原因、缓解）和 issue 链接：[ISSUES.md](ISSUES.md)
@@ -376,7 +376,7 @@ Arbiter 在 v7 的所有运行中一次都没有真正做出决定：被调用�
 ### 3.1 公平性
 
 - **同一个模型**：所有方法都用 `deepseek-flash`。
-- **都能运行代码**：Duo、Team、CrossCheck 都开启了本地 shell（`allow_unisolated_shell=True`）。Single2 的 bash 需要进程隔离才能开启，最初的运行脚本没有给它开 shell，导致最早的 Single2 基线所有 bash 调用都被拒绝（772 次中 772 次报 "bash is disabled ..."），只能读写文件、不能运行代码。这是本项目运行脚本的疏漏，不是框架的问题。发现后按 [docs/single2.md](https://github.com/RISE-X-Lab/OpenCollab/blob/78ca8e37/docs/single2.md) 的做法，传入 `builtin_tools(..., headless=False, limits=profile_tool_limits("base"))`，得到方法 `single-sh`：工具、顺序、系统提示词（逐字相同）、预算都与原来一致，只是 bash 能执行。`single-sh` 在全部 5 个数据集上重跑，作为主基线；原来的结果保留，标为"不能运行代码"。
+- **都能运行代码**：Duo、Team、CrossCheck 都开启了本地 shell（`allow_unisolated_shell=True`）。Single2 的 bash 需要进程隔离才能开启，最初的运行脚本没有给它开 shell，导致最早的 Single2 基线所有 bash 调用都被拒绝（772 次中 772 次报 "bash is disabled ..."），只能读写文件、不能运行代码。这是本项目运行脚本的疏漏，不是框架的问题。发现后按 [docs/single2.md](https://github.com/RISE-X-Lab/OpenCollab/blob/78ca8e37/docs/single2.md) 的做法，传入 `builtin_tools(..., headless=False, limits=profile_tool_limits("base"))`，得到方法 `single-sh`：工具、顺序、系统提示词（逐字相同）、预算都与原来一致，只是 bash 能执行。`single-sh` 在全部 2 个开发集和 3 个测试集上重跑，作为主基线；原来的结果保留，标为"不能运行代码"。
 - **同一个系统提示词**：所有方法都用 Single2 的系统提示词（`@s2`），Team 也用同样的配置，见 [scripts/teamcfg/team.collab.s2.yaml](scripts/teamcfg/team.collab.s2.yaml)（运行时使用的是这一份；`configs/` 下有一份内容相同的副本）。
 - **同样的预算和限制**：每次运行 80 万 token，单次输出上限 32,768 token，40 分钟墙钟时限。被墙钟时限杀掉的运行计为"未解决"（按论文附录 B.1 的规则）。
 - **同一个框架版本**：所有对比都跑在未修改的框架副本 `vendor/OpenCollab-upstream@78ca8e37` 上。只有标 `+guard` 的运行使用带改动的副本。
